@@ -18,7 +18,7 @@ package signature
 
 import (
 	"fmt"
-	"github.com/loopholelabs/scale/signature/generator"
+	"github.com/loopholelabs/scale-signature/generator"
 	"os"
 	"path"
 )
