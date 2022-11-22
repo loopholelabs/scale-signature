@@ -82,8 +82,15 @@ func New() (g *Generator) {
 		polyglotTemplate:  polyglotTemplate,
 		generatorTemplate: generatorTemplate,
 		CustomEncode:      func() string { return "" },
-		CustomDecode:      func() string { return "" },
-		CustomFields:      func() string { return "" },
+		CustomDecode: func() string {
+			return `x.error, err = d.Error()
+if err == nil {
+	return nil
+}`
+		},
+		CustomFields: func() string {
+			return "error error"
+		},
 	}
 	return g
 }
