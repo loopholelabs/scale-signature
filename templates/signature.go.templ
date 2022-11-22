@@ -14,7 +14,8 @@ type Context struct {
 	*context.Context
 }
 
-func (ctx *Context) Next() *Context {
-    ctx.Context = ctx.Context.Next()
-    return ctx
+func (ctx *Context) Next() (*Context, error) {
+    var err error
+    ctx.Context, err = ctx.Context.Next()
+    return ctx, err
 }

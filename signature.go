@@ -44,8 +44,9 @@ type RuntimeContext interface {
 // GuestContext is the interface that must be implemented by the Context of a Signature
 // in order for it to be used by the guest.
 type GuestContext interface {
-	ToWriteBuffer() (uint32, uint32) // ToWriteBuffer serializes the Context to a global buffer and returns the offset and length
-	FromReadBuffer() error           // FromReadBuffer deserializes the Context from the global buffer
+	ToWriteBuffer() (uint32, uint32)             // ToWriteBuffer serializes the Context to a global buffer and returns the offset and length
+	ErrorWriteBuffer(err error) (uint32, uint32) // ErrorWriteBuffer serializes an error into a global buffer and returns the offset and length
+	FromReadBuffer() error                       // FromReadBuffer deserializes the Context from the global buffer
 }
 
 // ParseSignature parses and returns the Namespace, Name, and Version of a signature string.
