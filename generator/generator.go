@@ -114,15 +114,15 @@ func (g *Generator) Generate(req *pluginpb.CodeGeneratorRequest) (res *pluginpb.
 		}
 
 		genFile := plugin.NewGeneratedFile(fmt.Sprintf("%s.signature.go", packageName), f.GoImportPath)
-		hostFile := plugin.NewGeneratedFile("host.go", f.GoImportPath)
-		packageFile := plugin.NewGeneratedFile(fmt.Sprintf("%s.go", f.GeneratedFilenamePrefix), f.GoImportPath)
+		hostFile := plugin.NewGeneratedFile("runtime.go", f.GoImportPath)
+		packageFile := plugin.NewGeneratedFile("guest.go", f.GoImportPath)
 
-		err = g.ExecuteHostGeneratorTemplate(hostFile, packageName, f.Desc.Path())
+		err = g.ExecuteRuntimeGeneratorTemplate(hostFile, packageName, f.Desc.Path())
 		if err != nil {
 			return nil, err
 		}
 
-		err = g.ExecutePackageGeneratorTemplate(packageFile, packageName, f.Desc.Path())
+		err = g.ExecuteGuestGeneratorTemplate(packageFile, packageName, f.Desc.Path())
 		if err != nil {
 			return nil, err
 		}
@@ -154,16 +154,16 @@ func (g *Generator) ExecuteProtoGeneratorTemplate(writer io.Writer, packageName 
 	})
 }
 
-func (g *Generator) ExecuteHostGeneratorTemplate(writer io.Writer, packageName string, source string) error {
-	return g.generatorTemplate.ExecuteTemplate(writer, "host.go.templ", map[string]interface{}{
+func (g *Generator) ExecuteRuntimeGeneratorTemplate(writer io.Writer, packageName string, source string) error {
+	return g.generatorTemplate.ExecuteTemplate(writer, "runtime.go.templ", map[string]interface{}{
 		"package":       packageName,
 		"pluginVersion": version,
 		"sourcePath":    source,
 	})
 }
 
-func (g *Generator) ExecutePackageGeneratorTemplate(writer io.Writer, packageName string, source string) error {
-	return g.generatorTemplate.ExecuteTemplate(writer, "package.go.templ", map[string]interface{}{
+func (g *Generator) ExecuteGuestGeneratorTemplate(writer io.Writer, packageName string, source string) error {
+	return g.generatorTemplate.ExecuteTemplate(writer, "guest.go.templ", map[string]interface{}{
 		"package":       packageName,
 		"pluginVersion": version,
 		"sourcePath":    source,

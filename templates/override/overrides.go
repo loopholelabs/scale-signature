@@ -18,5 +18,5 @@ package override
 
 import "embed"
 
-//go:embed *
+//go:embed *.templ
 var FS embed.FS

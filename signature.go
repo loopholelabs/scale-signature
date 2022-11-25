@@ -25,7 +25,6 @@ type Signature interface {
 	Version() string                // Version of the Signature
 	Name() string                   // Name of the Signature
 	RuntimeContext() RuntimeContext // RuntimeContext of the Signature
-	Resize(size uint32) uint32      // Resize resizes the global buffers to the given size and returns the offset
 }
 
 // Context is the interface that must be implemented by all Contexts
