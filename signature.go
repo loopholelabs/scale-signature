@@ -34,8 +34,9 @@ type Context interface {
 // RuntimeContext is the interface that must be implemented by the Context of a Signature
 // in order for it to be used by the runtime.
 type RuntimeContext interface {
-	Read(b []byte) error // Read updates the Context by decoding the given bytes
-	Write() []byte       // Write encodes the Context and returns the encoded bytes
+	Read(b []byte) error    // Read updates the Context by decoding the given bytes
+	Write() []byte          // Write encodes the Context and returns the encoded bytes
+	Error(err error) []byte // Error encodes the given error and returns the encoded bytes
 }
 
 // GuestContext is the interface that must be implemented by the Context of a Signature
