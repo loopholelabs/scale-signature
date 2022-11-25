@@ -17,8 +17,6 @@
 // Package signature implements the Signature type, that must be exported by Signatures
 package signature
 
-import "strings"
-
 // Signature is an interface that must be implemented by all Signatures
 // that will be used by the runtime. The guest does not use any of these methods.
 type Signature interface {
@@ -46,19 +44,4 @@ type GuestContext interface {
 	ToWriteBuffer() (uint32, uint32)             // ToWriteBuffer serializes the Context to a global buffer and returns the offset and length
 	ErrorWriteBuffer(err error) (uint32, uint32) // ErrorWriteBuffer serializes an error into a global buffer and returns the offset and length
 	FromReadBuffer() error                       // FromReadBuffer deserializes the Context from the global buffer
-}
-
-// ParseSignature parses and returns the Namespace, Name, and Version of a signature string.
-// If there is no namespace, the namespace will be an empty string.
-// If there is no version, the version will be an empty string.
-func ParseSignature(signature string) (string, string, string) {
-	signatureNamespaceSplit := strings.Split(signature, "/")
-	if len(signatureNamespaceSplit) == 1 {
-		signatureNamespaceSplit = []string{"", signature}
-	}
-	signatureVersionSplit := strings.Split(signatureNamespaceSplit[1], "@")
-	if len(signatureVersionSplit) == 1 {
-		signatureVersionSplit = []string{signatureVersionSplit[0], ""}
-	}
-	return signatureNamespaceSplit[0], signatureVersionSplit[0], signatureVersionSplit[1]
 }

@@ -1,3 +1,6 @@
+//go:build !tinygo && !js && !wasm
+// +build !tinygo,!js,!wasm
+
 /*
 	Copyright 2022 Loophole Labs
 
@@ -21,6 +24,7 @@ import (
 	"github.com/loopholelabs/scale-signature/generator"
 	"os"
 	"path"
+	"strings"
 )
 
 func CreateGoSignature(scaleFilePath string, directory string, signaturePath string) error {
@@ -43,4 +47,19 @@ func CreateGoSignature(scaleFilePath string, directory string, signaturePath str
 	}
 
 	return nil
+}
+
+// ParseSignature parses and returns the Namespace, Name, and Version of a signature string.
+// If there is no namespace, the namespace will be an empty string.
+// If there is no version, the version will be an empty string.
+func ParseSignature(signature string) (string, string, string) {
+	signatureNamespaceSplit := strings.Split(signature, "/")
+	if len(signatureNamespaceSplit) == 1 {
+		signatureNamespaceSplit = []string{"", signature}
+	}
+	signatureVersionSplit := strings.Split(signatureNamespaceSplit[1], "@")
+	if len(signatureVersionSplit) == 1 {
+		signatureVersionSplit = []string{signatureVersionSplit[0], ""}
+	}
+	return signatureNamespaceSplit[0], signatureVersionSplit[0], signatureVersionSplit[1]
 }
