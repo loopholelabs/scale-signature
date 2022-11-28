@@ -20,8 +20,6 @@ package signature
 // Signature is an interface that must be implemented by all Signatures
 // that will be used by the runtime. The guest does not use any of these methods.
 type Signature interface {
-	Version() string                // Version of the Signature
-	Name() string                   // Name of the Signature
 	RuntimeContext() RuntimeContext // RuntimeContext of the Signature
 }
 
