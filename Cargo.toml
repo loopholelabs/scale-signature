@@ -2,6 +2,8 @@
 name = "scale_signature"
 version = "0.0.1"
 edition = "2021"
+description = "scale-signature public traits to be used with scale runtime"
+license = "Apache-2.0"
 exclude = [
     "**/*.go",
     "**/*.templ",
