@@ -1,7 +1,13 @@
 [package]
 name = "scale_signature"
-version = "0.1.0"
+version = "0.0.1"
 edition = "2021"
+exclude = [
+    "**/*.go",
+    "**/*.templ",
+    "go.mod",
+    "go.sum",
+]
 
 [dependencies]
 
@@ -13,3 +19,4 @@ path = "signature.rs"
 opt-level = "z"
 lto = true
 codegen-units = 1
+
