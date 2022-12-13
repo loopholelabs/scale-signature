@@ -1,9 +1,9 @@
+[package]
 name = "scale_signature"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-scale_signature_http = { git = "https://github.com/loopholelabs/scale_signature_http" }
 
 [lib]
 crate-type = ["cdylib"]
