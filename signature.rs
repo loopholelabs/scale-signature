@@ -1,7 +1,7 @@
 use std::io::Error;
 use std::io::Cursor;
 
-pub struct HttpContext {}
+use scale_signature_http::http_signature::{HttpContext};
 
 pub trait RuntimeContext {
     fn read(&mut self) -> HttpContext;
