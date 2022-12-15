@@ -1,0 +1,24 @@
+[package]
+name = "scale_signature"
+version = "0.0.5"
+edition = "2021"
+description = "scale-signature public traits to be used with scale runtime"
+license = "Apache-2.0"
+exclude = [
+    "**/*.go",
+    "**/*.templ",
+    "go.mod",
+    "go.sum",
+]
+
+[dependencies]
+scale_signature_http = "0.0.1"
+
+[lib]
+path = "signature.rs"
+
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+
