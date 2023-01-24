@@ -11,9 +11,6 @@ exclude = [
     "go.sum",
 ]
 
-[dependencies]
-scale_signature_http = "0.0.1"
-
 [lib]
 path = "signature.rs"
 
