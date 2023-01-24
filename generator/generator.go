@@ -181,11 +181,12 @@ func (g *Generator) ExecuteGoSignatureGeneratorTemplate(writer io.Writer, packag
 	})
 }
 
-func (g *Generator) ExecuteRustSignatureGeneratorTemplate(writer io.Writer, packageName string, packagePath string) error {
+func (g *Generator) ExecuteRustSignatureGeneratorTemplate(writer io.Writer, packageName string, packagePath string, overrideName string) error {
 	return g.generatorTemplate.ExecuteTemplate(writer, "signature.rs.templ", map[string]interface{}{
 		"package":       packageName,
 		"path":          packagePath,
 		"pluginVersion": version,
+		"overrideName": overrideName,
 	})
 }
 

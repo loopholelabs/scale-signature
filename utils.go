@@ -63,10 +63,14 @@ func CreateRustSignature(scaleFilePath string, directory string, signaturePath s
 		return fmt.Errorf("error creating signature rust file: %w", err)
 	}
 
-	err = g.ExecuteRustSignatureGeneratorTemplate(signatureFile, "signature", signaturePath)
-	if err != nil {
-		return fmt.Errorf("error generating signature rust file: %w", err)
-	}
+  // dp: http is the only rust signature for now
+  signature := "http"
+  if signature == "http" {
+    err = g.ExecuteRustSignatureGeneratorTemplate(signatureFile, signature, signaturePath, "HttpContext")
+    if err != nil {
+      return fmt.Errorf("error generating signature rust file: %w", err)
+    }
+  }
 
 	return nil
 }
