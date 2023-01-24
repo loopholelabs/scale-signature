@@ -8,7 +8,7 @@ pub trait RuntimeContext {
 }
 
 pub trait GuestContext {
-    fn to_write_buffer(self) -> Result<(u32, u32), Error>;
+    fn to_write_buffer(self) -> (u32, u32);
     fn error_write_buffer(self, error: &str) -> (u32, u32);
     fn from_read_buffer(self, read_buff: &mut Cursor<&mut Vec<u8>>) -> Error;
 }
