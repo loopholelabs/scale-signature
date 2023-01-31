@@ -172,20 +172,17 @@ func (g *Generator) ExecuteGuestGeneratorTemplate(writer io.Writer, packageName 
 	})
 }
 
-func (g *Generator) ExecuteGoSignatureGeneratorTemplate(writer io.Writer, packageName string, packagePath string) error {
+func (g *Generator) ExecuteGoSignatureGeneratorTemplate(writer io.Writer, packagePath string) error {
 	return g.generatorTemplate.ExecuteTemplate(writer, "signature.go.templ", map[string]interface{}{
-		"package":       packageName,
 		"path":          packagePath,
 		"pluginVersion": version,
 	})
 }
 
-func (g *Generator) ExecuteRustSignatureGeneratorTemplate(writer io.Writer, packageName string, packagePath string, overrideName string) error {
+func (g *Generator) ExecuteRustSignatureGeneratorTemplate(writer io.Writer, packagePath string) error {
 	return g.generatorTemplate.ExecuteTemplate(writer, "signature.rs.templ", map[string]interface{}{
-		"package":       packageName,
 		"path":          packagePath,
 		"pluginVersion": version,
-		"overrideName":  overrideName,
 	})
 }
 

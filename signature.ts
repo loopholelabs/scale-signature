@@ -14,10 +14,14 @@
 	limitations under the License.
 */
 
-export interface GuestContext {
-  ToWriteBuffer(): number[];
-  ErrorWriteBuffer(e: Error): number[];
-  FromReadBuffer(): Error;
+export type NewSignature<T extends Signature> = () => T;
+
+export interface Signature {
+  RuntimeContext(): RuntimeContext
+}
+
+export interface Context {
+  GuestContext(): GuestContext
 }
 
 export interface RuntimeContext {
@@ -26,12 +30,8 @@ export interface RuntimeContext {
   Error(e: Error): Uint8Array;
 }
 
-export interface Context {
-  GuestContext(): GuestContext
+export interface GuestContext {
+  ToWriteBuffer(): number[];
+  ErrorWriteBuffer(e: Error): number[];
+  FromReadBuffer(): Error;
 }
-
-export interface Signature {
-  RuntimeContext(): RuntimeContext
-}
-
-export type SignatureFactory<T extends Signature> = () => T;
