@@ -1,5 +1,4 @@
 //go:build !tinygo && !js && !wasm
-// +build !tinygo,!js,!wasm
 
 /*
 	Copyright 2022 Loophole Labs
@@ -35,7 +34,7 @@ import (
 	"text/template"
 )
 
-const version = "v0.1.1"
+const version = "v0.1.3"
 
 type Generator struct {
 	options           *protogen.Options
@@ -186,7 +185,7 @@ func (g *Generator) ExecuteRustSignatureGeneratorTemplate(writer io.Writer, pack
 		"package":       packageName,
 		"path":          packagePath,
 		"pluginVersion": version,
-		"overrideName": overrideName,
+		"overrideName":  overrideName,
 	})
 }
 

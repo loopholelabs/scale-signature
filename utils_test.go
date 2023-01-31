@@ -1,5 +1,4 @@
 //go:build !tinygo && !js && !wasm
-// +build !tinygo,!js,!wasm
 
 /*
 	Copyright 2022 Loophole Labs
@@ -25,28 +24,28 @@ import (
 )
 
 func TestParseSignature(t *testing.T) {
-	namespace, name, version := ParseSignature("")
-	assert.Equal(t, "", namespace)
+	organization, name, version := ParseSignature("")
+	assert.Equal(t, "", organization)
 	assert.Equal(t, "", name)
 	assert.Equal(t, "", version)
 
-	namespace, name, version = ParseSignature("test")
-	assert.Equal(t, "", namespace)
+	organization, name, version = ParseSignature("test")
+	assert.Equal(t, "", organization)
 	assert.Equal(t, "test", name)
 	assert.Equal(t, "", version)
 
-	namespace, name, version = ParseSignature("test@1.0.0")
-	assert.Equal(t, "", namespace)
+	organization, name, version = ParseSignature("test@1.0.0")
+	assert.Equal(t, "", organization)
 	assert.Equal(t, "test", name)
 	assert.Equal(t, "1.0.0", version)
 
-	namespace, name, version = ParseSignature("nm/test")
-	assert.Equal(t, "nm", namespace)
+	organization, name, version = ParseSignature("nm/test")
+	assert.Equal(t, "nm", organization)
 	assert.Equal(t, "test", name)
 	assert.Equal(t, "", version)
 
-	namespace, name, version = ParseSignature("nm/test@v0.0.1")
-	assert.Equal(t, "nm", namespace)
+	organization, name, version = ParseSignature("nm/test@v0.0.1")
+	assert.Equal(t, "nm", organization)
 	assert.Equal(t, "test", name)
 	assert.Equal(t, "v0.0.1", version)
 }

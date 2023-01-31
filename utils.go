@@ -1,5 +1,4 @@
 //go:build !tinygo && !js && !wasm
-// +build !tinygo,!js,!wasm
 
 /*
 	Copyright 2022 Loophole Labs
@@ -63,29 +62,25 @@ func CreateRustSignature(scaleFilePath string, directory string, signaturePath s
 		return fmt.Errorf("error creating signature rust file: %w", err)
 	}
 
-  // dp: http is the only rust signature for now
-  signature := "http"
-  if signature == "http" {
-    err = g.ExecuteRustSignatureGeneratorTemplate(signatureFile, signature, signaturePath, "HttpContext")
-    if err != nil {
-      return fmt.Errorf("error generating signature rust file: %w", err)
-    }
-  }
+	err = g.ExecuteRustSignatureGeneratorTemplate(signatureFile, "http", signaturePath, "HttpContext")
+	if err != nil {
+		return fmt.Errorf("error generating signature rust file: %w", err)
+	}
 
 	return nil
 }
 
-// ParseSignature parses and returns the Namespace, Name, and Version of a signature string.
-// If there is no namespace, the namespace will be an empty string.
-// If there is no version, the version will be an empty string.
+// ParseSignature parses and returns the Organization, Name, and Version of a signature string.
+// If there is no organization, the organization will be an empty string.
+// If there is no tag, the tag will be an empty string.
 func ParseSignature(signature string) (string, string, string) {
-	signatureNamespaceSplit := strings.Split(signature, "/")
-	if len(signatureNamespaceSplit) == 1 {
-		signatureNamespaceSplit = []string{"", signature}
+	signatureOrganizationSplit := strings.Split(signature, "/")
+	if len(signatureOrganizationSplit) == 1 {
+		signatureOrganizationSplit = []string{"", signature}
 	}
-	signatureVersionSplit := strings.Split(signatureNamespaceSplit[1], "@")
+	signatureVersionSplit := strings.Split(signatureOrganizationSplit[1], "@")
 	if len(signatureVersionSplit) == 1 {
 		signatureVersionSplit = []string{signatureVersionSplit[0], ""}
 	}
-	return signatureNamespaceSplit[0], signatureVersionSplit[0], signatureVersionSplit[1]
+	return signatureOrganizationSplit[0], signatureVersionSplit[0], signatureVersionSplit[1]
 }
