@@ -1,5 +1,3 @@
-//go:build !tinygo && !js && !wasm
-
 /*
 	Copyright 2022 Loophole Labs
 
@@ -16,9 +14,4 @@
 	limitations under the License.
 */
 
-package override
-
-import "embed"
-
-//go:embed *.templ
-var FS embed.FS
+export * from "./signature";

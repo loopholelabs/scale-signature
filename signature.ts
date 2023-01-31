@@ -1,5 +1,3 @@
-//go:build !tinygo && !js && !wasm
-
 /*
 	Copyright 2022 Loophole Labs
 
@@ -16,9 +14,24 @@
 	limitations under the License.
 */
 
-package override
+export interface GuestContext {
+  ToWriteBuffer(): number[];
+  ErrorWriteBuffer(e: Error): number[];
+  FromReadBuffer(): Error;
+}
 
-import "embed"
+export interface RuntimeContext {
+  Read(b: Uint8Array): void;
+  Write(): Uint8Array;
+  Error(e: Error): Uint8Array;
+}
 
-//go:embed *.templ
-var FS embed.FS
+export interface Context {
+  GuestContext(): GuestContext
+}
+
+export interface Signature {
+  RuntimeContext(): RuntimeContext
+}
+
+export type SignatureFactory<T extends Signature> = () => T;
