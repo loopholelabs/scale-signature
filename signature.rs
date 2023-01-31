@@ -1,14 +1,23 @@
 use std::io::Error;
-use std::io::Cursor;
+
+type NewSignature<T> = fn() -> T;
+
+pub trait Signature {
+    fn runtime_context(&self) -> dyn RuntimeContext;
+}
+
+pub trait Context {
+    fn guest_context(&self) -> dyn GuestContext;
+}
 
 pub trait RuntimeContext {
-    fn read(&mut self) -> Error;
+    fn read(&mut self) -> Option<Error>;
     fn write(&self) -> Vec<u8>;
-    fn error(&self, err: Error) -> Vec<u8>;
+    fn error(&self, err: &str) -> Vec<u8>;
 }
 
 pub trait GuestContext {
-    fn to_write_buffer(self) -> (u32, u32);
-    fn error_write_buffer(self, error: &str) -> (u32, u32);
-    fn from_read_buffer(self, read_buff: &mut Cursor<&mut Vec<u8>>) -> Error;
+    unsafe fn to_write_buffer(&mut self) -> (u32, u32);
+    unsafe fn error_write_buffer(&mut self, error: &str) -> (u32, u32);
+    unsafe fn from_read_buffer(&mut self) -> Option<Error>;
 }

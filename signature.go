@@ -17,6 +17,9 @@
 // Package signature implements the Signature type, that must be exported by Signatures
 package signature
 
+// NewSignature is a factory function for creating a new Signature
+type NewSignature[T Signature] func() T
+
 // Signature is an interface that must be implemented by all Signatures
 // that will be used by the runtime. The guest does not use any of these methods.
 type Signature interface {

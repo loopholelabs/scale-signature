@@ -40,7 +40,7 @@ func CreateGoSignature(scaleFilePath string, directory string, signaturePath str
 		return fmt.Errorf("error creating signature go file: %w", err)
 	}
 
-	err = g.ExecuteGoSignatureGeneratorTemplate(signatureFile, "signature", signaturePath)
+	err = g.ExecuteGoSignatureGeneratorTemplate(signatureFile, signaturePath)
 	if err != nil {
 		return fmt.Errorf("error generating signature go file: %w", err)
 	}
@@ -62,7 +62,7 @@ func CreateRustSignature(scaleFilePath string, directory string, signaturePath s
 		return fmt.Errorf("error creating signature rust file: %w", err)
 	}
 
-	err = g.ExecuteRustSignatureGeneratorTemplate(signatureFile, "http", signaturePath, "HttpContext")
+	err = g.ExecuteRustSignatureGeneratorTemplate(signatureFile, signaturePath)
 	if err != nil {
 		return fmt.Errorf("error generating signature rust file: %w", err)
 	}
