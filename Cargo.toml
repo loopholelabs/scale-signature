@@ -1,6 +1,6 @@
 [package]
 name = "scale_signature"
-version = "0.1.7"
+version = "0.1.8"
 edition = "2021"
 description = "scale-signature public traits to be used with scale runtime"
 license = "Apache-2.0"
