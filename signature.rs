@@ -3,11 +3,11 @@ use std::io::Error;
 type NewSignature<T> = fn() -> T;
 
 pub trait Signature {
-    fn runtime_context(&self) -> dyn RuntimeContext;
+    fn runtime_context(&self) -> &dyn RuntimeContext;
 }
 
 pub trait Context {
-    fn guest_context(&self) -> dyn GuestContext;
+    fn guest_context(&self) -> &dyn GuestContext;
 }
 
 pub trait RuntimeContext {
