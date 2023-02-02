@@ -25,13 +25,13 @@ export interface Context {
 }
 
 export interface RuntimeContext {
-  Read(b: Uint8Array): void;
+  Read(b: Uint8Array): Error | undefined;
   Write(): Uint8Array;
-  Error(e: Error): Uint8Array;
+  Error(err: Error): Uint8Array;
 }
 
 export interface GuestContext {
+  FromReadBuffer(): Error | undefined;
   ToWriteBuffer(): number[];
-  ErrorWriteBuffer(e: Error): number[];
-  FromReadBuffer(): Error;
+  ErrorWriteBuffer(err: Error): number[];
 }
