@@ -37,7 +37,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Initial release of the Scale Signature library.
 
 [unreleased]: https://github.com/loopholelabs/scale-signature/compare/v0.2.2...HEAD
-[v0.2.2]: https://github.com/loopholelabs/scale-signature/compare/v0.2.1
+[v0.2.2]: https://github.com/loopholelabs/scale-signature/compare/v0.2.2
 [v0.2.1]: https://github.com/loopholelabs/scale-signature/compare/v0.2.1
 [v0.1.1]: https://github.com/loopholelabs/scale-signature/compare/v0.1.1
 [v0.1.0]: https://github.com/loopholelabs/scale-signature/compare/v0.1.0
