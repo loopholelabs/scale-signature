@@ -3,8 +3,8 @@
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-brightgreen.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![Tests](https://github.com/loopholelabs/scale-signature/actions/workflows/test.yml/badge.svg)](https://github.com/loopholelabs/scale-signature/actions/workflows/test.yml)
 
-This library contains the definitions and tooling required to generate and
-consume [Golang](http://golang.org) Signatures for [Scale Functions](https://scale.sh).
+This library contains the definitions and tooling required to test and
+consume [Golang](https://golang.org), [Rust](https://www.rust-lang.org/), and [Typescript](https://www.typescriptlang.org/) Signatures for [Scale Functions](https://scale.sh).
 
 **This library requires Go1.18 or later.**
 
