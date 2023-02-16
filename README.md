@@ -1,8 +1,11 @@
-# Scale Signature
+# Scale Signature 
 
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-brightgreen.svg)](https://www.apache.org/licenses/LICENSE-2.0)
-[![Tests](https://github.com/loopholelabs/scale-signature/actions/workflows/golang.yml/badge.svg)](https://github.com/loopholelabs/scale-signature/actions/workflows/golang.yml)
 [![Discord](https://dcbadge.vercel.app/api/server/JYmFhtdPeu?style=flat)](https://loopholelabs.io/discord)
+
+[![Golang](https://github.com/loopholelabs/scale-signature/actions/workflows/golang.yml/badge.svg)](https://github.com/loopholelabs/scale-signature/actions/workflows/golang.yml)
+[![Rust](https://github.com/loopholelabs/scale-signature/actions/workflows/rust.yml/badge.svg)](https://github.com/loopholelabs/scale-signature/actions/workflows/rust.yml)
+[![Typescript](https://github.com/loopholelabs/scale-signature/actions/workflows/typescript.yml/badge.svg)](https://github.com/loopholelabs/scale-signature/actions/workflows/typescript.yml)
 
 This library contains the definitions and tooling required to test and
 consume [Golang](https://golang.org), [Rust](https://www.rust-lang.org/), and [Typescript](https://www.typescriptlang.org/) Signatures for [Scale Functions](https://scale.sh).

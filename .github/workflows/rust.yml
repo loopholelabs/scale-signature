@@ -1,12 +1,10 @@
-name: Crates
+name: Rust
 
 on: [pull_request]
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
       - name: Run fmt
