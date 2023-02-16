@@ -1,7 +1,7 @@
 # Scale Signature
 
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-brightgreen.svg)](https://www.apache.org/licenses/LICENSE-2.0)
-[![Tests](https://github.com/loopholelabs/scale-signature/actions/workflows/test.yml/badge.svg)](https://github.com/loopholelabs/scale-signature/actions/workflows/test.yml)
+[![Tests](https://github.com/loopholelabs/scale-signature/actions/workflows/golang.yml/badge.svg)](https://github.com/loopholelabs/scale-signature/actions/workflows/golang.yml)
 [![Discord](https://dcbadge.vercel.app/api/server/JYmFhtdPeu?style=flat)](https://loopholelabs.io/discord)
 
 This library contains the definitions and tooling required to test and
