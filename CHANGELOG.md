@@ -7,6 +7,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [v0.2.6] - 2023-02-16
+
+### Changes
+
+- More bug fixes to the CI/CD processes
+
 ## [v0.2.5] - 2023-02-16
 
 ### Changes
