@@ -1,8 +1,8 @@
 [package]
 name = "scale_signature"
-version = "0.2.3"
+version = "0.2.4"
 edition = "2021"
-description = "scale-signature public traits to be used with scale runtime"
+description = "The definitions and tooling required to test and consume Rust Signatures for Scale Functions."
 license = "Apache-2.0"
 exclude = [
     "**/*.go",
