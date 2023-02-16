@@ -3,6 +3,8 @@ name = "scale_signature"
 version = "0.2.4"
 edition = "2021"
 description = "The definitions and tooling required to test and consume Rust Signatures for Scale Functions."
+homepage = "https://scale.sh"
+repository = "https://github.com/loopholelabs/scale-signatureå"
 license = "Apache-2.0"
 exclude = [
     "**/*.go",
