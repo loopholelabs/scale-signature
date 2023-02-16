@@ -1,7 +1,8 @@
 {
   "name": "@loopholelabs/scale-signature",
-  "version": "0.2.3",
-  "description": "TypeScript version of the scale-signature.",
+  "version": "0.2.4",
+  "license": "apache-2.0",
+  "description": "The definitions and tooling required to test and consume Typescript Signatures for Scale Functions.",
   "source": "index.ts",
   "main": "dist/main.js",
   "module": "dist/module.js",
@@ -9,6 +10,9 @@
   "scripts": {
     "build": "parcel build"
   },
+  "files": [
+    "dist"
+  ],
   "targets": {
     "default": {
       "distDir": "./dist"
