@@ -7,6 +7,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Changes
+
+- Updating `README.md` with a Discord badge
+
 ## [v0.2.3] - 2023-02-15
 
 ### Changes
