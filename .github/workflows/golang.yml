@@ -1,9 +1,6 @@
-name: GOLANG
+name: Golang
 
-on:
-  pull_request:
-    branches:
-      - "*"
+on: [pull_request]
 
 jobs:
   test:
