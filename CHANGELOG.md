@@ -7,6 +7,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [v0.2.5] - 2023-02-16
+
+### Changes
+
+- Fixing CI/CD processes to properly publish to crates.io and npmjs.com
+
 ## [v0.2.4] - 2023-02-16
 
 ### Changes
@@ -50,7 +56,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - Initial release of the Scale Signature library.
 
-[unreleased]: https://github.com/loopholelabs/scale-signature/compare/v0.2.4...HEAD
+[unreleased]: https://github.com/loopholelabs/scale-signature/compare/v0.2.5...HEAD
+[v0.2.5]: https://github.com/loopholelabs/scale-signature/compare/v0.2.5
 [v0.2.4]: https://github.com/loopholelabs/scale-signature/compare/v0.2.4
 [v0.2.3]: https://github.com/loopholelabs/scale-signature/compare/v0.2.3
 [v0.2.2]: https://github.com/loopholelabs/scale-signature/compare/v0.2.2

@@ -1,6 +1,6 @@
 name: Golang
 
-on: [pull_request]
+on: [pull_request, release]
 
 jobs:
   test:
