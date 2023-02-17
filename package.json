@@ -1,6 +1,6 @@
 {
   "name": "@loopholelabs/scale-signature",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "license": "apache-2.0",
   "description": "The definitions and tooling required to test and consume Typescript Signatures for Scale Functions.",
   "source": "index.ts",
