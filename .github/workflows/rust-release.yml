@@ -1,6 +1,8 @@
 name: Rust
 
-on: [release]
+on:
+  release:
+    types: [published]
 
 jobs:
   publish:
