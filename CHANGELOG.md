@@ -7,6 +7,13 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [v0.2.7] - 2023-02-16
+
+### Changes
+
+- Updating TypeScript, Golang, and Rust Github Actions
+- Updating `README.md`
+
 ## [v0.2.6] - 2023-02-16
 
 ### Changes
@@ -62,7 +69,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - Initial release of the Scale Signature library.
 
-[unreleased]: https://github.com/loopholelabs/scale-signature/compare/v0.2.5...HEAD
+[unreleased]: https://github.com/loopholelabs/scale-signature/compare/v0.2.7...HEAD
+[v0.2.7]: https://github.com/loopholelabs/scale-signature/compare/v0.2.7
+[v0.2.6]: https://github.com/loopholelabs/scale-signature/compare/v0.2.6
 [v0.2.5]: https://github.com/loopholelabs/scale-signature/compare/v0.2.5
 [v0.2.4]: https://github.com/loopholelabs/scale-signature/compare/v0.2.4
 [v0.2.3]: https://github.com/loopholelabs/scale-signature/compare/v0.2.3

@@ -1,6 +1,6 @@
 [package]
 name = "scale_signature"
-version = "0.2.6"
+version = "0.2.7"
 edition = "2021"
 description = "The definitions and tooling required to test and consume Rust Signatures for Scale Functions."
 homepage = "https://scale.sh"
