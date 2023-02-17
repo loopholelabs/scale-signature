@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/loopholelabs/polyglot-go v0.5.1
-	github.com/loopholelabs/scalefile v0.1.5
+	github.com/loopholelabs/scalefile v0.1.6
 	github.com/stretchr/testify v1.8.1
 	github.com/yalue/merged_fs v1.2.2
 	google.golang.org/protobuf v1.28.0

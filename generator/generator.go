@@ -34,7 +34,7 @@ import (
 	"text/template"
 )
 
-const version = "v0.2.7"
+const version = "v0.2.8"
 
 type Generator struct {
 	options           *protogen.Options

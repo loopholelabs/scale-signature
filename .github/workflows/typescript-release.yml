@@ -1,6 +1,8 @@
 name: Typescript
 
-on: [release]
+on:
+  release:
+    types: [published]
 
 jobs:
   publish:
