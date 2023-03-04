@@ -16,6 +16,11 @@
 
 package schema
 
+import (
+	"fmt"
+	"regexp"
+)
+
 type StringRegexValidatorSchema struct {
 	Expression string `hcl:"expression,attr"`
 }
@@ -32,25 +37,145 @@ type StringCaseModifierSchema struct {
 type StringSchema struct {
 	Name            string                       `hcl:"name,label"`
 	Default         string                       `hcl:"default,attr"`
-	Accessor        bool                         `hcl:"accessor,optional"`
+	Accessor        *bool                        `hcl:"accessor,optional"`
 	RegexValidator  *StringRegexValidatorSchema  `hcl:"regexValidator,block"`
 	LengthValidator *StringLengthValidatorSchema `hcl:"lengthValidator,block"`
 	CaseModifier    *StringCaseModifierSchema    `hcl:"caseModifier,block"`
 }
 
+func (s StringSchema) Validate(model ModelSchema) error {
+	if !ValidLabel.MatchString(s.Name) {
+		return fmt.Errorf("invalid %s.string name: %s", model.Name, s.Name)
+	}
+
+	if s.LengthValidator != nil {
+		if s.LengthValidator.Maximum != nil {
+			if *s.LengthValidator.Maximum == 0 {
+				return fmt.Errorf("invalid %s.%s.lengthValidator: maximum length cannot be zero", model.Name, s.Name)
+			}
+
+			if s.LengthValidator.Minimum != nil {
+				if *s.LengthValidator.Minimum > *s.LengthValidator.Maximum {
+					return fmt.Errorf("invalid %s.%s.lengthValidator: minimum length cannot be greater than maximum length", model.Name, s.Name)
+				}
+			}
+		}
+	}
+
+	if s.RegexValidator != nil {
+		if _, err := regexp.Compile(s.RegexValidator.Expression); err != nil {
+			return fmt.Errorf("invalid %s.%s.regexValidator: %w", model.Name, s.Name, err)
+		}
+	}
+
+	if s.CaseModifier != nil {
+		switch s.CaseModifier.Kind {
+		case "upper", "lower", "none":
+		default:
+			return fmt.Errorf("invalid %s.%s.caseModifier: kind must be upper, lower or none", model.Name, s.Name)
+		}
+	}
+
+	if (s.Accessor != nil && *s.Accessor == false) && (s.LengthValidator != nil || s.RegexValidator != nil || s.CaseModifier != nil) {
+		return fmt.Errorf("invalid %s.%s.accessor: cannot be false while using validators or modifiers", model.Name, s.Name)
+	}
+
+	return nil
+}
+
 type StringArraySchema struct {
 	Name            string                       `hcl:"name,label"`
-	Accessor        bool                         `hcl:"accessor,optional"`
+	Accessor        *bool                        `hcl:"accessor,optional"`
 	RegexValidator  *StringRegexValidatorSchema  `hcl:"regexValidator,block"`
 	LengthValidator *StringLengthValidatorSchema `hcl:"lengthValidator,block"`
 	CaseModifier    *StringCaseModifierSchema    `hcl:"caseModifier,block"`
+}
+
+func (s StringArraySchema) Validate(model ModelSchema) error {
+	if !ValidLabel.MatchString(s.Name) {
+		return fmt.Errorf("invalid %s.string name: %s", model.Name, s.Name)
+	}
+
+	if s.LengthValidator != nil {
+		if s.LengthValidator.Maximum != nil {
+			if *s.LengthValidator.Maximum == 0 {
+				return fmt.Errorf("invalid %s.%s.lengthValidator: maximum length cannot be zero", model.Name, s.Name)
+			}
+
+			if s.LengthValidator.Minimum != nil {
+				if *s.LengthValidator.Minimum > *s.LengthValidator.Maximum {
+					return fmt.Errorf("invalid %s.%s.lengthValidator: minimum length cannot be greater than maximum length", model.Name, s.Name)
+				}
+			}
+		}
+	}
+
+	if s.RegexValidator != nil {
+		if _, err := regexp.Compile(s.RegexValidator.Expression); err != nil {
+			return fmt.Errorf("invalid %s.%s.regexValidator: %w", model.Name, s.Name, err)
+		}
+	}
+
+	if s.CaseModifier != nil {
+		switch s.CaseModifier.Kind {
+		case "upper", "lower", "none":
+		default:
+			return fmt.Errorf("invalid %s.%s.caseModifier: kind must be upper, lower or none", model.Name, s.Name)
+		}
+	}
+
+	if (s.Accessor != nil && *s.Accessor == false) && (s.LengthValidator != nil || s.RegexValidator != nil || s.CaseModifier != nil) {
+		return fmt.Errorf("invalid %s.%s.accessor: cannot be false while using validators or modifiers", model.Name, s.Name)
+	}
+
+	return nil
 }
 
 type StringMapSchema struct {
 	Name            string                       `hcl:"name,label"`
 	Value           string                       `hcl:"value,attr"`
-	Accessor        bool                         `hcl:"accessor,optional"`
+	Accessor        *bool                        `hcl:"accessor,optional"`
 	RegexValidator  *StringRegexValidatorSchema  `hcl:"regexValidator,block"`
 	LengthValidator *StringLengthValidatorSchema `hcl:"lengthValidator,block"`
 	CaseModifier    *StringCaseModifierSchema    `hcl:"caseModifier,block"`
+}
+
+func (s StringMapSchema) Validate(model ModelSchema) error {
+	if !ValidLabel.MatchString(s.Name) {
+		return fmt.Errorf("invalid %s.string name: %s", model.Name, s.Name)
+	}
+
+	if s.LengthValidator != nil {
+		if s.LengthValidator.Maximum != nil {
+			if *s.LengthValidator.Maximum == 0 {
+				return fmt.Errorf("invalid %s.%s.lengthValidator: maximum length cannot be zero", model.Name, s.Name)
+			}
+
+			if s.LengthValidator.Minimum != nil {
+				if *s.LengthValidator.Minimum > *s.LengthValidator.Maximum {
+					return fmt.Errorf("invalid %s.%s.lengthValidator: minimum length cannot be greater than maximum length", model.Name, s.Name)
+				}
+			}
+		}
+	}
+
+	if s.RegexValidator != nil {
+		if _, err := regexp.Compile(s.RegexValidator.Expression); err != nil {
+			return fmt.Errorf("invalid %s.%s.regexValidator: %w", model.Name, s.Name, err)
+		}
+	}
+
+	if s.CaseModifier != nil {
+		switch s.CaseModifier.Kind {
+		case "upper", "lower", "none":
+		default:
+			return fmt.Errorf("invalid %s.%s.caseModifier: kind must be upper, lower or none", model.Name, s.Name)
+		}
+	}
+
+	if (s.Accessor != nil && *s.Accessor == false) && (s.LengthValidator != nil || s.RegexValidator != nil || s.CaseModifier != nil) {
+		return fmt.Errorf("invalid %s.%s.accessor: cannot be false while using validators or modifiers", model.Name, s.Name)
+	}
+
+	return nil
 }

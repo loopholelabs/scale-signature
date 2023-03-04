@@ -24,19 +24,19 @@ type Float32LimitValidatorSchema struct {
 type Float32Schema struct {
 	Name           string                       `hcl:"name,label"`
 	Default        float32                      `hcl:"default,attr"`
-	Accessor       bool                         `hcl:"accessor,optional"`
+	Accessor       *bool                        `hcl:"accessor,optional"`
 	LimitValidator *Float32LimitValidatorSchema `hcl:"limitValidator,block"`
 }
 
 type Float32ArraySchema struct {
 	Name           string                       `hcl:"name,label"`
-	Accessor       bool                         `hcl:"accessor,optional"`
+	Accessor       *bool                        `hcl:"accessor,optional"`
 	LimitValidator *Float32LimitValidatorSchema `hcl:"limitValidator,block"`
 }
 
 type Float32MapSchema struct {
 	Name           string                       `hcl:"name,label"`
 	Value          string                       `hcl:"value,attr"`
-	Accessor       bool                         `hcl:"accessor,optional"`
+	Accessor       *bool                        `hcl:"accessor,optional"`
 	LimitValidator *Float32LimitValidatorSchema `hcl:"limitValidator,block"`
 }

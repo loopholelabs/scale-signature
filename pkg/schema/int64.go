@@ -24,19 +24,19 @@ type Int64LimitValidatorSchema struct {
 type Int64Schema struct {
 	Name           string                     `hcl:"name,label"`
 	Default        int64                      `hcl:"default,attr"`
-	Accessor       bool                       `hcl:"accessor,optional"`
+	Accessor       *bool                      `hcl:"accessor,optional"`
 	LimitValidator *Int64LimitValidatorSchema `hcl:"limitValidator,block"`
 }
 
 type Int64ArraySchema struct {
 	Name           string                     `hcl:"name,label"`
-	Accessor       bool                       `hcl:"accessor,optional"`
+	Accessor       *bool                      `hcl:"accessor,optional"`
 	LimitValidator *Int64LimitValidatorSchema `hcl:"limitValidator,block"`
 }
 
 type Int64MapSchema struct {
 	Name           string                     `hcl:"name,label"`
 	Value          string                     `hcl:"value,attr"`
-	Accessor       bool                       `hcl:"accessor,optional"`
+	Accessor       *bool                      `hcl:"accessor,optional"`
 	LimitValidator *Int64LimitValidatorSchema `hcl:"limitValidator,block"`
 }

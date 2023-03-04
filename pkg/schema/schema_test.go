@@ -17,30 +17,25 @@
 package schema
 
 import (
-	"github.com/davecgh/go-spew/spew"
-	"github.com/hashicorp/hcl/v2"
-	"github.com/hashicorp/hcl/v2/gohcl"
-	"github.com/hashicorp/hcl/v2/hclsyntax"
 	"github.com/stretchr/testify/require"
 	"testing"
 )
 
 func TestSchema(t *testing.T) {
 	s := new(Schema)
-	file, diags := hclsyntax.ParseConfig([]byte(`
+	err := s.Decode([]byte(`
 name = "testName"
 tag = "1testTag"
 model testModel {
 	description = "this is a test model"
     string testString {
 		default = "asdfsa"
-		accessor = true
 	    regexValidator {
 			expression = ".*"
 		}
 		lengthValidator {
 			min = 1
-			max = 0
+			max = 3
 		}
 	}
 }
@@ -50,11 +45,8 @@ model testModel2 {
 		reference = "testModel"
 	}
 }
-`), "", hcl.Pos{Line: 1, Column: 1})
-	require.False(t, diags.HasErrors())
+`))
+	require.NoError(t, err)
 
-	diags = gohcl.DecodeBody(file.Body, nil, s)
-	require.False(t, diags.HasErrors())
-
-	t.Logf("%s", spew.Sdump(s))
+	require.NoError(t, s.Validate())
 }
