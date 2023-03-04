@@ -45,3 +45,12 @@ type StringArraySchema struct {
 	LengthValidator *StringLengthValidatorSchema `hcl:"lengthValidator,block"`
 	CaseModifier    *StringCaseModifierSchema    `hcl:"caseModifier,block"`
 }
+
+type StringMapSchema struct {
+	Name            string                       `hcl:"name,label"`
+	Value           string                       `hcl:"value,attr"`
+	Accessor        bool                         `hcl:"accessor,optional"`
+	RegexValidator  *StringRegexValidatorSchema  `hcl:"regexValidator,block"`
+	LengthValidator *StringLengthValidatorSchema `hcl:"lengthValidator,block"`
+	CaseModifier    *StringCaseModifierSchema    `hcl:"caseModifier,block"`
+}

@@ -26,3 +26,9 @@ type EnumArraySchema struct {
 	Name   string   `hcl:"name,label"`
 	Values []string `hcl:"values,attr"`
 }
+
+type EnumMapSchema struct {
+	Name     string `hcl:"name,label"`
+	Value    string `hcl:"value,attr"`
+	Accessor bool   `hcl:"accessor,optional"`
+}

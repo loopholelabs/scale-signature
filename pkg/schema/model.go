@@ -21,37 +21,47 @@ type ModelSchema struct {
 	Description string `hcl:"description,optional"`
 
 	Models      []ModelReferenceSchema      `hcl:"model,block"`
-	ModelsArray []ModelReferenceArraySchema `hcl:"modelArray,block"`
+	ModelArrays []ModelReferenceArraySchema `hcl:"modelArray,block"`
+	ModelMaps   []ModelReferenceMapSchema   `hcl:"modelMap,block"`
 
 	Strings      []StringSchema      `hcl:"string,block"`
-	StringsArray []StringArraySchema `hcl:"stringArray,block"`
+	StringArrays []StringArraySchema `hcl:"stringArray,block"`
+	StringMaps   []StringMapSchema   `hcl:"stringMap,block"`
 
 	Bools      []BoolSchema      `hcl:"bool,block"`
-	BoolsArray []BoolArraySchema `hcl:"boolArray,block"`
+	BoolArrays []BoolArraySchema `hcl:"boolArray,block"`
 
-	Bytes      []BytesSchema      `hcl:"bytes,block"`
-	BytesArray []BytesArraySchema `hcl:"bytesArray,block"`
+	Bytes       []BytesSchema      `hcl:"bytes,block"`
+	BytesArrays []BytesArraySchema `hcl:"bytesArray,block"`
+	BytesMaps   []BytesMapSchema   `hcl:"bytesMap,block"`
 
 	Enums      []EnumSchema      `hcl:"enum,block"`
-	EnumsArray []EnumArraySchema `hcl:"enumArray,block"`
+	EnumArrays []EnumArraySchema `hcl:"enumArray,block"`
+	EnumMaps   []EnumMapSchema   `hcl:"enumMap,block"`
 
 	Int32s     []Int32Schema      `hcl:"int32,block"`
 	Int32Array []Int32ArraySchema `hcl:"int32Array,block"`
+	Int32Maps  []Int32MapSchema   `hcl:"int32Map,block"`
 
 	Int64s      []Int64Schema      `hcl:"int64,block"`
-	Int64sArray []Int64ArraySchema `hcl:"int64Array,block"`
+	Int64Arrays []Int64ArraySchema `hcl:"int64Array,block"`
+	Int64Maps   []Int64MapSchema   `hcl:"int64Map,block"`
 
 	Uint32s      []Uint32Schema      `hcl:"uint32,block"`
-	Uint32sArray []Uint32ArraySchema `hcl:"uint32Array,block"`
+	Uint32Arrays []Uint32ArraySchema `hcl:"uint32Array,block"`
+	Uint32Maps   []Uint32MapSchema   `hcl:"uint32Map,block"`
 
 	Uint64s      []Uint64Schema      `hcl:"uint64,block"`
-	Uint64sArray []Uint64ArraySchema `hcl:"uint64Array,block"`
+	Uint64Arrays []Uint64ArraySchema `hcl:"uint64Array,block"`
+	Uint64Maps   []Uint64MapSchema   `hcl:"uint64Map,block"`
 
 	Float32s      []Float32Schema      `hcl:"float32,block"`
-	Float32sArray []Float32ArraySchema `hcl:"float32Array,block"`
+	Float32Arrays []Float32ArraySchema `hcl:"float32Array,block"`
+	Float32Maps   []Float32MapSchema   `hcl:"float32Map,block"`
 
 	Float64s      []Float64Schema      `hcl:"float64,block"`
-	Float64sArray []Float64ArraySchema `hcl:"float64Array,block"`
+	Float64Arrays []Float64ArraySchema `hcl:"float64Array,block"`
+	Float64Maps   []Float64MapSchema   `hcl:"float64Map,block"`
 }
 
 type ModelReferenceSchema struct {
@@ -62,4 +72,11 @@ type ModelReferenceSchema struct {
 type ModelReferenceArraySchema struct {
 	Name      string `hcl:"name,label"`
 	Reference string `hcl:"reference,attr"`
+}
+
+type ModelReferenceMapSchema struct {
+	Name      string `hcl:"name,label"`
+	Reference string `hcl:"reference,attr"`
+	Value     string `hcl:"value,attr"`
+	Accessor  bool   `hcl:"accessor,optional"`
 }

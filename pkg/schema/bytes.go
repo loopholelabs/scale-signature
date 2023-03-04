@@ -17,11 +17,15 @@
 package schema
 
 type BytesSchema struct {
-	Name     string `hcl:"name,label"`
-	Accessor bool   `hcl:"accessor,optional"`
+	Name string `hcl:"name,label"`
 }
 
 type BytesArraySchema struct {
+	Name string `hcl:"name,label"`
+}
+
+type BytesMapSchema struct {
 	Name     string `hcl:"name,label"`
+	Value    string `hcl:"value,attr"`
 	Accessor bool   `hcl:"accessor,optional"`
 }

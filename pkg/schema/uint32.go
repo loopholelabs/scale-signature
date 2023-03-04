@@ -33,3 +33,10 @@ type Uint32ArraySchema struct {
 	Accessor       bool                        `hcl:"accessor,optional"`
 	LimitValidator *Uint32LimitValidatorSchema `hcl:"limitValidator,block"`
 }
+
+type Uint32MapSchema struct {
+	Name           string                      `hcl:"name,label"`
+	Value          string                      `hcl:"value,attr"`
+	Accessor       bool                        `hcl:"accessor,optional"`
+	LimitValidator *Uint32LimitValidatorSchema `hcl:"limitValidator,block"`
+}

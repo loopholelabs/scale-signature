@@ -33,3 +33,10 @@ type Uint64ArraySchema struct {
 	Accessor       bool                        `hcl:"accessor,optional"`
 	LimitValidator *Uint64LimitValidatorSchema `hcl:"limitValidator,block"`
 }
+
+type Uint64MapSchema struct {
+	Name           string                      `hcl:"name,label"`
+	Value          string                      `hcl:"value,attr"`
+	Accessor       bool                        `hcl:"accessor,optional"`
+	LimitValidator *Uint64LimitValidatorSchema `hcl:"limitValidator,block"`
+}

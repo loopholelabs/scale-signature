@@ -22,6 +22,5 @@ type BoolSchema struct {
 }
 
 type BoolArraySchema struct {
-	Name     string `hcl:"name,label"`
-	Accessor bool   `hcl:"accessor,optional"`
+	Name string `hcl:"name,label"`
 }
