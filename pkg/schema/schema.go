@@ -326,7 +326,7 @@ func (s *Schema) Validate() error {
 				return fmt.Errorf("unknown %s.%s.reference: %s", model.Name, modelReferenceMap.Name, modelReferenceMap.Reference)
 			}
 
-			if !validPrimitiveType(modelReferenceMap.Value) {
+			if !ValidPrimitiveType(modelReferenceMap.Value) {
 				if _, ok := knownModels[modelReferenceMap.Value]; !ok {
 					return fmt.Errorf("unknown %s.%s.value: %s", model.Name, modelReferenceMap.Name, modelReferenceMap.Value)
 				}
@@ -334,7 +334,7 @@ func (s *Schema) Validate() error {
 		}
 
 		for _, strMap := range model.StringMaps {
-			if !validPrimitiveType(strMap.Value) {
+			if !ValidPrimitiveType(strMap.Value) {
 				if _, ok := knownModels[strMap.Value]; !ok {
 					return fmt.Errorf("unknown %s.%s.value: %s", model.Name, strMap.Name, strMap.Value)
 				}
@@ -342,7 +342,7 @@ func (s *Schema) Validate() error {
 		}
 
 		for _, i32Map := range model.Int32Maps {
-			if !validPrimitiveType(i32Map.Value) {
+			if !ValidPrimitiveType(i32Map.Value) {
 				if _, ok := knownModels[i32Map.Value]; !ok {
 					return fmt.Errorf("unknown %s.%s.value: %s", model.Name, i32Map.Name, i32Map.Value)
 				}
@@ -350,7 +350,7 @@ func (s *Schema) Validate() error {
 		}
 
 		for _, i64Map := range model.Int64Maps {
-			if !validPrimitiveType(i64Map.Value) {
+			if !ValidPrimitiveType(i64Map.Value) {
 				if _, ok := knownModels[i64Map.Value]; !ok {
 					return fmt.Errorf("unknown %s.%s.value: %s", model.Name, i64Map.Name, i64Map.Value)
 				}
@@ -358,7 +358,7 @@ func (s *Schema) Validate() error {
 		}
 
 		for _, u32Map := range model.Uint32Maps {
-			if !validPrimitiveType(u32Map.Value) {
+			if !ValidPrimitiveType(u32Map.Value) {
 				if _, ok := knownModels[u32Map.Value]; !ok {
 					return fmt.Errorf("unknown %s.%s.value: %s", model.Name, u32Map.Name, u32Map.Value)
 				}
@@ -366,7 +366,7 @@ func (s *Schema) Validate() error {
 		}
 
 		for _, u64Map := range model.Uint64Maps {
-			if !validPrimitiveType(u64Map.Value) {
+			if !ValidPrimitiveType(u64Map.Value) {
 				if _, ok := knownModels[u64Map.Value]; !ok {
 					return fmt.Errorf("unknown %s.%s.value: %s", model.Name, u64Map.Name, u64Map.Value)
 				}
@@ -374,7 +374,7 @@ func (s *Schema) Validate() error {
 		}
 
 		for _, f32Map := range model.Float32Maps {
-			if !validPrimitiveType(f32Map.Value) {
+			if !ValidPrimitiveType(f32Map.Value) {
 				if _, ok := knownModels[f32Map.Value]; !ok {
 					return fmt.Errorf("unknown %s.%s.value: %s", model.Name, f32Map.Name, f32Map.Value)
 				}
@@ -382,7 +382,7 @@ func (s *Schema) Validate() error {
 		}
 
 		for _, f64Map := range model.Float64Maps {
-			if !validPrimitiveType(f64Map.Value) {
+			if !ValidPrimitiveType(f64Map.Value) {
 				if _, ok := knownModels[f64Map.Value]; !ok {
 					return fmt.Errorf("unknown %s.%s.value: %s", model.Name, f64Map.Name, f64Map.Value)
 				}
@@ -390,7 +390,7 @@ func (s *Schema) Validate() error {
 		}
 
 		for _, bMap := range model.BytesMaps {
-			if !validPrimitiveType(bMap.Value) {
+			if !ValidPrimitiveType(bMap.Value) {
 				if _, ok := knownModels[bMap.Value]; !ok {
 					return fmt.Errorf("unknown %s.%s.value: %s", model.Name, bMap.Name, bMap.Value)
 				}
@@ -398,7 +398,7 @@ func (s *Schema) Validate() error {
 		}
 
 		for _, enumMap := range model.EnumMaps {
-			if !validPrimitiveType(enumMap.Value) {
+			if !ValidPrimitiveType(enumMap.Value) {
 				if _, ok := knownModels[enumMap.Value]; !ok {
 					return fmt.Errorf("unknown %s.%s.value: %s", model.Name, enumMap.Name, enumMap.Value)
 				}
@@ -409,7 +409,7 @@ func (s *Schema) Validate() error {
 	return nil
 }
 
-func validPrimitiveType(t string) bool {
+func ValidPrimitiveType(t string) bool {
 	switch t {
 	case "string", "int32", "int64", "uint32", "uint64", "float32", "float64", "bool", "bytes":
 		return true

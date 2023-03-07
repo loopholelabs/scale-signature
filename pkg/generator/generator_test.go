@@ -13,8 +13,75 @@
 
 package generator
 
-import "testing"
+import (
+	"bytes"
+	"github.com/loopholelabs/scale-signature/pkg/generator/templates"
+	"github.com/loopholelabs/scale-signature/pkg/schema"
+	"github.com/stretchr/testify/require"
+	"testing"
+	"text/template"
+)
 
 func TestGenerator(t *testing.T) {
+	m := template.FuncMap{
+		"IsPrimitive": schema.ValidPrimitiveType,
+		"Deref":       func(i *bool) bool { return *i },
+	}
+	templ, err := template.New("").Funcs(m).ParseFS(templates.FS, "*.templ")
+	require.NoError(t, err)
+
+	s := new(schema.Schema)
+	err = s.Decode([]byte(`
+name = "testName"
+tag = "1testTag"
+model testModel {
+	description = "this is a test model"
+    string testString {
+		default = "asdfsa"
+	    regexValidator {
+			expression = ".*"
+		}
+		lengthValidator {
+			min = 1
+			max = 3
+		}
+	}
+}
+
+model testModel2 {
+	model "myTest" {
+		reference = "testModel"
+	}
+	stringMap testMap {
+		value = "testModel"
+	}
+	stringMap testMap2 {
+		value = "testModel"
+		accessor = true
+	}
+	stringMap testMap3 {
+		value = "string"
+	}
+	stringArray testArray {}
+
+	modelMap testModelMap {
+		value = "testModel"
+		reference = "testModel2"
+	}
+
+	modelArray testModelArray {
+		reference = "testModel2"
+	}
+}
+`))
+	require.NoError(t, err)
+
+	require.NoError(t, s.Validate())
+
+	buf := new(bytes.Buffer)
+	err = templ.ExecuteTemplate(buf, "go.templ", s)
+	require.NoError(t, err)
+
+	t.Log(buf.String())
 
 }

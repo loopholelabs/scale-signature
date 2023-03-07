@@ -104,7 +104,7 @@ type ModelReferenceMapSchema struct {
 	Name      string `hcl:"name,label"`
 	Reference string `hcl:"reference,attr"`
 	Value     string `hcl:"value,attr"`
-	Accessor  *bool  `hcl:"accessor,optional"`
+	Accessor  bool   `hcl:"accessor,optional"`
 }
 
 func (m *ModelReferenceMapSchema) Validate(model *ModelSchema) error {

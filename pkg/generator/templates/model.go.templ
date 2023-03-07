@@ -1,14 +1,273 @@
 {{ define "model" }}
-{{ if .Description }}
+
+{{- if .Description }}
 // {{ .Name }}: {{ .Description }}
-{{ end }}
+{{ end -}}
+
 type Model_{{ .Name }} struct {
-{{ range .Models }}
-   {{ if .Accessor }}
-   model_{{ .Name }} *Model_{{ .Name }}
-   {{ else }}
-   Model_{{ .Name }} *Model_{{ .Name }}
-   {{ end }}
-{{ end }}
+
+{{- range .Models }}
+    Model_{{ .Name }} *Model_{{ .Reference }}
+{{- end -}}
+
+{{- range .ModelArrays }}
+    Model_{{ .Name }} []*Model_{{ .Reference }}
+{{- end -}}
+
+{{- range .ModelMaps }}
+    {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
+    model_{{ .Name }} map[*Model_{{ .Reference }}]{{ .Value }}
+    {{- end -}}
+
+    {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
+    model_{{ .Name }} map[*Model_{{ .Reference }}]*Model_{{ .Value }}
+    {{- end -}}
+
+    {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
+    Model_{{ .Name }} map[*Model_{{ .Reference }}]{{ .Value }}
+    {{- end -}}
+
+    {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
+    Model_{{ .Name }} map[*Model_{{ .Reference }}]*Model_{{ .Value }}
+    {{- end -}}
+{{- end }}
+
+{{- range .Strings -}}
+    {{- if (Deref .Accessor) }}
+    model_{{ .Name }} string
+    {{- else }}
+    Model_{{ .Name }} string
+    {{- end -}}
+{{- end -}}
+
+{{- range .StringArrays }}
+    {{- if (Deref .Accessor) }}
+    model_{{ .Name }} []string
+    {{- else }}
+    Model_{{ .Name }} []string
+    {{- end -}}
+{{- end -}}
+
+{{- range .StringMaps }}
+    {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
+    model_{{ .Name }} map[string]{{ .Value }}
+    {{- end -}}
+
+    {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
+    model_{{ .Name }} map[string]*Model_{{ .Value }}
+    {{- end -}}
+
+    {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
+    Model_{{ .Name }} map[string]{{ .Value }}
+    {{- end -}}
+
+    {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
+    Model_{{ .Name }} map[string]*Model_{{ .Value }}
+    {{- end -}}
+{{- end }}
+
+{{- range .Int32s -}}
+    {{- if (Deref .Accessor) }}
+    model_{{ .Name }} int32
+    {{- else }}
+    Model_{{ .Name }} int32
+    {{- end -}}
+{{- end -}}
+
+{{- range .Int32Arrays }}
+    {{- if (Deref .Accessor) }}
+    model_{{ .Name }} []int32
+    {{- else }}
+    Model_{{ .Name }} []int32
+    {{- end -}}
+{{- end -}}
+
+{{- range .Int32Maps }}
+    {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
+    model_{{ .Name }} map[int32]{{ .Value }}
+    {{- end -}}
+
+    {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
+    model_{{ .Name }} map[int32]*Model_{{ .Value }}
+    {{- end -}}
+
+    {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
+    Model_{{ .Name }} map[int32]{{ .Value }}
+    {{- end -}}
+
+    {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
+    Model_{{ .Name }} map[int32]*Model_{{ .Value }}
+    {{- end -}}
+{{- end }}
+
+{{- range .Int64s -}}
+    {{- if (Deref .Accessor) }}
+    model_{{ .Name }} int64
+    {{- else }}
+    Model_{{ .Name }} int64
+    {{- end -}}
+{{- end -}}
+
+{{- range .Int64Arrays }}
+    {{- if (Deref .Accessor) }}
+    model_{{ .Name }} []int64
+    {{- else }}
+    Model_{{ .Name }} []int64
+    {{- end -}}
+{{- end -}}
+
+{{- range .Int64Maps }}
+    {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
+    model_{{ .Name }} map[int64]{{ .Value }}
+    {{- end -}}
+
+    {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
+    model_{{ .Name }} map[int64]*Model_{{ .Value }}
+    {{- end -}}
+
+    {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
+    Model_{{ .Name }} map[int64]{{ .Value }}
+    {{- end -}}
+
+    {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
+    Model_{{ .Name }} map[int64]*Model_{{ .Value }}
+    {{- end -}}
+{{- end }}
+
+{{- range .Uint32s -}}
+    {{- if (Deref .Accessor) }}
+    model_{{ .Name }} uint32
+    {{- else }}
+    Model_{{ .Name }} uint32
+    {{- end -}}
+{{- end -}}
+
+{{- range .Uint32Arrays }}
+    {{- if (Deref .Accessor) }}
+    model_{{ .Name }} []uint32
+    {{- else }}
+    Model_{{ .Name }} []uint32
+    {{- end -}}
+{{- end -}}
+
+{{- range .Uint32Maps }}
+    {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
+    model_{{ .Name }} map[uint32]{{ .Value }}
+    {{- end -}}
+
+    {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
+    model_{{ .Name }} map[uint32]*Model_{{ .Value }}
+    {{- end -}}
+
+    {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
+    Model_{{ .Name }} map[uint32]{{ .Value }}
+    {{- end -}}
+
+    {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
+    Model_{{ .Name }} map[uint32]*Model_{{ .Value }}
+    {{- end -}}
+{{- end }}
+
+{{- range .Uint64s -}}
+    {{- if (Deref .Accessor) }}
+    model_{{ .Name }} uint64
+    {{- else }}
+    Model_{{ .Name }} uint64
+    {{- end -}}
+{{- end -}}
+
+{{- range .Uint64Arrays }}
+    {{- if (Deref .Accessor) }}
+    model_{{ .Name }} []uint64
+    {{- else }}
+    Model_{{ .Name }} []uint64
+    {{- end -}}
+{{- end -}}
+
+{{- range .Uint64Maps }}
+    {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
+    model_{{ .Name }} map[uint64]{{ .Value }}
+    {{- end -}}
+
+    {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
+    model_{{ .Name }} map[uint64]*Model_{{ .Value }}
+    {{- end -}}
+
+    {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
+    Model_{{ .Name }} map[uint64]{{ .Value }}
+    {{- end -}}
+
+    {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
+    Model_{{ .Name }} map[uint64]*Model_{{ .Value }}
+    {{- end -}}
+{{- end }}
+
+{{- range .Float32s -}}
+    {{- if (Deref .Accessor) }}
+    model_{{ .Name }} float32
+    {{- else }}
+    Model_{{ .Name }} float32
+    {{- end -}}
+{{- end -}}
+
+{{- range .Float32Arrays }}
+    {{- if (Deref .Accessor) }}
+    model_{{ .Name }} []float32
+    {{- else }}
+    Model_{{ .Name }} []float32
+    {{- end -}}
+{{- end -}}
+
+{{- range .Float32Maps }}
+    {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
+    model_{{ .Name }} map[float32]{{ .Value }}
+    {{- end -}}
+
+    {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
+    model_{{ .Name }} map[float32]*Model_{{ .Value }}
+    {{- end -}}
+
+    {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
+    Model_{{ .Name }} map[float32]{{ .Value }}
+    {{- end -}}
+
+    {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
+    Model_{{ .Name }} map[float32]*Model_{{ .Value }}
+    {{- end -}}
+{{- end }}
+
+{{- range .Float64s -}}
+    {{- if (Deref .Accessor) }}
+    model_{{ .Name }} float64
+    {{- else }}
+    Model_{{ .Name }} float64
+    {{- end -}}
+{{- end -}}
+
+{{- range .Float64Arrays }}
+    {{- if (Deref .Accessor) }}
+    model_{{ .Name }} []float64
+    {{- else }}
+    Model_{{ .Name }} []float64
+    {{- end -}}
+{{- end -}}
+
+{{- range .Float64Maps }}
+    {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
+    model_{{ .Name }} map[float64]{{ .Value }}
+    {{- end -}}
+
+    {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
+    model_{{ .Name }} map[float64]*Model_{{ .Value }}
+    {{- end -}}
+
+    {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
+    Model_{{ .Name }} map[float64]{{ .Value }}
+    {{- end -}}
+
+    {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
+    Model_{{ .Name }} map[float64]*Model_{{ .Value }}
+    {{- end -}}
+{{- end }}
 }
 {{ end }}
