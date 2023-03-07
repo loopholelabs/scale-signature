@@ -1,0 +1,14 @@
+{{ define "model" }}
+{{ if .Description }}
+// {{ .Name }}: {{ .Description }}
+{{ end }}
+type Model_{{ .Name }} struct {
+{{ range .Models }}
+   {{ if .Accessor }}
+   model_{{ .Name }} *Model_{{ .Name }}
+   {{ else }}
+   Model_{{ .Name }} *Model_{{ .Name }}
+   {{ end }}
+{{ end }}
+}
+{{ end }}

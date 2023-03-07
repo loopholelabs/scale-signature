@@ -1,5 +1,5 @@
 /*
-	Copyright 2022 Loophole Labs
+	Copyright 2023 Loophole Labs
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 package schema
 
 import (
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"testing"
 )
@@ -49,4 +50,16 @@ model testModel2 {
 	require.NoError(t, err)
 
 	require.NoError(t, s.Validate())
+
+	assert.Equal(t, "testModel", s.Models[0].Name)
+	assert.Equal(t, "testModel2", s.Models[1].Name)
+	assert.Equal(t, "myTest", s.Models[1].Models[0].Name)
+	assert.Equal(t, "testModel", s.Models[1].Models[0].Reference)
+
+	assert.Equal(t, "testName", s.Name)
+	assert.Equal(t, "1testTag", s.Tag)
+
+	assert.Equal(t, "this is a test model", s.Models[0].Description)
+	assert.Equal(t, "testString", s.Models[0].Strings[0].Name)
+	assert.True(t, *s.Models[0].Strings[0].Accessor)
 }

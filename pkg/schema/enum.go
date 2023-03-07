@@ -1,5 +1,5 @@
 /*
-	Copyright 2022 Loophole Labs
+	Copyright 2023 Loophole Labs
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ type EnumSchema struct {
 	Values  []string `hcl:"values,attr"`
 }
 
-func (s EnumSchema) Validate(model ModelSchema) error {
+func (s *EnumSchema) Validate(model *ModelSchema) error {
 	if !ValidLabel.MatchString(s.Name) {
 		return fmt.Errorf("invalid %s.enum name: %s", model.Name, s.Name)
 	}
@@ -43,7 +43,7 @@ type EnumArraySchema struct {
 	Values []string `hcl:"values,attr"`
 }
 
-func (s EnumArraySchema) Validate(model ModelSchema) error {
+func (s *EnumArraySchema) Validate(model *ModelSchema) error {
 	if !ValidLabel.MatchString(s.Name) {
 		return fmt.Errorf("invalid %s.enumArray name: %s", model.Name, s.Name)
 	}
@@ -55,10 +55,10 @@ type EnumMapSchema struct {
 	Name     string   `hcl:"name,label"`
 	Values   []string `hcl:"values,attr"`
 	Value    string   `hcl:"value,attr"`
-	Accessor *bool    `hcl:"accessor,optional"`
+	Accessor bool     `hcl:"accessor,optional"`
 }
 
-func (s EnumMapSchema) Validate(model ModelSchema) error {
+func (s *EnumMapSchema) Validate(model *ModelSchema) error {
 	if !ValidLabel.MatchString(s.Name) {
 		return fmt.Errorf("invalid %s.enumMap name: %s", model.Name, s.Name)
 	}

@@ -1,5 +1,5 @@
 /*
-	Copyright 2022 Loophole Labs
+	Copyright 2023 Loophole Labs
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -37,9 +37,9 @@ var (
 )
 
 type Schema struct {
-	Name   string        `hcl:"name,attr"`
-	Tag    string        `hcl:"tag,attr"`
-	Models []ModelSchema `hcl:"model,block"`
+	Name   string         `hcl:"name,attr"`
+	Tag    string         `hcl:"tag,attr"`
+	Models []*ModelSchema `hcl:"model,block"`
 }
 
 func ReadSchema(path string) (*Schema, error) {

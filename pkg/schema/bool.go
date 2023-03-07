@@ -1,5 +1,5 @@
 /*
-	Copyright 2022 Loophole Labs
+	Copyright 2023 Loophole Labs
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ type BoolSchema struct {
 	Default bool   `hcl:"default,attr"`
 }
 
-func (s BoolSchema) Validate(model ModelSchema) error {
+func (s *BoolSchema) Validate(model *ModelSchema) error {
 	if !ValidLabel.MatchString(s.Name) {
 		return fmt.Errorf("invalid %s.bool name: %s", model.Name, s.Name)
 	}
@@ -37,7 +37,7 @@ type BoolArraySchema struct {
 	Name string `hcl:"name,label"`
 }
 
-func (s BoolArraySchema) Validate(model ModelSchema) error {
+func (s *BoolArraySchema) Validate(model *ModelSchema) error {
 	if !ValidLabel.MatchString(s.Name) {
 		return fmt.Errorf("invalid %s.boolArray name: %s", model.Name, s.Name)
 	}

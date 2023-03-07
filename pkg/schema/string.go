@@ -1,5 +1,5 @@
 /*
-	Copyright 2022 Loophole Labs
+	Copyright 2023 Loophole Labs
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ type StringSchema struct {
 	CaseModifier    *StringCaseModifierSchema    `hcl:"caseModifier,block"`
 }
 
-func (s StringSchema) Validate(model ModelSchema) error {
+func (s *StringSchema) Validate(model *ModelSchema) error {
 	if !ValidLabel.MatchString(s.Name) {
 		return fmt.Errorf("invalid %s.string name: %s", model.Name, s.Name)
 	}
@@ -76,8 +76,18 @@ func (s StringSchema) Validate(model ModelSchema) error {
 		}
 	}
 
-	if (s.Accessor != nil && *s.Accessor == false) && (s.LengthValidator != nil || s.RegexValidator != nil || s.CaseModifier != nil) {
-		return fmt.Errorf("invalid %s.%s.accessor: cannot be false while using validators or modifiers", model.Name, s.Name)
+	if s.Accessor != nil {
+		if *s.Accessor == false && (s.LengthValidator != nil || s.RegexValidator != nil || s.CaseModifier != nil) {
+			return fmt.Errorf("invalid %s.%s.accessor: cannot be false while using validators or modifiers", model.Name, s.Name)
+		}
+	} else {
+		if s.LengthValidator != nil || s.RegexValidator != nil || s.CaseModifier != nil {
+			s.Accessor = new(bool)
+			*s.Accessor = true
+		} else {
+			s.Accessor = new(bool)
+			*s.Accessor = false
+		}
 	}
 
 	return nil
@@ -91,7 +101,7 @@ type StringArraySchema struct {
 	CaseModifier    *StringCaseModifierSchema    `hcl:"caseModifier,block"`
 }
 
-func (s StringArraySchema) Validate(model ModelSchema) error {
+func (s *StringArraySchema) Validate(model *ModelSchema) error {
 	if !ValidLabel.MatchString(s.Name) {
 		return fmt.Errorf("invalid %s.stringArray name: %s", model.Name, s.Name)
 	}
@@ -124,8 +134,18 @@ func (s StringArraySchema) Validate(model ModelSchema) error {
 		}
 	}
 
-	if (s.Accessor != nil && *s.Accessor == false) && (s.LengthValidator != nil || s.RegexValidator != nil || s.CaseModifier != nil) {
-		return fmt.Errorf("invalid %s.%s.accessor: cannot be false while using validators or modifiers", model.Name, s.Name)
+	if s.Accessor != nil {
+		if *s.Accessor == false && (s.LengthValidator != nil || s.RegexValidator != nil || s.CaseModifier != nil) {
+			return fmt.Errorf("invalid %s.%s.accessor: cannot be false while using validators or modifiers", model.Name, s.Name)
+		}
+	} else {
+		if s.LengthValidator != nil || s.RegexValidator != nil || s.CaseModifier != nil {
+			s.Accessor = new(bool)
+			*s.Accessor = true
+		} else {
+			s.Accessor = new(bool)
+			*s.Accessor = false
+		}
 	}
 
 	return nil
@@ -140,7 +160,7 @@ type StringMapSchema struct {
 	CaseModifier    *StringCaseModifierSchema    `hcl:"caseModifier,block"`
 }
 
-func (s StringMapSchema) Validate(model ModelSchema) error {
+func (s *StringMapSchema) Validate(model *ModelSchema) error {
 	if !ValidLabel.MatchString(s.Name) {
 		return fmt.Errorf("invalid %s.stringMap name: %s", model.Name, s.Name)
 	}
@@ -173,8 +193,18 @@ func (s StringMapSchema) Validate(model ModelSchema) error {
 		}
 	}
 
-	if (s.Accessor != nil && *s.Accessor == false) && (s.LengthValidator != nil || s.RegexValidator != nil || s.CaseModifier != nil) {
-		return fmt.Errorf("invalid %s.%s.accessor: cannot be false while using validators or modifiers", model.Name, s.Name)
+	if s.Accessor != nil {
+		if *s.Accessor == false && (s.LengthValidator != nil || s.RegexValidator != nil || s.CaseModifier != nil) {
+			return fmt.Errorf("invalid %s.%s.accessor: cannot be false while using validators or modifiers", model.Name, s.Name)
+		}
+	} else {
+		if s.LengthValidator != nil || s.RegexValidator != nil || s.CaseModifier != nil {
+			s.Accessor = new(bool)
+			*s.Accessor = true
+		} else {
+			s.Accessor = new(bool)
+			*s.Accessor = false
+		}
 	}
 
 	return nil
