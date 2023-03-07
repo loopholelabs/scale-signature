@@ -26,6 +26,7 @@ func TestGenerator(t *testing.T) {
 	m := template.FuncMap{
 		"IsPrimitive": schema.ValidPrimitiveType,
 		"Deref":       func(i *bool) bool { return *i },
+		"LowerFirst":  func(s string) string { return string(s[0]+32) + s[1:] },
 	}
 	templ, err := template.New("").Funcs(m).ParseFS(templates.FS, "*.templ")
 	require.NoError(t, err)

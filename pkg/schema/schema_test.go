@@ -51,15 +51,15 @@ model testModel2 {
 
 	require.NoError(t, s.Validate())
 
-	assert.Equal(t, "testModel", s.Models[0].Name)
-	assert.Equal(t, "testModel2", s.Models[1].Name)
-	assert.Equal(t, "myTest", s.Models[1].Models[0].Name)
-	assert.Equal(t, "testModel", s.Models[1].Models[0].Reference)
+	assert.Equal(t, "TestModel", s.Models[0].Name)
+	assert.Equal(t, "TestModel2", s.Models[1].Name)
+	assert.Equal(t, "MyTest", s.Models[1].Models[0].Name)
+	assert.Equal(t, "TestModel", s.Models[1].Models[0].Reference)
 
 	assert.Equal(t, "testName", s.Name)
 	assert.Equal(t, "1testTag", s.Tag)
 
 	assert.Equal(t, "this is a test model", s.Models[0].Description)
-	assert.Equal(t, "testString", s.Models[0].Strings[0].Name)
+	assert.Equal(t, "TestString", s.Models[0].Strings[0].Name)
 	assert.True(t, *s.Models[0].Strings[0].Accessor)
 }
