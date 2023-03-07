@@ -16,6 +16,8 @@
 
 package schema
 
+import "fmt"
+
 type Float64LimitValidatorSchema struct {
 	Maximum *float64 `hcl:"maximum,optional"`
 	Minimum *float64 `hcl:"minimum,optional"`
@@ -28,10 +30,54 @@ type Float64Schema struct {
 	LimitValidator *Float64LimitValidatorSchema `hcl:"limitValidator,block"`
 }
 
+func (s Float64Schema) Validate(model ModelSchema) error {
+	if !ValidLabel.MatchString(s.Name) {
+		return fmt.Errorf("invalid %s.float64 name: %s", model.Name, s.Name)
+	}
+
+	if s.LimitValidator != nil {
+		if s.LimitValidator.Maximum != nil {
+			if s.LimitValidator.Minimum != nil {
+				if *s.LimitValidator.Minimum > *s.LimitValidator.Maximum {
+					return fmt.Errorf("invalid %s.%s.limitValidator: minimum cannot be greater than maximum", model.Name, s.Name)
+				}
+			}
+		}
+	}
+
+	if (s.Accessor != nil && *s.Accessor == false) && (s.LimitValidator != nil) {
+		return fmt.Errorf("invalid %s.%s.accessor: cannot be false while using validators or modifiers", model.Name, s.Name)
+	}
+
+	return nil
+}
+
 type Float64ArraySchema struct {
 	Name           string                       `hcl:"name,label"`
 	Accessor       *bool                        `hcl:"accessor,optional"`
 	LimitValidator *Float64LimitValidatorSchema `hcl:"limitValidator,block"`
+}
+
+func (s Float64ArraySchema) Validate(model ModelSchema) error {
+	if !ValidLabel.MatchString(s.Name) {
+		return fmt.Errorf("invalid %s.float64Array name: %s", model.Name, s.Name)
+	}
+
+	if s.LimitValidator != nil {
+		if s.LimitValidator.Maximum != nil {
+			if s.LimitValidator.Minimum != nil {
+				if *s.LimitValidator.Minimum > *s.LimitValidator.Maximum {
+					return fmt.Errorf("invalid %s.%s.limitValidator: minimum cannot be greater than maximum", model.Name, s.Name)
+				}
+			}
+		}
+	}
+
+	if (s.Accessor != nil && *s.Accessor == false) && (s.LimitValidator != nil) {
+		return fmt.Errorf("invalid %s.%s.accessor: cannot be false while using validators or modifiers", model.Name, s.Name)
+	}
+
+	return nil
 }
 
 type Float64MapSchema struct {
@@ -39,4 +85,26 @@ type Float64MapSchema struct {
 	Value          string                       `hcl:"value,attr"`
 	Accessor       *bool                        `hcl:"accessor,optional"`
 	LimitValidator *Float64LimitValidatorSchema `hcl:"limitValidator,block"`
+}
+
+func (s Float64MapSchema) Validate(model ModelSchema) error {
+	if !ValidLabel.MatchString(s.Name) {
+		return fmt.Errorf("invalid %s.float64Map name: %s", model.Name, s.Name)
+	}
+
+	if s.LimitValidator != nil {
+		if s.LimitValidator.Maximum != nil {
+			if s.LimitValidator.Minimum != nil {
+				if *s.LimitValidator.Minimum > *s.LimitValidator.Maximum {
+					return fmt.Errorf("invalid %s.%s.limitValidator: minimum cannot be greater than maximum", model.Name, s.Name)
+				}
+			}
+		}
+	}
+
+	if (s.Accessor != nil && *s.Accessor == false) && (s.LimitValidator != nil) {
+		return fmt.Errorf("invalid %s.%s.accessor: cannot be false while using validators or modifiers", model.Name, s.Name)
+	}
+
+	return nil
 }

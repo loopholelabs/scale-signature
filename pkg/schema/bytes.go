@@ -16,16 +16,42 @@
 
 package schema
 
+import "fmt"
+
 type BytesSchema struct {
 	Name string `hcl:"name,label"`
+}
+
+func (s BytesSchema) Validate(model ModelSchema) error {
+	if !ValidLabel.MatchString(s.Name) {
+		return fmt.Errorf("invalid %s.bytes name: %s", model.Name, s.Name)
+	}
+
+	return nil
 }
 
 type BytesArraySchema struct {
 	Name string `hcl:"name,label"`
 }
 
+func (s BytesArraySchema) Validate(model ModelSchema) error {
+	if !ValidLabel.MatchString(s.Name) {
+		return fmt.Errorf("invalid %s.bytesArray name: %s", model.Name, s.Name)
+	}
+
+	return nil
+}
+
 type BytesMapSchema struct {
 	Name     string `hcl:"name,label"`
 	Value    string `hcl:"value,attr"`
 	Accessor *bool  `hcl:"accessor,optional"`
+}
+
+func (s BytesMapSchema) Validate(model ModelSchema) error {
+	if !ValidLabel.MatchString(s.Name) {
+		return fmt.Errorf("invalid %s.bytesMap name: %s", model.Name, s.Name)
+	}
+
+	return nil
 }

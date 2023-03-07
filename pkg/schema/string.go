@@ -93,7 +93,7 @@ type StringArraySchema struct {
 
 func (s StringArraySchema) Validate(model ModelSchema) error {
 	if !ValidLabel.MatchString(s.Name) {
-		return fmt.Errorf("invalid %s.string name: %s", model.Name, s.Name)
+		return fmt.Errorf("invalid %s.stringArray name: %s", model.Name, s.Name)
 	}
 
 	if s.LengthValidator != nil {
@@ -142,7 +142,7 @@ type StringMapSchema struct {
 
 func (s StringMapSchema) Validate(model ModelSchema) error {
 	if !ValidLabel.MatchString(s.Name) {
-		return fmt.Errorf("invalid %s.string name: %s", model.Name, s.Name)
+		return fmt.Errorf("invalid %s.stringMap name: %s", model.Name, s.Name)
 	}
 
 	if s.LengthValidator != nil {

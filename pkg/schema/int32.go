@@ -60,7 +60,7 @@ type Int32ArraySchema struct {
 
 func (s Int32ArraySchema) Validate(model ModelSchema) error {
 	if !ValidLabel.MatchString(s.Name) {
-		return fmt.Errorf("invalid %s.int32 name: %s", model.Name, s.Name)
+		return fmt.Errorf("invalid %s.int32Array name: %s", model.Name, s.Name)
 	}
 
 	if s.LimitValidator != nil {
@@ -89,7 +89,7 @@ type Int32MapSchema struct {
 
 func (s Int32MapSchema) Validate(model ModelSchema) error {
 	if !ValidLabel.MatchString(s.Name) {
-		return fmt.Errorf("invalid %s.int32 name: %s", model.Name, s.Name)
+		return fmt.Errorf("invalid %s.int32Map name: %s", model.Name, s.Name)
 	}
 
 	if s.LimitValidator != nil {

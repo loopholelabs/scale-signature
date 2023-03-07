@@ -16,10 +16,26 @@
 
 package schema
 
+import "fmt"
+
 type EnumSchema struct {
 	Name    string   `hcl:"name,label"`
 	Default string   `hcl:"default,attr"`
 	Values  []string `hcl:"values,attr"`
+}
+
+func (s EnumSchema) Validate(model ModelSchema) error {
+	if !ValidLabel.MatchString(s.Name) {
+		return fmt.Errorf("invalid %s.enum name: %s", model.Name, s.Name)
+	}
+
+	for _, value := range s.Values {
+		if value == s.Default {
+			return nil
+		}
+	}
+
+	return fmt.Errorf("invalid %s.%s.default: %s is not a valid value", model.Name, s.Name, s.Default)
 }
 
 type EnumArraySchema struct {
@@ -27,8 +43,25 @@ type EnumArraySchema struct {
 	Values []string `hcl:"values,attr"`
 }
 
+func (s EnumArraySchema) Validate(model ModelSchema) error {
+	if !ValidLabel.MatchString(s.Name) {
+		return fmt.Errorf("invalid %s.enumArray name: %s", model.Name, s.Name)
+	}
+
+	return nil
+}
+
 type EnumMapSchema struct {
-	Name     string `hcl:"name,label"`
-	Value    string `hcl:"value,attr"`
-	Accessor *bool  `hcl:"accessor,optional"`
+	Name     string   `hcl:"name,label"`
+	Values   []string `hcl:"values,attr"`
+	Value    string   `hcl:"value,attr"`
+	Accessor *bool    `hcl:"accessor,optional"`
+}
+
+func (s EnumMapSchema) Validate(model ModelSchema) error {
+	if !ValidLabel.MatchString(s.Name) {
+		return fmt.Errorf("invalid %s.enumMap name: %s", model.Name, s.Name)
+	}
+
+	return nil
 }

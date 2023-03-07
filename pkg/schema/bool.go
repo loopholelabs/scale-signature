@@ -16,11 +16,31 @@
 
 package schema
 
+import (
+	"fmt"
+)
+
 type BoolSchema struct {
 	Name    string `hcl:"name,label"`
 	Default bool   `hcl:"default,attr"`
 }
 
+func (s BoolSchema) Validate(model ModelSchema) error {
+	if !ValidLabel.MatchString(s.Name) {
+		return fmt.Errorf("invalid %s.bool name: %s", model.Name, s.Name)
+	}
+
+	return nil
+}
+
 type BoolArraySchema struct {
 	Name string `hcl:"name,label"`
+}
+
+func (s BoolArraySchema) Validate(model ModelSchema) error {
+	if !ValidLabel.MatchString(s.Name) {
+		return fmt.Errorf("invalid %s.boolArray name: %s", model.Name, s.Name)
+	}
+
+	return nil
 }

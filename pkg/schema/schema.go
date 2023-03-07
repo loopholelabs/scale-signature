@@ -32,7 +32,8 @@ var (
 )
 
 var (
-	ValidLabel = regexp.MustCompile(`^[A-Za-z0-9]*$`)
+	ValidLabel    = regexp.MustCompile(`^[A-Za-z0-9]*$`)
+	InvalidString = regexp.MustCompile(`[^A-Za-z0-9-.]`)
 )
 
 type Schema struct {
@@ -70,7 +71,7 @@ func (s *Schema) Validate() error {
 		return ErrInvalidName
 	}
 
-	if !ValidLabel.MatchString(s.Tag) {
+	if InvalidString.MatchString(s.Tag) {
 		return ErrInvalidTag
 	}
 
@@ -144,6 +145,167 @@ func (s *Schema) Validate() error {
 				return err
 			}
 		}
+
+		for _, i64 := range model.Int64s {
+			err := i64.Validate(model)
+			if err != nil {
+				return err
+			}
+		}
+
+		for _, i64Array := range model.Int64Arrays {
+			err := i64Array.Validate(model)
+			if err != nil {
+				return err
+			}
+		}
+
+		for _, i64Map := range model.Int64Maps {
+			err := i64Map.Validate(model)
+			if err != nil {
+				return err
+			}
+		}
+
+		for _, u32 := range model.Uint32s {
+			err := u32.Validate(model)
+			if err != nil {
+				return err
+			}
+		}
+
+		for _, u32Array := range model.Uint32Arrays {
+			err := u32Array.Validate(model)
+			if err != nil {
+				return err
+			}
+		}
+
+		for _, u32Map := range model.Uint32Maps {
+			err := u32Map.Validate(model)
+			if err != nil {
+				return err
+			}
+		}
+
+		for _, u64 := range model.Uint64s {
+			err := u64.Validate(model)
+			if err != nil {
+				return err
+			}
+		}
+
+		for _, u64Array := range model.Uint64Arrays {
+			err := u64Array.Validate(model)
+			if err != nil {
+				return err
+			}
+		}
+
+		for _, u64Map := range model.Uint64Maps {
+			err := u64Map.Validate(model)
+			if err != nil {
+				return err
+			}
+		}
+
+		for _, f32 := range model.Float32s {
+			err := f32.Validate(model)
+			if err != nil {
+				return err
+			}
+		}
+
+		for _, f32Array := range model.Float32Arrays {
+			err := f32Array.Validate(model)
+			if err != nil {
+				return err
+			}
+		}
+
+		for _, f32Map := range model.Float32Maps {
+			err := f32Map.Validate(model)
+			if err != nil {
+				return err
+			}
+		}
+
+		for _, f64 := range model.Float64s {
+			err := f64.Validate(model)
+			if err != nil {
+				return err
+			}
+		}
+
+		for _, f64Array := range model.Float64Arrays {
+			err := f64Array.Validate(model)
+			if err != nil {
+				return err
+			}
+		}
+
+		for _, f64Map := range model.Float64Maps {
+			err := f64Map.Validate(model)
+			if err != nil {
+				return err
+			}
+		}
+
+		for _, b := range model.Bools {
+			err := b.Validate(model)
+			if err != nil {
+				return err
+			}
+		}
+
+		for _, bArray := range model.BoolArrays {
+			err := bArray.Validate(model)
+			if err != nil {
+				return err
+			}
+		}
+
+		for _, b := range model.Bytes {
+			err := b.Validate(model)
+			if err != nil {
+				return err
+			}
+		}
+
+		for _, bArray := range model.BytesArrays {
+			err := bArray.Validate(model)
+			if err != nil {
+				return err
+			}
+		}
+
+		for _, bMap := range model.BytesMaps {
+			err := bMap.Validate(model)
+			if err != nil {
+				return err
+			}
+		}
+
+		for _, enum := range model.Enums {
+			err := enum.Validate(model)
+			if err != nil {
+				return err
+			}
+		}
+
+		for _, enumArray := range model.EnumArrays {
+			err := enumArray.Validate(model)
+			if err != nil {
+				return err
+			}
+		}
+
+		for _, enumMap := range model.EnumMaps {
+			err := enumMap.Validate(model)
+			if err != nil {
+				return err
+			}
+		}
 	}
 
 	for _, model := range s.Models {
@@ -183,6 +345,62 @@ func (s *Schema) Validate() error {
 			if !validPrimitiveType(i32Map.Value) {
 				if _, ok := knownModels[i32Map.Value]; !ok {
 					return fmt.Errorf("unknown %s.%s.value: %s", model.Name, i32Map.Name, i32Map.Value)
+				}
+			}
+		}
+
+		for _, i64Map := range model.Int64Maps {
+			if !validPrimitiveType(i64Map.Value) {
+				if _, ok := knownModels[i64Map.Value]; !ok {
+					return fmt.Errorf("unknown %s.%s.value: %s", model.Name, i64Map.Name, i64Map.Value)
+				}
+			}
+		}
+
+		for _, u32Map := range model.Uint32Maps {
+			if !validPrimitiveType(u32Map.Value) {
+				if _, ok := knownModels[u32Map.Value]; !ok {
+					return fmt.Errorf("unknown %s.%s.value: %s", model.Name, u32Map.Name, u32Map.Value)
+				}
+			}
+		}
+
+		for _, u64Map := range model.Uint64Maps {
+			if !validPrimitiveType(u64Map.Value) {
+				if _, ok := knownModels[u64Map.Value]; !ok {
+					return fmt.Errorf("unknown %s.%s.value: %s", model.Name, u64Map.Name, u64Map.Value)
+				}
+			}
+		}
+
+		for _, f32Map := range model.Float32Maps {
+			if !validPrimitiveType(f32Map.Value) {
+				if _, ok := knownModels[f32Map.Value]; !ok {
+					return fmt.Errorf("unknown %s.%s.value: %s", model.Name, f32Map.Name, f32Map.Value)
+				}
+			}
+		}
+
+		for _, f64Map := range model.Float64Maps {
+			if !validPrimitiveType(f64Map.Value) {
+				if _, ok := knownModels[f64Map.Value]; !ok {
+					return fmt.Errorf("unknown %s.%s.value: %s", model.Name, f64Map.Name, f64Map.Value)
+				}
+			}
+		}
+
+		for _, bMap := range model.BytesMaps {
+			if !validPrimitiveType(bMap.Value) {
+				if _, ok := knownModels[bMap.Value]; !ok {
+					return fmt.Errorf("unknown %s.%s.value: %s", model.Name, bMap.Name, bMap.Value)
+				}
+			}
+		}
+
+		for _, enumMap := range model.EnumMaps {
+			if !validPrimitiveType(enumMap.Value) {
+				if _, ok := knownModels[enumMap.Value]; !ok {
+					return fmt.Errorf("unknown %s.%s.value: %s", model.Name, enumMap.Name, enumMap.Value)
 				}
 			}
 		}
