@@ -8,37 +8,37 @@ type {{ .Name }} struct {
 
 {{- range .Models }}
     {{ .Name }} *{{ .Reference }}
-{{- end -}}
+{{ end }}
 
 {{- range .ModelArrays }}
     {{ .Name }} []*{{ .Reference }}
-{{- end -}}
+{{ end }}
 
 {{- range .ModelMaps }}
     {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
     {{ LowerFirst .Name }} map[*{{ .Reference }}]{{ .Value }}
-    {{- end -}}
+    {{- end }}
 
     {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
     {{ LowerFirst .Name }} map[*{{ .Reference }}]*{{ .Value }}
-    {{- end -}}
+    {{- end }}
 
     {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
     {{ .Name }} map[*{{ .Reference }}]{{ .Value }}
-    {{- end -}}
+    {{- end }}
 
     {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
     {{ .Name }} map[*{{ .Reference }}]*{{ .Value }}
-    {{- end -}}
-{{- end }}
+    {{- end }}
+{{ end }}
 
-{{- range .Strings -}}
+{{- range .Strings }}
     {{- if (Deref .Accessor) }}
     {{ LowerFirst .Name }} string
     {{- else }}
     {{ .Name }} string
     {{- end -}}
-{{- end -}}
+{{ end }}
 
 {{- range .StringArrays }}
     {{- if (Deref .Accessor) }}
@@ -46,33 +46,33 @@ type {{ .Name }} struct {
     {{- else }}
     {{ .Name }} []string
     {{- end -}}
-{{- end -}}
+{{ end }}
 
 {{- range .StringMaps }}
     {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
     {{ LowerFirst .Name }} map[string]{{ .Value }}
-    {{- end -}}
+    {{- end }}
 
     {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
     {{ LowerFirst .Name }} map[string]*{{ .Value }}
-    {{- end -}}
+    {{- end }}
 
     {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
     {{ .Name }} map[string]{{ .Value }}
-    {{- end -}}
+    {{- end }}
 
     {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
     {{ .Name }} map[string]*{{ .Value }}
-    {{- end -}}
-{{- end }}
+    {{- end }}
+{{ end }}
 
-{{- range .Int32s -}}
+{{- range .Int32s }}
     {{- if (Deref .Accessor) }}
     {{ LowerFirst .Name }} int32
     {{- else }}
     {{ .Name }} int32
     {{- end -}}
-{{- end -}}
+{{ end }}
 
 {{- range .Int32Arrays }}
     {{- if (Deref .Accessor) }}
@@ -80,33 +80,33 @@ type {{ .Name }} struct {
     {{- else }}
     {{ .Name }} []int32
     {{- end -}}
-{{- end -}}
+{{ end }}
 
 {{- range .Int32Maps }}
     {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
     {{ LowerFirst .Name }} map[int32]{{ .Value }}
-    {{- end -}}
+    {{- end }}
 
     {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
     {{ LowerFirst .Name }} map[int32]*{{ .Value }}
-    {{- end -}}
+    {{- end }}
 
     {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
     {{ .Name }} map[int32]{{ .Value }}
-    {{- end -}}
+    {{- end }}
 
     {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
     {{ .Name }} map[int32]*{{ .Value }}
-    {{- end -}}
-{{- end }}
+    {{- end }}
+{{ end }}
 
-{{- range .Int64s -}}
+{{- range .Int64s }}
     {{- if (Deref .Accessor) }}
     {{ LowerFirst .Name }} int64
     {{- else }}
     {{ .Name }} int64
     {{- end -}}
-{{- end -}}
+{{ end }}
 
 {{- range .Int64Arrays }}
     {{- if (Deref .Accessor) }}
@@ -114,33 +114,33 @@ type {{ .Name }} struct {
     {{- else }}
     {{ .Name }} []int64
     {{- end -}}
-{{- end -}}
+{{ end }}
 
 {{- range .Int64Maps }}
     {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
     {{ LowerFirst .Name }} map[int64]{{ .Value }}
-    {{- end -}}
+    {{- end }}
 
     {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
     {{ LowerFirst .Name }} map[int64]*{{ .Value }}
-    {{- end -}}
+    {{- end }}
 
     {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
     {{ .Name }} map[int64]{{ .Value }}
-    {{- end -}}
+    {{- end }}
 
     {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
     {{ .Name }} map[int64]*{{ .Value }}
-    {{- end -}}
-{{- end }}
+    {{- end }}
+{{ end }}
 
-{{- range .Uint32s -}}
+{{- range .Uint32s }}
     {{- if (Deref .Accessor) }}
     {{ LowerFirst .Name }} uint32
     {{- else }}
     {{ .Name }} uint32
     {{- end -}}
-{{- end -}}
+{{ end }}
 
 {{- range .Uint32Arrays }}
     {{- if (Deref .Accessor) }}
@@ -148,33 +148,33 @@ type {{ .Name }} struct {
     {{- else }}
     {{ .Name }} []uint32
     {{- end -}}
-{{- end -}}
+{{ end }}
 
 {{- range .Uint32Maps }}
     {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
     {{ LowerFirst .Name }} map[uint32]{{ .Value }}
-    {{- end -}}
+    {{- end }}
 
     {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
     {{ LowerFirst .Name }} map[uint32]*{{ .Value }}
-    {{- end -}}
+    {{- end }}
 
     {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
     {{ .Name }} map[uint32]{{ .Value }}
-    {{- end -}}
+    {{- end }}
 
     {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
     {{ .Name }} map[uint32]*{{ .Value }}
-    {{- end -}}
-{{- end }}
+    {{- end }}
+{{ end }}
 
-{{- range .Uint64s -}}
+{{- range .Uint64s }}
     {{- if (Deref .Accessor) }}
     {{ LowerFirst .Name }} uint64
     {{- else }}
     {{ .Name }} uint64
     {{- end -}}
-{{- end -}}
+{{ end }}
 
 {{- range .Uint64Arrays }}
     {{- if (Deref .Accessor) }}
@@ -182,33 +182,33 @@ type {{ .Name }} struct {
     {{- else }}
     {{ .Name }} []uint64
     {{- end -}}
-{{- end -}}
+{{ end }}
 
 {{- range .Uint64Maps }}
     {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
     {{ LowerFirst .Name }} map[uint64]{{ .Value }}
-    {{- end -}}
+    {{- end }}
 
     {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
     {{ LowerFirst .Name }} map[uint64]*{{ .Value }}
-    {{- end -}}
+    {{- end }}
 
     {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
     {{ .Name }} map[uint64]{{ .Value }}
-    {{- end -}}
+    {{- end }}
 
     {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
     {{ .Name }} map[uint64]*{{ .Value }}
-    {{- end -}}
-{{- end }}
+    {{- end }}
+{{ end }}
 
-{{- range .Float32s -}}
+{{- range .Float32s }}
     {{- if (Deref .Accessor) }}
     {{ LowerFirst .Name }} float32
     {{- else }}
     {{ .Name }} float32
     {{- end -}}
-{{- end -}}
+{{ end }}
 
 {{- range .Float32Arrays }}
     {{- if (Deref .Accessor) }}
@@ -216,33 +216,33 @@ type {{ .Name }} struct {
     {{- else }}
     {{ .Name }} []float32
     {{- end -}}
-{{- end -}}
+{{ end }}
 
 {{- range .Float32Maps }}
     {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
     {{ LowerFirst .Name }} map[float32]{{ .Value }}
-    {{- end -}}
+    {{- end }}
 
     {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
     {{ LowerFirst .Name }} map[float32]*{{ .Value }}
-    {{- end -}}
+    {{- end }}
 
     {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
     {{ .Name }} map[float32]{{ .Value }}
-    {{- end -}}
+    {{- end }}
 
     {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
     {{ .Name }} map[float32]*{{ .Value }}
-    {{- end -}}
-{{- end }}
+    {{- end }}
+{{ end }}
 
-{{- range .Float64s -}}
+{{- range .Float64s }}
     {{- if (Deref .Accessor) }}
     {{ LowerFirst .Name }} float64
     {{- else }}
     {{ .Name }} float64
     {{- end -}}
-{{- end -}}
+{{ end }}
 
 {{- range .Float64Arrays }}
     {{- if (Deref .Accessor) }}
@@ -250,54 +250,51 @@ type {{ .Name }} struct {
     {{- else }}
     {{ .Name }} []float64
     {{- end -}}
-{{- end -}}
+{{ end }}
 
 {{- range .Float64Maps }}
     {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
     {{ LowerFirst .Name }} map[float64]{{ .Value }}
-    {{- end -}}
+    {{- end }}
 
     {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
     {{ LowerFirst .Name }} map[float64]*{{ .Value }}
-    {{- end -}}
+    {{- end }}
 
     {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
     {{ .Name }} map[float64]{{ .Value }}
-    {{- end -}}
+    {{- end }}
 
     {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
     {{ .Name }} map[float64]*{{ .Value }}
-    {{- end -}}
-{{- end }}
+    {{- end }}
+{{ end }}
 
-{{- range .Enums -}}
-    {{ .Name }} Enum_{{ .Name }}
-{{- end -}}
+{{ $current_model := . }}
+{{- range .Enums }}
+    {{ .Name }} Enum{{ $current_model.Name }}{{ .Name }}
+{{ end }}
 
-{{- range .Float64Arrays }}
-    {{- if (Deref .Accessor) }}
-    {{ LowerFirst .Name }} []float64
-    {{- else }}
-    {{ .Name }} []float64
-    {{- end -}}
-{{- end -}}
+{{- range .EnumArrays }}
+    {{ .Name }} []Enum{{ $current_model.Name }}{{ .Name }}
+{{ end }}
 
-{{- range .Float64Maps }}
+{{- range .EnumMaps }}
     {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
-    {{ LowerFirst .Name }} map[float64]{{ .Value }}
-    {{- end -}}
+    {{ LowerFirst .Name }} map[Enum{{ $current_model.Name }}{{ .Name }}]{{ .Value }}
+    {{- end }}
 
     {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
-    {{ LowerFirst .Name }} map[float64]*{{ .Value }}
-    {{- end -}}
+    {{ LowerFirst .Name }} map[Enum{{ $current_model.Name }}{{ .Name }}]*{{ .Value }}
+    {{- end }}
 
     {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
-    {{ .Name }} map[float64]{{ .Value }}
-    {{- end -}}
+    {{ .Name }} map[Enum{{ $current_model.Name }}{{ .Name }}]{{ .Value }}
+    {{- end }}
 
     {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
-    {{ .Name }} map[float64]*{{ .Value }}
-    {{- end -}}
-{{- end }}
+    {{ .Name }} map[Enum{{ $current_model.Name }}{{ .Name }}]*{{ .Value }}
+    {{- end }}
+{{ end }}
 }
 {{ end }}

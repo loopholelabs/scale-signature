@@ -73,6 +73,21 @@ model testModel2 {
 	modelArray testModelArray {
 		reference = "testModel2"
 	}
+
+	enum testEnum {
+		default = "test"
+		values = ["test", "test2"]
+	}
+
+	enumArray testEnumArray {
+		values = ["test", "test2"]
+	}
+
+	enumMap testEnumMap {
+		value = "string"
+		values = ["test", "test2"]
+	}
+		
 }
 `))
 	require.NoError(t, err)

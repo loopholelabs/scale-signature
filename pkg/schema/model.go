@@ -281,6 +281,7 @@ func (m *ModelSchema) Normalize() {
 
 	for _, enum := range m.Enums {
 		enum.Name = TitleCaser.String(enum.Name)
+		enum.Default = TitleCaser.String(enum.Default)
 		for i := range enum.Values {
 			enum.Values[i] = TitleCaser.String(enum.Values[i])
 		}
