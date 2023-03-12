@@ -39,7 +39,7 @@ type BoolArraySchema struct {
 
 func (s *BoolArraySchema) Validate(model *ModelSchema) error {
 	if !ValidLabel.MatchString(s.Name) {
-		return fmt.Errorf("invalid %s.boolArray name: %s", model.Name, s.Name)
+		return fmt.Errorf("invalid %s.bool_array name: %s", model.Name, s.Name)
 	}
 
 	return nil

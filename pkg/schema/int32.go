@@ -27,7 +27,7 @@ type Int32Schema struct {
 	Name           string                     `hcl:"name,label"`
 	Default        int32                      `hcl:"default,attr"`
 	Accessor       *bool                      `hcl:"accessor,optional"`
-	LimitValidator *Int32LimitValidatorSchema `hcl:"limitValidator,block"`
+	LimitValidator *Int32LimitValidatorSchema `hcl:"limit_validator,block"`
 }
 
 func (s *Int32Schema) Validate(model *ModelSchema) error {
@@ -39,7 +39,7 @@ func (s *Int32Schema) Validate(model *ModelSchema) error {
 		if s.LimitValidator.Maximum != nil {
 			if s.LimitValidator.Minimum != nil {
 				if *s.LimitValidator.Minimum > *s.LimitValidator.Maximum {
-					return fmt.Errorf("invalid %s.%s.limitValidator: minimum cannot be greater than maximum", model.Name, s.Name)
+					return fmt.Errorf("invalid %s.%s.limit_validator: minimum cannot be greater than maximum", model.Name, s.Name)
 				}
 			}
 		}
@@ -65,19 +65,19 @@ func (s *Int32Schema) Validate(model *ModelSchema) error {
 type Int32ArraySchema struct {
 	Name           string                     `hcl:"name,label"`
 	Accessor       *bool                      `hcl:"accessor,optional"`
-	LimitValidator *Int32LimitValidatorSchema `hcl:"limitValidator,block"`
+	LimitValidator *Int32LimitValidatorSchema `hcl:"limit_validator,block"`
 }
 
 func (s *Int32ArraySchema) Validate(model *ModelSchema) error {
 	if !ValidLabel.MatchString(s.Name) {
-		return fmt.Errorf("invalid %s.int32Array name: %s", model.Name, s.Name)
+		return fmt.Errorf("invalid %s.int32_array name: %s", model.Name, s.Name)
 	}
 
 	if s.LimitValidator != nil {
 		if s.LimitValidator.Maximum != nil {
 			if s.LimitValidator.Minimum != nil {
 				if *s.LimitValidator.Minimum > *s.LimitValidator.Maximum {
-					return fmt.Errorf("invalid %s.%s.limitValidator: minimum cannot be greater than maximum", model.Name, s.Name)
+					return fmt.Errorf("invalid %s.%s.limit_validator: minimum cannot be greater than maximum", model.Name, s.Name)
 				}
 			}
 		}
@@ -104,19 +104,19 @@ type Int32MapSchema struct {
 	Name           string                     `hcl:"name,label"`
 	Value          string                     `hcl:"value,attr"`
 	Accessor       *bool                      `hcl:"accessor,optional"`
-	LimitValidator *Int32LimitValidatorSchema `hcl:"limitValidator,block"`
+	LimitValidator *Int32LimitValidatorSchema `hcl:"limit_validator,block"`
 }
 
 func (s *Int32MapSchema) Validate(model *ModelSchema) error {
 	if !ValidLabel.MatchString(s.Name) {
-		return fmt.Errorf("invalid %s.int32Map name: %s", model.Name, s.Name)
+		return fmt.Errorf("invalid %s.int32_map name: %s", model.Name, s.Name)
 	}
 
 	if s.LimitValidator != nil {
 		if s.LimitValidator.Maximum != nil {
 			if s.LimitValidator.Minimum != nil {
 				if *s.LimitValidator.Minimum > *s.LimitValidator.Maximum {
-					return fmt.Errorf("invalid %s.%s.limitValidator: minimum cannot be greater than maximum", model.Name, s.Name)
+					return fmt.Errorf("invalid %s.%s.limit_validator: minimum cannot be greater than maximum", model.Name, s.Name)
 				}
 			}
 		}

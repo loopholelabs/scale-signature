@@ -36,7 +36,7 @@ type BytesArraySchema struct {
 
 func (s *BytesArraySchema) Validate(model *ModelSchema) error {
 	if !ValidLabel.MatchString(s.Name) {
-		return fmt.Errorf("invalid %s.bytesArray name: %s", model.Name, s.Name)
+		return fmt.Errorf("invalid %s.bytes_array name: %s", model.Name, s.Name)
 	}
 
 	return nil
@@ -50,7 +50,7 @@ type BytesMapSchema struct {
 
 func (s *BytesMapSchema) Validate(model *ModelSchema) error {
 	if !ValidLabel.MatchString(s.Name) {
-		return fmt.Errorf("invalid %s.bytesMap name: %s", model.Name, s.Name)
+		return fmt.Errorf("invalid %s.bytes_map name: %s", model.Name, s.Name)
 	}
 
 	return nil

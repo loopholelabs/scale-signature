@@ -27,7 +27,7 @@ type Float32Schema struct {
 	Name           string                       `hcl:"name,label"`
 	Default        float32                      `hcl:"default,attr"`
 	Accessor       *bool                        `hcl:"accessor,optional"`
-	LimitValidator *Float32LimitValidatorSchema `hcl:"limitValidator,block"`
+	LimitValidator *Float32LimitValidatorSchema `hcl:"limit_validator,block"`
 }
 
 func (s *Float32Schema) Validate(model *ModelSchema) error {
@@ -39,7 +39,7 @@ func (s *Float32Schema) Validate(model *ModelSchema) error {
 		if s.LimitValidator.Maximum != nil {
 			if s.LimitValidator.Minimum != nil {
 				if *s.LimitValidator.Minimum > *s.LimitValidator.Maximum {
-					return fmt.Errorf("invalid %s.%s.limitValidator: minimum cannot be greater than maximum", model.Name, s.Name)
+					return fmt.Errorf("invalid %s.%s.limit_validator: minimum cannot be greater than maximum", model.Name, s.Name)
 				}
 			}
 		}
@@ -65,19 +65,19 @@ func (s *Float32Schema) Validate(model *ModelSchema) error {
 type Float32ArraySchema struct {
 	Name           string                       `hcl:"name,label"`
 	Accessor       *bool                        `hcl:"accessor,optional"`
-	LimitValidator *Float32LimitValidatorSchema `hcl:"limitValidator,block"`
+	LimitValidator *Float32LimitValidatorSchema `hcl:"limit_validator,block"`
 }
 
 func (s *Float32ArraySchema) Validate(model *ModelSchema) error {
 	if !ValidLabel.MatchString(s.Name) {
-		return fmt.Errorf("invalid %s.float32Array name: %s", model.Name, s.Name)
+		return fmt.Errorf("invalid %s.float32_array name: %s", model.Name, s.Name)
 	}
 
 	if s.LimitValidator != nil {
 		if s.LimitValidator.Maximum != nil {
 			if s.LimitValidator.Minimum != nil {
 				if *s.LimitValidator.Minimum > *s.LimitValidator.Maximum {
-					return fmt.Errorf("invalid %s.%s.limitValidator: minimum cannot be greater than maximum", model.Name, s.Name)
+					return fmt.Errorf("invalid %s.%s.limit_validator: minimum cannot be greater than maximum", model.Name, s.Name)
 				}
 			}
 		}
@@ -104,19 +104,19 @@ type Float32MapSchema struct {
 	Name           string                       `hcl:"name,label"`
 	Value          string                       `hcl:"value,attr"`
 	Accessor       *bool                        `hcl:"accessor,optional"`
-	LimitValidator *Float32LimitValidatorSchema `hcl:"limitValidator,block"`
+	LimitValidator *Float32LimitValidatorSchema `hcl:"limit_validator,block"`
 }
 
 func (s *Float32MapSchema) Validate(model *ModelSchema) error {
 	if !ValidLabel.MatchString(s.Name) {
-		return fmt.Errorf("invalid %s.float32Map name: %s", model.Name, s.Name)
+		return fmt.Errorf("invalid %s.float32_map name: %s", model.Name, s.Name)
 	}
 
 	if s.LimitValidator != nil {
 		if s.LimitValidator.Maximum != nil {
 			if s.LimitValidator.Minimum != nil {
 				if *s.LimitValidator.Minimum > *s.LimitValidator.Maximum {
-					return fmt.Errorf("invalid %s.%s.limitValidator: minimum cannot be greater than maximum", model.Name, s.Name)
+					return fmt.Errorf("invalid %s.%s.limit_validator: minimum cannot be greater than maximum", model.Name, s.Name)
 				}
 			}
 		}

@@ -31,10 +31,10 @@ model testModel {
 	description = "this is a test model"
     string testString {
 		default = "asdfsa"
-	    regexValidator {
+	    regex_validator {
 			expression = ".*"
 		}
-		lengthValidator {
+		length_validator {
 			min = 1
 			max = 3
 		}

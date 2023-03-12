@@ -39,10 +39,10 @@ model testModel {
 	description = "this is a test model"
     string testString {
 		default = "asdfsa"
-	    regexValidator {
+	    regex_validator {
 			expression = ".*"
 		}
-		lengthValidator {
+		length_validator {
 			min = 1
 			max = 3
 		}
@@ -53,24 +53,24 @@ model testModel2 {
 	model "myTest" {
 		reference = "testModel"
 	}
-	stringMap testMap {
+	string_map testMap {
 		value = "testModel"
 	}
-	stringMap testMap2 {
+	string_map testMap2 {
 		value = "testModel"
 		accessor = true
 	}
-	stringMap testMap3 {
+	string_map testMap3 {
 		value = "string"
 	}
-	stringArray testArray {}
+	string_array testArray {}
 
-	modelMap testModelMap {
+	model_map testModelMap {
 		value = "testModel"
 		reference = "testModel2"
 	}
 
-	modelArray testModelArray {
+	model_array testModelArray {
 		reference = "testModel2"
 	}
 
@@ -79,11 +79,11 @@ model testModel2 {
 		values = ["test", "test2"]
 	}
 
-	enumArray testEnumArray {
+	enum_array testEnumArray {
 		values = ["test", "test2"]
 	}
 
-	enumMap testEnumMap {
+	enum_map testEnumMap {
 		value = "string"
 		values = ["test", "test2"]
 	}
@@ -95,7 +95,11 @@ model testModel2 {
 	require.NoError(t, s.Validate())
 
 	buf := new(bytes.Buffer)
-	err = templ.ExecuteTemplate(buf, "go.templ", s)
+	err = templ.ExecuteTemplate(buf, "types.go.templ", map[string]any{
+		"schema":  s,
+		"version": "v0.1.0",
+		"package": "types",
+	})
 	require.NoError(t, err)
 
 	t.Log(buf.String())

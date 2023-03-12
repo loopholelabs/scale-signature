@@ -38,8 +38,8 @@ type StringSchema struct {
 	Name            string                       `hcl:"name,label"`
 	Default         string                       `hcl:"default,attr"`
 	Accessor        *bool                        `hcl:"accessor,optional"`
-	RegexValidator  *StringRegexValidatorSchema  `hcl:"regexValidator,block"`
-	LengthValidator *StringLengthValidatorSchema `hcl:"lengthValidator,block"`
+	RegexValidator  *StringRegexValidatorSchema  `hcl:"regex_validator,block"`
+	LengthValidator *StringLengthValidatorSchema `hcl:"length_validator,block"`
 	CaseModifier    *StringCaseModifierSchema    `hcl:"caseModifier,block"`
 }
 
@@ -51,12 +51,12 @@ func (s *StringSchema) Validate(model *ModelSchema) error {
 	if s.LengthValidator != nil {
 		if s.LengthValidator.Maximum != nil {
 			if *s.LengthValidator.Maximum == 0 {
-				return fmt.Errorf("invalid %s.%s.lengthValidator: maximum length cannot be zero", model.Name, s.Name)
+				return fmt.Errorf("invalid %s.%s.length_validator: maximum length cannot be zero", model.Name, s.Name)
 			}
 
 			if s.LengthValidator.Minimum != nil {
 				if *s.LengthValidator.Minimum > *s.LengthValidator.Maximum {
-					return fmt.Errorf("invalid %s.%s.lengthValidator: minimum length cannot be greater than maximum length", model.Name, s.Name)
+					return fmt.Errorf("invalid %s.%s.length_validator: minimum length cannot be greater than maximum length", model.Name, s.Name)
 				}
 			}
 		}
@@ -64,7 +64,7 @@ func (s *StringSchema) Validate(model *ModelSchema) error {
 
 	if s.RegexValidator != nil {
 		if _, err := regexp.Compile(s.RegexValidator.Expression); err != nil {
-			return fmt.Errorf("invalid %s.%s.regexValidator: %w", model.Name, s.Name, err)
+			return fmt.Errorf("invalid %s.%s.regex_validator: %w", model.Name, s.Name, err)
 		}
 	}
 
@@ -96,25 +96,25 @@ func (s *StringSchema) Validate(model *ModelSchema) error {
 type StringArraySchema struct {
 	Name            string                       `hcl:"name,label"`
 	Accessor        *bool                        `hcl:"accessor,optional"`
-	RegexValidator  *StringRegexValidatorSchema  `hcl:"regexValidator,block"`
-	LengthValidator *StringLengthValidatorSchema `hcl:"lengthValidator,block"`
+	RegexValidator  *StringRegexValidatorSchema  `hcl:"regex_validator,block"`
+	LengthValidator *StringLengthValidatorSchema `hcl:"length_validator,block"`
 	CaseModifier    *StringCaseModifierSchema    `hcl:"caseModifier,block"`
 }
 
 func (s *StringArraySchema) Validate(model *ModelSchema) error {
 	if !ValidLabel.MatchString(s.Name) {
-		return fmt.Errorf("invalid %s.stringArray name: %s", model.Name, s.Name)
+		return fmt.Errorf("invalid %s.string_array name: %s", model.Name, s.Name)
 	}
 
 	if s.LengthValidator != nil {
 		if s.LengthValidator.Maximum != nil {
 			if *s.LengthValidator.Maximum == 0 {
-				return fmt.Errorf("invalid %s.%s.lengthValidator: maximum length cannot be zero", model.Name, s.Name)
+				return fmt.Errorf("invalid %s.%s.length_validator: maximum length cannot be zero", model.Name, s.Name)
 			}
 
 			if s.LengthValidator.Minimum != nil {
 				if *s.LengthValidator.Minimum > *s.LengthValidator.Maximum {
-					return fmt.Errorf("invalid %s.%s.lengthValidator: minimum length cannot be greater than maximum length", model.Name, s.Name)
+					return fmt.Errorf("invalid %s.%s.length_validator: minimum length cannot be greater than maximum length", model.Name, s.Name)
 				}
 			}
 		}
@@ -122,7 +122,7 @@ func (s *StringArraySchema) Validate(model *ModelSchema) error {
 
 	if s.RegexValidator != nil {
 		if _, err := regexp.Compile(s.RegexValidator.Expression); err != nil {
-			return fmt.Errorf("invalid %s.%s.regexValidator: %w", model.Name, s.Name, err)
+			return fmt.Errorf("invalid %s.%s.regex_validator: %w", model.Name, s.Name, err)
 		}
 	}
 
@@ -155,25 +155,25 @@ type StringMapSchema struct {
 	Name            string                       `hcl:"name,label"`
 	Value           string                       `hcl:"value,attr"`
 	Accessor        *bool                        `hcl:"accessor,optional"`
-	RegexValidator  *StringRegexValidatorSchema  `hcl:"regexValidator,block"`
-	LengthValidator *StringLengthValidatorSchema `hcl:"lengthValidator,block"`
+	RegexValidator  *StringRegexValidatorSchema  `hcl:"regex_validator,block"`
+	LengthValidator *StringLengthValidatorSchema `hcl:"length_validator,block"`
 	CaseModifier    *StringCaseModifierSchema    `hcl:"caseModifier,block"`
 }
 
 func (s *StringMapSchema) Validate(model *ModelSchema) error {
 	if !ValidLabel.MatchString(s.Name) {
-		return fmt.Errorf("invalid %s.stringMap name: %s", model.Name, s.Name)
+		return fmt.Errorf("invalid %s.string_map name: %s", model.Name, s.Name)
 	}
 
 	if s.LengthValidator != nil {
 		if s.LengthValidator.Maximum != nil {
 			if *s.LengthValidator.Maximum == 0 {
-				return fmt.Errorf("invalid %s.%s.lengthValidator: maximum length cannot be zero", model.Name, s.Name)
+				return fmt.Errorf("invalid %s.%s.length_validator: maximum length cannot be zero", model.Name, s.Name)
 			}
 
 			if s.LengthValidator.Minimum != nil {
 				if *s.LengthValidator.Minimum > *s.LengthValidator.Maximum {
-					return fmt.Errorf("invalid %s.%s.lengthValidator: minimum length cannot be greater than maximum length", model.Name, s.Name)
+					return fmt.Errorf("invalid %s.%s.length_validator: minimum length cannot be greater than maximum length", model.Name, s.Name)
 				}
 			}
 		}
@@ -181,7 +181,7 @@ func (s *StringMapSchema) Validate(model *ModelSchema) error {
 
 	if s.RegexValidator != nil {
 		if _, err := regexp.Compile(s.RegexValidator.Expression); err != nil {
-			return fmt.Errorf("invalid %s.%s.regexValidator: %w", model.Name, s.Name, err)
+			return fmt.Errorf("invalid %s.%s.regex_validator: %w", model.Name, s.Name, err)
 		}
 	}
 
