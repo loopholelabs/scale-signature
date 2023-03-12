@@ -7,6 +7,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [v0.2.10] - 2023-03-11
+
+### Changes
+
+- Bumping `scalefile` dependency to `v0.1.8`
+
 ## [v0.2.9] - 2023-02-17
 
 ### Changes
@@ -81,7 +87,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - Initial release of the Scale Signature library.
 
-[unreleased]: https://github.com/loopholelabs/scale-signature/compare/v0.2.9...HEAD
+[unreleased]: https://github.com/loopholelabs/scale-signature/compare/v0.2.10...HEAD
+[v0.2.10]: https://github.com/loopholelabs/scale-signature/compare/v0.2.10
 [v0.2.9]: https://github.com/loopholelabs/scale-signature/compare/v0.2.9
 [v0.2.8]: https://github.com/loopholelabs/scale-signature/compare/v0.2.8
 [v0.2.7]: https://github.com/loopholelabs/scale-signature/compare/v0.2.7
