@@ -64,6 +64,7 @@ func (s *Float32Schema) Validate(model *ModelSchema) error {
 
 type Float32ArraySchema struct {
 	Name           string                       `hcl:"name,label"`
+	InitialSize    uint64                       `hcl:"initial_size,attr"`
 	Accessor       *bool                        `hcl:"accessor,optional"`
 	LimitValidator *Float32LimitValidatorSchema `hcl:"limit_validator,block"`
 }

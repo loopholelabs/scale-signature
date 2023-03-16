@@ -63,7 +63,9 @@ model testModel2 {
 	string_map testMap3 {
 		value = "string"
 	}
-	string_array testArray {}
+	string_array testArray {
+		initial_size = 0
+	}
 
 	model_map testModelMap {
 		value = "testModel"
@@ -72,6 +74,7 @@ model testModel2 {
 
 	model_array testModelArray {
 		reference = "testModel2"
+		initial_size = 0
 	}
 
 	enum testEnum {
@@ -81,6 +84,7 @@ model testModel2 {
 
 	enum_array testEnumArray {
 		values = ["test", "test2"]
+		initial_size = 0
 	}
 
 	enum_map testEnumMap {

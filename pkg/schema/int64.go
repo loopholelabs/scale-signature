@@ -64,6 +64,7 @@ func (s *Int64Schema) Validate(model *ModelSchema) error {
 
 type Int64ArraySchema struct {
 	Name           string                     `hcl:"name,label"`
+	InitialSize    uint64                     `hcl:"initial_size,attr"`
 	Accessor       *bool                      `hcl:"accessor,optional"`
 	LimitValidator *Int64LimitValidatorSchema `hcl:"limit_validator,block"`
 }
