@@ -348,16 +348,19 @@ func (*{{.Name}} x) encode(b *polyglot.Buffer) {
     if x == nil {
         e.Nil()
     } else {
-
         {{- range .Models }}
+
         x.{{ .Name }}.encode(b)
+
         {{ end }}
 
         {{- range .ModelArrays }}
+
         e.Slice(uint32(len(x.{{ .Name }})), polyglot.AnyKind)
         for _, a := range x.{{ .Name }} {
             a.encode(b)
         }
+
         {{ end }}
 
         {{- range .ModelMaps }}
@@ -390,6 +393,68 @@ func (*{{.Name}} x) encode(b *polyglot.Buffer) {
         e.Map(uint32(len(x.{{ .Name }})), polyglot.AnyKind, polyglot.AnyKind)
         for k, v := range x.{{ .Name }} {
             k.encode(b)
+            v.encode(b)
+        }
+        {{- end }}
+
+        {{ end }}
+
+        {{- range .Strings }}
+
+        {{- if (Deref .Accessor) }}
+        e.String(x.{{ LowerFirst .Name }})
+        {{- else }}
+        e.String(x.{{ .Name }})
+        {{- end -}}
+
+        {{ end }}
+
+        {{- range .StringArrays }}
+
+        {{- if (Deref .Accessor) }}
+        e.Slice(uint32(len(x.{{ LowerFirst .Name }})), polyglot.StringKind)
+        for _, a := range x.{{ LowerFirst .Name }} {
+            e.String(a)
+        }
+        {{- else }}
+        e.Slice(uint32(len(x.{{ .Name }})), polyglot.StringKind)
+        for _, a := range x.{{ .Name }} {
+            e.String(a)
+        }
+        {{- end -}}
+
+        {{ end }}
+
+        {{- range .StringMaps }}
+
+        {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
+        e.Map(uint32(len(x.{{ LowerFirst .Name }})), polyglot.StringKind, {{ PolyglotPrimitive .Value }})
+        for k, v := range x.{{ LowerFirst .Name }} {
+            e.String(k)
+            e.{{ PolyglotPrimitiveEncode .Value }}(v)
+        }
+        {{- end }}
+
+        {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
+        e.Map(uint32(len(x.{{ LowerFirst .Name }})), polyglot.StringKing, polyglot.AnyKind)
+        for k, v := range x.{{ LowerFirst .Name }} {
+            e.String(k)
+            v.encode(b)
+        }
+        {{- end }}
+
+        {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
+        e.Map(uint32(len(x.{{ .Name }})), polyglot.StringKind, {{ PolyglotPrimitive .Value }})
+        for k, v := range x.{{ .Name }} {
+            e.String(k)
+            e.{{ PolyglotPrimitiveEncode .Value }}(v)
+        }
+        {{- end }}
+
+        {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
+        e.Map(uint32(len(x.{{ .Name }})), polyglot.StringKind, polyglot.AnyKind)
+        for k, v := range x.{{ .Name }} {
+            e.String(k)
             v.encode(b)
         }
         {{- end }}
