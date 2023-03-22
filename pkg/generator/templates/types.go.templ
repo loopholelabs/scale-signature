@@ -9,6 +9,10 @@ import (
     "errors"
 )
 
+var (
+	NilDecode = errors.New("cannot decode into a nil root struct")
+)
+
 {{- range .schema.Models -}}
 {{ $current_model := . }}
 
@@ -337,5 +341,60 @@ type {{ .Name }} struct {
     {{ .Name }} map[Enum{{ $current_model.Name }}{{ .Name }}]*{{ .Value }}
     {{- end }}
 {{ end }}
+}
+
+func (*{{.Name}} x) encode(b *polyglot.Buffer) {
+    e := polyglot.Encoder(b)
+    if x == nil {
+        e.Nil()
+    } else {
+
+        {{- range .Models }}
+        x.{{ .Name }}.encode(b)
+        {{ end }}
+
+        {{- range .ModelArrays }}
+        e.Slice(uint32(len(x.{{ .Name }})), polyglot.AnyKind)
+        for _, a := range x.{{ .Name }} {
+            a.encode(b)
+        }
+        {{ end }}
+
+        {{- range .ModelMaps }}
+
+        {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
+        e.Map(uint32(len(x.{{ LowerFirst .Name }})), polyglot.AnyKind, {{ PolyglotPrimitive .Value }})
+        for k, v := range x.{{ LowerFirst .Name }} {
+            k.encode(b)
+            e.{{ PolyglotPrimitiveEncode .Value }}(v)
+        }
+        {{- end }}
+
+        {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
+        e.Map(uint32(len(x.{{ LowerFirst .Name }})), polyglot.AnyKind, polyglot.AnyKind)
+        for k, v := range x.{{ LowerFirst .Name }} {
+            k.encode(b)
+            v.encode(b)
+        }
+        {{- end }}
+
+        {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
+        e.Map(uint32(len(x.{{ .Name }})), polyglot.AnyKind, {{ PolyglotPrimitive .Value }})
+        for k, v := range x.{{ .Name }} {
+            k.encode(b)
+            e.{{ PolyglotPrimitiveEncode .Value }}(v)
+        }
+        {{- end }}
+
+        {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
+        e.Map(uint32(len(x.{{ .Name }})), polyglot.AnyKind, polyglot.AnyKind)
+        for k, v := range x.{{ .Name }} {
+            k.encode(b)
+            v.encode(b)
+        }
+        {{- end }}
+
+        {{ end }}
+    }
 }
 {{ end -}}

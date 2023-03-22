@@ -24,9 +24,11 @@ import (
 
 func TestGenerator(t *testing.T) {
 	m := template.FuncMap{
-		"IsPrimitive": schema.ValidPrimitiveType,
-		"Deref":       func(i *bool) bool { return *i },
-		"LowerFirst":  func(s string) string { return string(s[0]+32) + s[1:] },
+		"IsPrimitive":             schema.ValidPrimitiveType,
+		"PolyglotPrimitive":       schema.PolyglotPrimitive,
+		"PolyglotPrimitiveEncode": schema.PolyglotPrimitiveEncode,
+		"Deref":                   func(i *bool) bool { return *i },
+		"LowerFirst":              func(s string) string { return string(s[0]+32) + s[1:] },
 	}
 	templ, err := template.New("").Funcs(m).ParseFS(templates.FS, "*.templ")
 	require.NoError(t, err)
@@ -69,6 +71,12 @@ model testModel2 {
 
 	model_map testModelMap {
 		value = "testModel"
+		reference = "testModel2"
+	}
+
+	model_map testModelMap2 {
+		value = "string"
+		accessor = true
 		reference = "testModel2"
 	}
 
