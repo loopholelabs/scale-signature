@@ -21,8 +21,9 @@ import (
 )
 
 type BoolSchema struct {
-	Name    string `hcl:"name,label"`
-	Default bool   `hcl:"default,attr"`
+	Name     string `hcl:"name,label"`
+	Default  bool   `hcl:"default,attr"`
+	Accessor bool   `hcl:"accessor,optional"`
 }
 
 func (s *BoolSchema) Validate(model *ModelSchema) error {
@@ -36,6 +37,7 @@ func (s *BoolSchema) Validate(model *ModelSchema) error {
 type BoolArraySchema struct {
 	Name        string `hcl:"name,label"`
 	InitialSize uint64 `hcl:"initial_size,attr"`
+	Accessor    bool   `hcl:"accessor,optional"`
 }
 
 func (s *BoolArraySchema) Validate(model *ModelSchema) error {

@@ -62,7 +62,7 @@ type {{ .Name }} struct {
 
 {{- range .ModelMaps }}
     {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
-    {{ LowerFirst .Name }} map[*{{ .Reference }}]{{ .Value }}
+    {{ LowerFirst .Name }} map[*{{ .Reference }}]{{ Primitive .Value }}
     {{- end }}
 
     {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
@@ -70,7 +70,7 @@ type {{ .Name }} struct {
     {{- end }}
 
     {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
-    {{ .Name }} map[*{{ .Reference }}]{{ .Value }}
+    {{ .Name }} map[*{{ .Reference }}]{{ Primitive .Value }}
     {{- end }}
 
     {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
@@ -96,7 +96,7 @@ type {{ .Name }} struct {
 
 {{- range .StringMaps }}
     {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
-    {{ LowerFirst .Name }} map[string]{{ .Value }}
+    {{ LowerFirst .Name }} map[string]{{ Primitive .Value }}
     {{- end }}
 
     {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
@@ -104,7 +104,7 @@ type {{ .Name }} struct {
     {{- end }}
 
     {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
-    {{ .Name }} map[string]{{ .Value }}
+    {{ .Name }} map[string]{{ Primitive .Value }}
     {{- end }}
 
     {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
@@ -130,7 +130,7 @@ type {{ .Name }} struct {
 
 {{- range .Int32Maps }}
     {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
-    {{ LowerFirst .Name }} map[int32]{{ .Value }}
+    {{ LowerFirst .Name }} map[int32]{{ Primitive .Value }}
     {{- end }}
 
     {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
@@ -138,7 +138,7 @@ type {{ .Name }} struct {
     {{- end }}
 
     {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
-    {{ .Name }} map[int32]{{ .Value }}
+    {{ .Name }} map[int32]{{ Primitive .Value }}
     {{- end }}
 
     {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
@@ -164,7 +164,7 @@ type {{ .Name }} struct {
 
 {{- range .Int64Maps }}
     {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
-    {{ LowerFirst .Name }} map[int64]{{ .Value }}
+    {{ LowerFirst .Name }} map[int64]{{ Primitive .Value }}
     {{- end }}
 
     {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
@@ -172,7 +172,7 @@ type {{ .Name }} struct {
     {{- end }}
 
     {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
-    {{ .Name }} map[int64]{{ .Value }}
+    {{ .Name }} map[int64]{{ Primitive .Value }}
     {{- end }}
 
     {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
@@ -198,7 +198,7 @@ type {{ .Name }} struct {
 
 {{- range .Uint32Maps }}
     {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
-    {{ LowerFirst .Name }} map[uint32]{{ .Value }}
+    {{ LowerFirst .Name }} map[uint32]{{ Primitive .Value }}
     {{- end }}
 
     {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
@@ -206,7 +206,7 @@ type {{ .Name }} struct {
     {{- end }}
 
     {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
-    {{ .Name }} map[uint32]{{ .Value }}
+    {{ .Name }} map[uint32]{{ Primitive .Value }}
     {{- end }}
 
     {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
@@ -232,7 +232,7 @@ type {{ .Name }} struct {
 
 {{- range .Uint64Maps }}
     {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
-    {{ LowerFirst .Name }} map[uint64]{{ .Value }}
+    {{ LowerFirst .Name }} map[uint64]{{ Primitive .Value }}
     {{- end }}
 
     {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
@@ -240,7 +240,7 @@ type {{ .Name }} struct {
     {{- end }}
 
     {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
-    {{ .Name }} map[uint64]{{ .Value }}
+    {{ .Name }} map[uint64]{{ Primitive .Value }}
     {{- end }}
 
     {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
@@ -266,7 +266,7 @@ type {{ .Name }} struct {
 
 {{- range .Float32Maps }}
     {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
-    {{ LowerFirst .Name }} map[float32]{{ .Value }}
+    {{ LowerFirst .Name }} map[float32]{{ Primitive .Value }}
     {{- end }}
 
     {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
@@ -274,7 +274,7 @@ type {{ .Name }} struct {
     {{- end }}
 
     {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
-    {{ .Name }} map[float32]{{ .Value }}
+    {{ .Name }} map[float32]{{ Primitive .Value }}
     {{- end }}
 
     {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
@@ -300,7 +300,7 @@ type {{ .Name }} struct {
 
 {{- range .Float64Maps }}
     {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
-    {{ LowerFirst .Name }} map[float64]{{ .Value }}
+    {{ LowerFirst .Name }} map[float64]{{ Primitive .Value }}
     {{- end }}
 
     {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
@@ -308,7 +308,7 @@ type {{ .Name }} struct {
     {{- end }}
 
     {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
-    {{ .Name }} map[float64]{{ .Value }}
+    {{ .Name }} map[float64]{{ Primitive .Value }}
     {{- end }}
 
     {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
@@ -316,17 +316,59 @@ type {{ .Name }} struct {
     {{- end }}
 {{ end }}
 
+{{- range .Bytes }}
+    {{- if (Deref .Accessor) }}
+    {{ LowerFirst .Name }} []byte
+    {{- else }}
+    {{ .Name }} []byte
+    {{- end -}}
+{{ end }}
+
+{{- range .BytesArrays }}
+    {{- if (Deref .Accessor) }}
+    {{ LowerFirst .Name }} [][]byte
+    {{- else }}
+    {{ .Name }} [][]byte
+    {{- end -}}
+{{ end }}
+
+{{- range .BytesMaps }}
+    {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
+    {{ LowerFirst .Name }} map[[]byte]{{ Primitive .Value }}
+    {{- end }}
+
+    {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
+    {{ LowerFirst .Name }} map[[]byte]*{{ .Value }}
+    {{- end }}
+
+    {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
+    {{ .Name }} map[[]byte]{{ Primitive .Value }}
+    {{- end }}
+
+    {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
+    {{ .Name }} map[[]byte]*{{ .Value }}
+    {{- end }}
+{{ end }}
+
 {{- range .Enums }}
+    {{- if (Deref .Accessor) }}
+    {{ LowerFirst .Name }} Enum{{ $current_model.Name }}{{ .Name }}
+    {{- else }}
     {{ .Name }} Enum{{ $current_model.Name }}{{ .Name }}
+    {{- end -}}
 {{ end }}
 
 {{- range .EnumArrays }}
+    {{- if (Deref .Accessor) }}
+    {{ LowerFirst .Name }} []Enum{{ $current_model.Name }}{{ .Name }}
+    {{- else }}
     {{ .Name }} []Enum{{ $current_model.Name }}{{ .Name }}
+    {{- end -}}
 {{ end }}
 
 {{- range .EnumMaps }}
     {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
-    {{ LowerFirst .Name }} map[Enum{{ $current_model.Name }}{{ .Name }}]{{ .Value }}
+    {{ LowerFirst .Name }} map[Enum{{ $current_model.Name }}{{ .Name }}]{{ Primitive .Value }}
     {{- end }}
 
     {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
@@ -334,7 +376,7 @@ type {{ .Name }} struct {
     {{- end }}
 
     {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
-    {{ .Name }} map[Enum{{ $current_model.Name }}{{ .Name }}]{{ .Value }}
+    {{ .Name }} map[Enum{{ $current_model.Name }}{{ .Name }}]{{ Primitive .Value }}
     {{- end }}
 
     {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
@@ -343,7 +385,37 @@ type {{ .Name }} struct {
 {{ end }}
 }
 
-func (*{{.Name}} x) encode(b *polyglot.Buffer) {
+func New{{ .Name }}() *{{ .Name }} {
+    return &{{ .Name }}{
+        {{- range .Models }}
+
+        {{ .Name }}: New{{ .Reference }}(),
+
+        {{ end }}
+
+        {{- range .ModelMaps }}
+
+        {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
+        {{ LowerFirst .Name }}: make(map[*{{ .Reference }}]{{ Primitive .Value }}),
+        {{- end }}
+
+        {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
+        {{ LowerFirst .Name }}: make(map[*{{ .Reference }}]*{{ .Value }}),
+        {{- end }}
+
+        {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
+        {{ .Name }}: make(map[*{{ .Reference }}]{{ Primitive .Value }}),
+        {{- end }}
+
+        {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
+        {{ .Name }}: make(map[*{{ .Reference }}]*{{ .Value }}),
+        {{- end }}
+
+        {{ end }}
+    }
+}
+
+func (x *{{ .Name }}) encode(b *polyglot.Buffer) {
     e := polyglot.Encoder(b)
     if x == nil {
         e.Nil()
@@ -436,7 +508,7 @@ func (*{{.Name}} x) encode(b *polyglot.Buffer) {
         {{- end }}
 
         {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
-        e.Map(uint32(len(x.{{ LowerFirst .Name }})), polyglot.StringKing, polyglot.AnyKind)
+        e.Map(uint32(len(x.{{ LowerFirst .Name }})), polyglot.StringKind, polyglot.AnyKind)
         for k, v := range x.{{ LowerFirst .Name }} {
             e.String(k)
             v.encode(b)
@@ -460,6 +532,687 @@ func (*{{.Name}} x) encode(b *polyglot.Buffer) {
         {{- end }}
 
         {{ end }}
+
+        {{- range .Bools }}
+
+        {{- if (Deref .Accessor) }}
+        e.Bool(x.{{ LowerFirst .Name }})
+        {{- else }}
+        e.Bool(x.{{ .Name }})
+        {{- end -}}
+
+        {{ end }}
+
+        {{- range .BoolArrays }}
+
+        {{- if (Deref .Accessor) }}
+        e.Slice(uint32(len(x.{{ LowerFirst .Name }})), polyglot.BoolKind)
+        for _, a := range x.{{ LowerFirst .Name }} {
+            e.Bool(a)
+        }
+        {{- else }}
+        e.Slice(uint32(len(x.{{ .Name }})), polyglot.BoolKind)
+        for _, a := range x.{{ .Name }} {
+            e.Bool(a)
+        }
+        {{- end -}}
+
+        {{ end }}
+
+        {{- range .Bytes }}
+
+        {{- if (Deref .Accessor) }}
+        e.Bytes(x.{{ LowerFirst .Name }})
+        {{- else }}
+        e.Bytes(x.{{ .Name }})
+        {{- end -}}
+
+        {{ end }}
+
+        {{- range .BytesArrays }}
+
+        {{- if (Deref .Accessor) }}
+        e.Slice(uint32(len(x.{{ LowerFirst .Name }})), polyglot.BytesKind)
+        for _, a := range x.{{ LowerFirst .Name }} {
+           e.Bytes(a)
+        }
+        {{- else }}
+        e.Slice(uint32(len(x.{{ .Name }})), polyglot.BytesKind)
+        for _, a := range x.{{ .Name }} {
+           e.Bytes(a)
+        }
+        {{- end -}}
+
+        {{ end }}
+
+        {{- range .BytesMaps }}
+
+        {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
+        e.Map(uint32(len(x.{{ LowerFirst .Name }})), polyglot.BytesKind, {{ PolyglotPrimitive .Value }})
+        for k, v := range x.{{ LowerFirst .Name }} {
+           e.Bytes(k)
+           e.{{ PolyglotPrimitiveEncode .Value }}(v)
+        }
+        {{- end }}
+
+        {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
+        e.Map(uint32(len(x.{{ LowerFirst .Name }})), polyglot.BytesKind, polyglot.AnyKind)
+        for k, v := range x.{{ LowerFirst .Name }} {
+           e.Bytes(k)
+           v.encode(b)
+        }
+        {{- end }}
+
+        {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
+        e.Map(uint32(len(x.{{ .Name }})), polyglot.BytesKind, {{ PolyglotPrimitive .Value }})
+        for k, v := range x.{{ .Name }} {
+           e.Bytes(k)
+           e.{{ PolyglotPrimitiveEncode .Value }}(v)
+        }
+        {{- end }}
+
+        {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
+        e.Map(uint32(len(x.{{ .Name }})), polyglot.BytesKind, polyglot.AnyKind)
+        for k, v := range x.{{ .Name }} {
+           e.Bytes(k)
+           v.encode(b)
+        }
+        {{- end }}
+
+        {{ end }}
+
+        {{- range .Enums }}
+
+        {{- if (Deref .Accessor) }}
+        e.Uint32(uint32(x.{{ LowerFirst .Name }}))
+        {{- else }}
+        e.Uint32(uint32(x.{{ .Name }}))
+        {{- end -}}
+
+        {{ end }}
+
+        {{- range .EnumArrays }}
+
+        {{- if (Deref .Accessor) }}
+        e.Slice(uint32(len(x.{{ LowerFirst .Name }})), polyglot.Uint32Kind)
+        for _, a := range x.{{ LowerFirst .Name }} {
+           e.Uint32(uint32(a))
+        }
+        {{- else }}
+        e.Slice(uint32(len(x.{{ .Name }})), polyglot.Uint32Kind)
+        for _, a := range x.{{ .Name }} {
+           e.Uint32(uint32(a))
+        }
+        {{- end -}}
+
+        {{ end }}
+
+        {{- range .EnumMaps }}
+
+        {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
+        e.Map(uint32(len(x.{{ LowerFirst .Name }})), polyglot.Uint32Kind, {{ PolyglotPrimitive .Value }})
+        for k, v := range x.{{ LowerFirst .Name }} {
+           e.Uint32(uint32(k))
+           e.{{ PolyglotPrimitiveEncode .Value }}(v)
+        }
+        {{- end }}
+
+        {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
+        e.Map(uint32(len(x.{{ LowerFirst .Name }})), polyglot.Uint32Kind, polyglot.AnyKind)
+        for k, v := range x.{{ LowerFirst .Name }} {
+           e.Uint32(uint32(k))
+           v.encode(b)
+        }
+        {{- end }}
+
+        {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
+        e.Map(uint32(len(x.{{ .Name }})), polyglot.Uint32Kind, {{ PolyglotPrimitive .Value }})
+        for k, v := range x.{{ .Name }} {
+           e.Uint32(uint32(k))
+           e.{{ PolyglotPrimitiveEncode .Value }}(v)
+        }
+        {{- end }}
+
+        {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
+        e.Map(uint32(len(x.{{ .Name }})), polyglot.Uint32Kind, polyglot.AnyKind)
+        for k, v := range x.{{ .Name }} {
+           e.Uint32(uint32(k))
+           v.encode(b)
+        }
+        {{- end }}
+
+        {{ end }}
+
+        {{- range .Int32s }}
+
+        {{- if (Deref .Accessor) }}
+        e.Int32(x.{{ LowerFirst .Name }})
+        {{- else }}
+        e.Int32(x.{{ .Name }})
+        {{- end -}}
+
+        {{ end }}
+
+        {{- range .Int32Arrays }}
+
+        {{- if (Deref .Accessor) }}
+        e.Slice(uint32(len(x.{{ LowerFirst .Name }})), polyglot.Int32Kind)
+        for _, a := range x.{{ LowerFirst .Name }} {
+            e.Int32(a)
+        }
+        {{- else }}
+        e.Slice(uint32(len(x.{{ .Name }})), polyglot.Int32Kind)
+        for _, a := range x.{{ .Name }} {
+            e.Int32(a)
+        }
+        {{- end -}}
+
+        {{ end }}
+
+        {{- range .Int32Maps }}
+
+        {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
+        e.Map(uint32(len(x.{{ LowerFirst .Name }})), polyglot.Int32Kind, {{ PolyglotPrimitive .Value }})
+        for k, v := range x.{{ LowerFirst .Name }} {
+            e.Int32(k)
+            e.{{ PolyglotPrimitiveEncode .Value }}(v)
+        }
+        {{- end }}
+
+        {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
+        e.Map(uint32(len(x.{{ LowerFirst .Name }})), polyglot.Int32Kind, polyglot.AnyKind)
+        for k, v := range x.{{ LowerFirst .Name }} {
+            e.Int32(k)
+            v.encode(b)
+        }
+        {{- end }}
+
+        {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
+        e.Map(uint32(len(x.{{ .Name }})), polyglot.Int32Kind, {{ PolyglotPrimitive .Value }})
+        for k, v := range x.{{ .Name }} {
+            e.Int32(k)
+            e.{{ PolyglotPrimitiveEncode .Value }}(v)
+        }
+        {{- end }}
+
+        {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
+        e.Map(uint32(len(x.{{ .Name }})), polyglot.Int32Kind, polyglot.AnyKind)
+        for k, v := range x.{{ .Name }} {
+            e.Int32(k)
+            v.encode(b)
+        }
+        {{- end }}
+
+        {{ end }}
+
+        {{- range .Int64s }}
+
+        {{- if (Deref .Accessor) }}
+        e.Int64(x.{{ LowerFirst .Name }})
+        {{- else }}
+        e.Int64(x.{{ .Name }})
+        {{- end -}}
+
+        {{ end }}
+
+        {{- range .Int64Arrays }}
+
+        {{- if (Deref .Accessor) }}
+        e.Slice(uint32(len(x.{{ LowerFirst .Name }})), polyglot.Int64Kind)
+        for _, a := range x.{{ LowerFirst .Name }} {
+            e.Int64(a)
+        }
+        {{- else }}
+        e.Slice(uint32(len(x.{{ .Name }})), polyglot.Int64Kind)
+        for _, a := range x.{{ .Name }} {
+            e.Int64(a)
+        }
+        {{- end -}}
+
+        {{ end }}
+
+        {{- range .Int64Maps }}
+
+        {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
+        e.Map(uint32(len(x.{{ LowerFirst .Name }})), polyglot.Int64Kind, {{ PolyglotPrimitive .Value }})
+        for k, v := range x.{{ LowerFirst .Name }} {
+            e.Int64(k)
+            e.{{ PolyglotPrimitiveEncode .Value }}(v)
+        }
+        {{- end }}
+
+        {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
+        e.Map(uint32(len(x.{{ LowerFirst .Name }})), polyglot.Int64Kind, polyglot.AnyKind)
+        for k, v := range x.{{ LowerFirst .Name }} {
+            e.Int64(k)
+            v.encode(b)
+        }
+        {{- end }}
+
+        {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
+        e.Map(uint32(len(x.{{ .Name }})), polyglot.Int64Kind, {{ PolyglotPrimitive .Value }})
+        for k, v := range x.{{ .Name }} {
+            e.Int64(k)
+            e.{{ PolyglotPrimitiveEncode .Value }}(v)
+        }
+        {{- end }}
+
+        {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
+        e.Map(uint32(len(x.{{ .Name }})), polyglot.Int64Kind, polyglot.AnyKind)
+        for k, v := range x.{{ .Name }} {
+            e.Int64(k)
+            v.encode(b)
+        }
+        {{- end }}
+
+        {{ end }}
+
+        {{- range .Uint32s }}
+
+        {{- if (Deref .Accessor) }}
+        e.Uint32(x.{{ LowerFirst .Name }})
+        {{- else }}
+        e.Uint32(x.{{ .Name }})
+        {{- end -}}
+
+        {{ end }}
+
+        {{- range .Uint32Arrays }}
+
+        {{- if (Deref .Accessor) }}
+        e.Slice(uint32(len(x.{{ LowerFirst .Name }})), polyglot.Uint32Kind)
+        for _, a := range x.{{ LowerFirst .Name }} {
+            e.Uint32(a)
+        }
+        {{- else }}
+        e.Slice(uint32(len(x.{{ .Name }})), polyglot.Uint32Kind)
+        for _, a := range x.{{ .Name }} {
+            e.Uint32(a)
+        }
+        {{- end -}}
+
+        {{ end }}
+
+        {{- range .Uint32Maps }}
+
+        {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
+        e.Map(uint32(len(x.{{ LowerFirst .Name }})), polyglot.Uint32Kind, {{ PolyglotPrimitive .Value }})
+        for k, v := range x.{{ LowerFirst .Name }} {
+            e.Uint32(k)
+            e.{{ PolyglotPrimitiveEncode .Value }}(v)
+        }
+        {{- end }}
+
+        {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
+        e.Map(uint32(len(x.{{ LowerFirst .Name }})), polyglot.Uint32Kind, polyglot.AnyKind)
+        for k, v := range x.{{ LowerFirst .Name }} {
+            e.Uint32(k)
+            v.encode(b)
+        }
+        {{- end }}
+
+        {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
+        e.Map(uint32(len(x.{{ .Name }})), polyglot.Uint32Kind, {{ PolyglotPrimitive .Value }})
+        for k, v := range x.{{ .Name }} {
+            e.Uint32(k)
+            e.{{ PolyglotPrimitiveEncode .Value }}(v)
+        }
+        {{- end }}
+
+        {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
+        e.Map(uint32(len(x.{{ .Name }})), polyglot.Uint32Kind, polyglot.AnyKind)
+        for k, v := range x.{{ .Name }} {
+            e.Uint32(k)
+            v.encode(b)
+        }
+        {{- end }}
+
+        {{ end }}
+
+        {{- range .Uint64s }}
+
+        {{- if (Deref .Accessor) }}
+        e.Uint64(x.{{ LowerFirst .Name }})
+        {{- else }}
+        e.Uint64(x.{{ .Name }})
+        {{- end -}}
+
+        {{ end }}
+
+        {{- range .Uint64Arrays }}
+
+        {{- if (Deref .Accessor) }}
+        e.Slice(uint32(len(x.{{ LowerFirst .Name }})), polyglot.Uint64Kind)
+        for _, a := range x.{{ LowerFirst .Name }} {
+            e.Uint64(a)
+        }
+        {{- else }}
+        e.Slice(uint32(len(x.{{ .Name }})), polyglot.Uint64Kind)
+        for _, a := range x.{{ .Name }} {
+            e.Uint64(a)
+        }
+        {{- end -}}
+
+        {{ end }}
+
+        {{- range .Uint64Maps }}
+
+        {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
+        e.Map(uint32(len(x.{{ LowerFirst .Name }})), polyglot.Uint64Kind, {{ PolyglotPrimitive .Value }})
+        for k, v := range x.{{ LowerFirst .Name }} {
+            e.Uint64(k)
+            e.{{ PolyglotPrimitiveEncode .Value }}(v)
+        }
+        {{- end }}
+
+        {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
+        e.Map(uint32(len(x.{{ LowerFirst .Name }})), polyglot.Uint64Kind, polyglot.AnyKind)
+        for k, v := range x.{{ LowerFirst .Name }} {
+            e.Uint64(k)
+            v.encode(b)
+        }
+        {{- end }}
+
+        {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
+        e.Map(uint32(len(x.{{ .Name }})), polyglot.Uint64Kind, {{ PolyglotPrimitive .Value }})
+        for k, v := range x.{{ .Name }} {
+            e.Uint64(k)
+            e.{{ PolyglotPrimitiveEncode .Value }}(v)
+        }
+        {{- end }}
+
+        {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
+        e.Map(uint32(len(x.{{ .Name }})), polyglot.Uint64Kind, polyglot.AnyKind)
+        for k, v := range x.{{ .Name }} {
+            e.Uint64(k)
+            v.encode(b)
+        }
+        {{- end }}
+
+        {{ end }}
+
+        {{- range .Float32s }}
+
+        {{- if (Deref .Accessor) }}
+        e.Float32(x.{{ LowerFirst .Name }})
+        {{- else }}
+        e.Float32(x.{{ .Name }})
+        {{- end -}}
+
+        {{ end }}
+
+        {{- range .Float32Arrays }}
+
+        {{- if (Deref .Accessor) }}
+        e.Slice(uint32(len(x.{{ LowerFirst .Name }})), polyglot.Float32Kind)
+        for _, a := range x.{{ LowerFirst .Name }} {
+            e.Float32(a)
+        }
+        {{- else }}
+        e.Slice(uint32(len(x.{{ .Name }})), polyglot.Float32Kind)
+        for _, a := range x.{{ .Name }} {
+            e.Float32(a)
+        }
+        {{- end -}}
+
+        {{ end }}
+
+        {{- range .Float32Maps }}
+
+        {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
+        e.Map(uint32(len(x.{{ LowerFirst .Name }})), polyglot.Float32Kind, {{ PolyglotPrimitive .Value }})
+        for k, v := range x.{{ LowerFirst .Name }} {
+            e.Float32(k)
+            e.{{ PolyglotPrimitiveEncode .Value }}(v)
+        }
+        {{- end }}
+
+        {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
+        e.Map(uint32(len(x.{{ LowerFirst .Name }})), polyglot.Float32Kind, polyglot.AnyKind)
+        for k, v := range x.{{ LowerFirst .Name }} {
+            e.Float32(k)
+            v.encode(b)
+        }
+        {{- end }}
+
+        {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
+        e.Map(uint32(len(x.{{ .Name }})), polyglot.Float32Kind, {{ PolyglotPrimitive .Value }})
+        for k, v := range x.{{ .Name }} {
+            e.Float32(k)
+            e.{{ PolyglotPrimitiveEncode .Value }}(v)
+        }
+        {{- end }}
+
+        {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
+        e.Map(uint32(len(x.{{ .Name }})), polyglot.Float32Kind, polyglot.AnyKind)
+        for k, v := range x.{{ .Name }} {
+            e.Float32(k)
+            v.encode(b)
+        }
+        {{- end }}
+
+        {{ end }}
+
+        {{- range .Float64s }}
+
+        {{- if (Deref .Accessor) }}
+        e.Float64(x.{{ LowerFirst .Name }})
+        {{- else }}
+        e.Float64(x.{{ .Name }})
+        {{- end -}}
+
+        {{ end }}
+
+        {{- range .Float64Arrays }}
+
+        {{- if (Deref .Accessor) }}
+        e.Slice(uint32(len(x.{{ LowerFirst .Name }})), polyglot.Float64Kind)
+        for _, a := range x.{{ LowerFirst .Name }} {
+            e.Float64(a)
+        }
+        {{- else }}
+        e.Slice(uint32(len(x.{{ .Name }})), polyglot.Float64Kind)
+        for _, a := range x.{{ .Name }} {
+            e.Float64(a)
+        }
+        {{- end -}}
+
+        {{ end }}
+
+        {{- range .Float64Maps }}
+
+        {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
+        e.Map(uint32(len(x.{{ LowerFirst .Name }})), polyglot.Float64Kind, {{ PolyglotPrimitive .Value }})
+        for k, v := range x.{{ LowerFirst .Name }} {
+            e.Float64(k)
+            e.{{ PolyglotPrimitiveEncode .Value }}(v)
+        }
+        {{- end }}
+
+        {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
+        e.Map(uint32(len(x.{{ LowerFirst .Name }})), polyglot.Float64Kind, polyglot.AnyKind)
+        for k, v := range x.{{ LowerFirst .Name }} {
+            e.Float64(k)
+            v.encode(b)
+        }
+        {{- end }}
+
+        {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
+        e.Map(uint32(len(x.{{ .Name }})), polyglot.Float64Kind, {{ PolyglotPrimitive .Value }})
+        for k, v := range x.{{ .Name }} {
+            e.Float64(k)
+            e.{{ PolyglotPrimitiveEncode .Value }}(v)
+        }
+        {{- end }}
+
+        {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
+        e.Map(uint32(len(x.{{ .Name }})), polyglot.Float64Kind, polyglot.AnyKind)
+        for k, v := range x.{{ .Name }} {
+            e.Float64(k)
+            v.encode(b)
+        }
+        {{- end }}
+
+        {{ end }}
     }
+}
+
+func (x *{{ .Name }}) decode(b []byte) error {
+    if x == nil {
+        return NilDecode
+    }
+    d := polyglot.GetDecoder(b)
+    defer d.Return()
+    return x._decode(d)
+}
+
+func (x *{{ .Name }}) _decode(d *polyglot.Decoder) error {
+    if d.Nil() {
+		return nil
+	}
+
+	err, _ := d.Error()
+    if err != nil {
+        return err
+    }
+
+    {{- range .Models }}
+    if x.{{ .Name }} == nil {
+        x.{{ .Name }} = New{{ .Reference }}()
+    }
+
+    err = x.{{ .Name }}._decode(d)
+	if err != nil {
+		return err
+	}
+
+    {{ end }}
+
+    {{- range .ModelArrays }}
+    var sliceSize{{ .Name }} uint32
+	sliceSize{{ .Name }}, err = d.Slice(polyglot.AnyKind)
+	if err != nil {
+        return err
+    }
+
+    if uint32(len(x.{{ .Name }})) != sliceSize{{ .Name }} {
+        x.{{ .Name }} = make([]*{{ .Reference }}, sliceSize{{ .Name }})
+    }
+
+    for i := uint32(0); i < sliceSize{{ .Name }}; i++ {
+        x.{{ .Name }}[i] = New{{ .Reference }}()
+        err = x.{{ .Name }}[i]._decode(d)
+        if err != nil {
+            return err
+        }
+    }
+
+    {{ end }}
+
+    {{- range .ModelMaps }}
+
+    {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
+    var mapSize{{ LowerFirst .Name }} uint32
+    mapSize{{ LowerFirst .Name }}, err = d.Map(polyglot.AnyKind, {{ PolyglotPrimitive .Value }})
+    if err != nil {
+        return err
+    }
+
+    if uint32(len(x.{{ LowerFirst .Name }})) != mapSize{{ LowerFirst .Name }} {
+        x.{{ LowerFirst .Name }} = make(map[*{{ .Reference }}]{{ Primitive .Value }}, mapSize{{ LowerFirst .Name }})
+    }
+
+    for i := uint32(0); i < mapSize{{ LowerFirst .Name }}; i++ {
+        k := New{{ .Reference }}()
+        err = k._decode(d)
+        if err != nil {
+            return err
+        }
+        x.{{ LowerFirst .Name }}[k], err = d.{{ PolyglotPrimitiveDecode .Value }}()
+        if err != nil {
+            return err
+        }
+    }
+    {{- end }}
+
+    {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
+    var mapSize{{ LowerFirst .Name }} uint32
+    mapSize{{ LowerFirst .Name }}, err = d.Map(polyglot.AnyKind, polyglot.AnyKind)
+    if err != nil {
+        return err
+    }
+
+    if uint32(len(x.{{ LowerFirst .Name }})) != mapSize{{ LowerFirst .Name }} {
+        x.{{ LowerFirst .Name }} = make(map[*{{ .Reference }}]*{{ .Value }}, mapSize{{ LowerFirst .Name }})
+    }
+
+    for i := uint32(0); i < mapSize{{ LowerFirst .Name }}; i++ {
+        k := New{{ .Reference }}()
+        err = k._decode(d)
+        if err != nil {
+            return err
+        }
+        v := New{{ .Value }}()
+        err = v._decode(d)
+        if err != nil {
+            return err
+        }
+        x.{{ LowerFirst .Name }}[k] = v
+    }
+    {{- end }}
+
+    {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
+    var mapSize{{ .Name }} uint32
+    mapSize{{ .Name }}, err = d.Map(polyglot.AnyKind, {{ PolyglotPrimitive .Value }})
+    if err != nil {
+        return err
+    }
+
+    if uint32(len(x.{{ .Name }})) != mapSize{{ .Name }} {
+        x.{{ .Name }} = make(map[*{{ .Reference }}]{{ Primitive .Value }}, mapSize{{ .Name }})
+    }
+
+    for i := uint32(0); i < mapSize{{ LowerFirst .Name }}; i++ {
+        k := New{{ .Reference }}()
+        err = k._decode(d)
+        if err != nil {
+            return err
+        }
+        x.{{ .Name }}[k], err = d.{{ PolyglotPrimitiveDecode .Value }}()
+        if err != nil {
+            return err
+        }
+    }
+    {{- end }}
+
+    {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
+    var mapSize{{ .Name }} uint32
+    mapSize{{ .Name }}, err = d.Map(polyglot.AnyKind, polyglot.AnyKind)
+    if err != nil {
+        return err
+    }
+
+    if uint32(len(x.{{ .Name }})) != mapSize{{ .Name }} {
+        x.{{ .Name }} = make(map[*{{ .Reference }}]*{{ .Value }}, mapSize{{ .Name }})
+    }
+
+    for i := uint32(0); i < mapSize{{ .Name }}; i++ {
+        k := New{{ .Reference }}()
+        err = k._decode(d)
+        if err != nil {
+            return err
+        }
+        v := New{{ .Value }}()
+        err = v._decode(d)
+        if err != nil {
+            return err
+        }
+        x.{{ .Name }}[k] = v
+    }
+    {{- end }}
+
+    {{ end }}
+
+    return nil
 }
 {{ end -}}

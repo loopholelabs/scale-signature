@@ -19,9 +19,10 @@ package schema
 import "fmt"
 
 type EnumSchema struct {
-	Name    string   `hcl:"name,label"`
-	Default string   `hcl:"default,attr"`
-	Values  []string `hcl:"values,attr"`
+	Name     string   `hcl:"name,label"`
+	Default  string   `hcl:"default,attr"`
+	Accessor bool     `hcl:"accessor,optional"`
+	Values   []string `hcl:"values,attr"`
 }
 
 func (s *EnumSchema) Validate(model *ModelSchema) error {
@@ -54,6 +55,7 @@ func (s *EnumSchema) Validate(model *ModelSchema) error {
 type EnumArraySchema struct {
 	Name        string   `hcl:"name,label"`
 	Values      []string `hcl:"values,attr"`
+	Accessor    bool     `hcl:"accessor,optional"`
 	InitialSize uint64   `hcl:"initial_size,attr"`
 }
 

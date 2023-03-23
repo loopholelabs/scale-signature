@@ -206,6 +206,17 @@ func ValidPrimitiveType(t string) bool {
 	}
 }
 
+func Primitive(t string) string {
+	switch t {
+	case "string", "int32", "int64", "uint32", "uint64", "float32", "float64", "bool":
+		return t
+	case "bytes":
+		return "[]byte"
+	default:
+		return ""
+	}
+}
+
 func PolyglotPrimitive(t string) string {
 	switch t {
 	case "string":
@@ -232,6 +243,31 @@ func PolyglotPrimitive(t string) string {
 }
 
 func PolyglotPrimitiveEncode(t string) string {
+	switch t {
+	case "string":
+		return "String"
+	case "int32":
+		return "Int32"
+	case "int64":
+		return "Int64"
+	case "uint32":
+		return "Uint32"
+	case "uint64":
+		return "Uint64"
+	case "float32":
+		return "Float32"
+	case "float64":
+		return "Float64"
+	case "bool":
+		return "Bool"
+	case "bytes":
+		return "Bytes"
+	default:
+		return ""
+	}
+}
+
+func PolyglotPrimitiveDecode(t string) string {
 	switch t {
 	case "string":
 		return "String"

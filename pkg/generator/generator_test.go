@@ -24,9 +24,11 @@ import (
 
 func TestGenerator(t *testing.T) {
 	m := template.FuncMap{
+		"Primitive":               schema.Primitive,
 		"IsPrimitive":             schema.ValidPrimitiveType,
 		"PolyglotPrimitive":       schema.PolyglotPrimitive,
 		"PolyglotPrimitiveEncode": schema.PolyglotPrimitiveEncode,
+		"PolyglotPrimitiveDecode": schema.PolyglotPrimitiveDecode,
 		"Deref":                   func(i *bool) bool { return *i },
 		"LowerFirst":              func(s string) string { return string(s[0]+32) + s[1:] },
 	}
@@ -48,6 +50,16 @@ model testModel {
 			min = 1
 			max = 3
 		}
+	}
+
+	int32 testInt32 {
+		default = 0
+	}
+
+	enum testEnum {
+		default = "test"
+		accessor = true
+		values = ["test", "test2"]
 	}
 }
 
@@ -78,6 +90,11 @@ model testModel2 {
 		value = "string"
 		accessor = true
 		reference = "testModel2"
+	}
+
+	model_map testModelMap3 {
+		value = "testModel2"
+		reference = "testModel"
 	}
 
 	model_array testModelArray {
