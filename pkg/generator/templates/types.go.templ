@@ -725,16 +725,27 @@ func (x *{{ .Name }}) encode(b *polyglot.Buffer) {
     } else {
         {{- range .Models }}
 
+        {{- if .Accessor }}
+        x.{{ LowerFirst .Name }}.encode(b)
+        {{- else }}
         x.{{ .Name }}.encode(b)
+        {{- end -}}
 
         {{ end }}
 
         {{- range .ModelArrays }}
 
+        {{- if .Accessor }}
+        e.Slice(uint32(len(x.{{ LowerFirst .Name }})), polyglot.AnyKind)
+        for _, a := range x.{{ LowerFirst .Name }} {
+            a.encode(b)
+        }
+        {{- else }}
         e.Slice(uint32(len(x.{{ .Name }})), polyglot.AnyKind)
         for _, a := range x.{{ .Name }} {
             a.encode(b)
         }
+        {{- end -}}
 
         {{ end }}
 
@@ -1381,14 +1392,25 @@ func (x *{{ .Name }}) _decode(d *polyglot.Decoder) error {
 
     {{- range .Models }}
 
+    {{- if .Accessor }}
+    if x.{{ LowerFirst .Name }} == nil {
+        x.{{ LowerFirst .Name }} = New{{ .Reference }}()
+    }
+
+    err = x.{{ LowerFirst .Name }}._decode(d)
+    if err != nil {
+        return err
+    }
+    {{- else }}
     if x.{{ .Name }} == nil {
         x.{{ .Name }} = New{{ .Reference }}()
     }
 
     err = x.{{ .Name }}._decode(d)
-	if err != nil {
-		return err
-	}
+    if err != nil {
+        return err
+    }
+    {{- end -}}
 
     {{ end }}
 
