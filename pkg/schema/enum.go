@@ -56,7 +56,7 @@ type EnumArraySchema struct {
 	Name        string   `hcl:"name,label"`
 	Values      []string `hcl:"values,attr"`
 	Accessor    bool     `hcl:"accessor,optional"`
-	InitialSize uint64   `hcl:"initial_size,attr"`
+	InitialSize uint32   `hcl:"initial_size,attr"`
 }
 
 func (s *EnumArraySchema) Validate(model *ModelSchema) error {

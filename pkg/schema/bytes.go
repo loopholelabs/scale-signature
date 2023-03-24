@@ -33,7 +33,7 @@ func (s *BytesSchema) Validate(model *ModelSchema) error {
 
 type BytesArraySchema struct {
 	Name        string `hcl:"name,label"`
-	InitialSize uint64 `hcl:"initial_size,attr"`
+	InitialSize uint32 `hcl:"initial_size,attr"`
 	Accessor    bool   `hcl:"accessor,optional"`
 }
 

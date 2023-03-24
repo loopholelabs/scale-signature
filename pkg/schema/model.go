@@ -72,6 +72,7 @@ type ModelSchema struct {
 type ModelReferenceSchema struct {
 	Name      string `hcl:"name,label"`
 	Reference string `hcl:"reference,attr"`
+	Accessor  bool   `hcl:"accessor,optional"`
 }
 
 func (m *ModelReferenceSchema) Validate(model *ModelSchema) error {
@@ -89,7 +90,8 @@ func (m *ModelReferenceSchema) Validate(model *ModelSchema) error {
 type ModelReferenceArraySchema struct {
 	Name        string `hcl:"name,label"`
 	Reference   string `hcl:"reference,attr"`
-	InitialSize uint64 `hcl:"initial_size,attr"`
+	InitialSize uint32 `hcl:"initial_size,attr"`
+	Accessor    bool   `hcl:"accessor,optional"`
 }
 
 func (m *ModelReferenceArraySchema) Validate(model *ModelSchema) error {

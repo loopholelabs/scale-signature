@@ -36,7 +36,7 @@ func (s *BoolSchema) Validate(model *ModelSchema) error {
 
 type BoolArraySchema struct {
 	Name        string `hcl:"name,label"`
-	InitialSize uint64 `hcl:"initial_size,attr"`
+	InitialSize uint32 `hcl:"initial_size,attr"`
 	Accessor    bool   `hcl:"accessor,optional"`
 }
 

@@ -54,11 +54,19 @@ const (
 type {{ .Name }} struct {
 
 {{- range .Models }}
+    {{- if .Accessor }}
+    {{ LowerFirst .Name }} *{{ .Reference }}
+    {{- else }}
     {{ .Name }} *{{ .Reference }}
+    {{- end -}}
 {{ end }}
 
 {{- range .ModelArrays }}
+    {{- if .Accessor }}
+    {{ LowerFirst .Name }} []*{{ .Reference }}
+    {{- else }}
     {{ .Name }} []*{{ .Reference }}
+    {{- end -}}
 {{ end }}
 
 {{- range .ModelMaps }}
@@ -390,7 +398,21 @@ func New{{ .Name }}() *{{ .Name }} {
     return &{{ .Name }}{
         {{- range .Models }}
 
+        {{- if .Accessor }}
+        {{ LowerFirst .Name }}: New{{ .Reference }}(),
+        {{- else }}
         {{ .Name }}: New{{ .Reference }}(),
+        {{- end -}}
+
+        {{ end }}
+
+        {{- range .ModelArrays }}
+
+        {{- if .Accessor }}
+        {{ LowerFirst .Name }}: make([]*{{ .Reference }},  {{.InitialSize }}),
+        {{- else }}
+        {{ .Name }}: make([]*{{ .Reference }}, {{ .InitialSize }}),
+        {{- end -}}
 
         {{ end }}
 
@@ -414,6 +436,16 @@ func New{{ .Name }}() *{{ .Name }} {
 
         {{ end }}
 
+        {{- range .StringArrays }}
+
+        {{- if .Accessor }}
+        {{ LowerFirst .Name }}: make([]string,  {{.InitialSize }}),
+        {{- else }}
+        {{ .Name }}: make([]string, {{ .InitialSize }}),
+        {{- end -}}
+
+        {{ end }}
+
         {{- range .StringMaps }}
 
         {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
@@ -431,6 +463,16 @@ func New{{ .Name }}() *{{ .Name }} {
         {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
         {{ .Name }}: make(map[string]*{{ .Value }}),
         {{- end }}
+
+        {{ end }}
+
+        {{- range .Int32Arrays }}
+
+        {{- if .Accessor }}
+        {{ LowerFirst .Name }}: make([]int32,  {{.InitialSize }}),
+        {{- else }}
+        {{ .Name }}: make([]int32, {{ .InitialSize }}),
+        {{- end -}}
 
         {{ end }}
 
@@ -454,6 +496,16 @@ func New{{ .Name }}() *{{ .Name }} {
 
         {{ end }}
 
+        {{- range .Int64Arrays }}
+
+        {{- if .Accessor }}
+        {{ LowerFirst .Name }}: make([]int64,  {{.InitialSize }}),
+        {{- else }}
+        {{ .Name }}: make([]int64, {{ .InitialSize }}),
+        {{- end -}}
+
+        {{ end }}
+
         {{- range .Int64Maps }}
 
         {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
@@ -471,6 +523,16 @@ func New{{ .Name }}() *{{ .Name }} {
         {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
         {{ .Name }}: make(map[int64]*{{ .Value }}),
         {{- end }}
+
+        {{ end }}
+
+        {{- range .Uint32Arrays }}
+
+        {{- if .Accessor }}
+        {{ LowerFirst .Name }}: make([]uint32,  {{.InitialSize }}),
+        {{- else }}
+        {{ .Name }}: make([]uint32, {{ .InitialSize }}),
+        {{- end -}}
 
         {{ end }}
 
@@ -494,6 +556,16 @@ func New{{ .Name }}() *{{ .Name }} {
 
         {{ end }}
 
+        {{- range .Uint64Arrays }}
+
+        {{- if .Accessor }}
+        {{ LowerFirst .Name }}: make([]uint64,  {{.InitialSize }}),
+        {{- else }}
+        {{ .Name }}: make([]uint64, {{ .InitialSize }}),
+        {{- end -}}
+
+        {{ end }}
+
         {{- range .Uint64Maps }}
 
         {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
@@ -511,6 +583,16 @@ func New{{ .Name }}() *{{ .Name }} {
         {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
         {{ .Name }}: make(map[uint64]*{{ .Value }}),
         {{- end }}
+
+        {{ end }}
+
+        {{- range .Float32Arrays }}
+
+        {{- if .Accessor }}
+        {{ LowerFirst .Name }}: make([]float32,  {{.InitialSize }}),
+        {{- else }}
+        {{ .Name }}: make([]float32, {{ .InitialSize }}),
+        {{- end -}}
 
         {{ end }}
 
@@ -534,6 +616,16 @@ func New{{ .Name }}() *{{ .Name }} {
 
         {{ end }}
 
+        {{- range .Float64Arrays }}
+
+        {{- if .Accessor }}
+        {{ LowerFirst .Name }}: make([]float64,  {{.InitialSize }}),
+        {{- else }}
+        {{ .Name }}: make([]float64, {{ .InitialSize }}),
+        {{- end -}}
+
+        {{ end }}
+
         {{- range .Float64Maps }}
 
         {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
@@ -554,6 +646,16 @@ func New{{ .Name }}() *{{ .Name }} {
 
         {{ end }}
 
+        {{- range .EnumArrays }}
+
+        {{- if .Accessor }}
+        {{ LowerFirst .Name }}: make([]Enum{{ $current_model.Name }}{{ .Name }},  {{.InitialSize }}),
+        {{- else }}
+        {{ .Name }}: make([]Enum{{ $current_model.Name }}{{ .Name }}, {{ .InitialSize }}),
+        {{- end -}}
+
+        {{ end }}
+
         {{- range .EnumMaps }}
 
         {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
@@ -571,6 +673,16 @@ func New{{ .Name }}() *{{ .Name }} {
         {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
         {{ .Name }}: make(map[Enum{{ $current_model.Name }}{{ .Name }}]*{{ .Value }}),
         {{- end }}
+
+        {{ end }}
+
+        {{- range .BytesArrays }}
+
+        {{- if .Accessor }}
+        {{ LowerFirst .Name }}: make([][]byte,  {{.InitialSize }}),
+        {{- else }}
+        {{ .Name }}: make([][]byte, {{ .InitialSize }}),
+        {{- end -}}
 
         {{ end }}
 

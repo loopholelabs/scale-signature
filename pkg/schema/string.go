@@ -95,7 +95,7 @@ func (s *StringSchema) Validate(model *ModelSchema) error {
 
 type StringArraySchema struct {
 	Name            string                       `hcl:"name,label"`
-	InitialSize     uint64                       `hcl:"initial_size,attr"`
+	InitialSize     uint32                       `hcl:"initial_size,attr"`
 	Accessor        *bool                        `hcl:"accessor,optional"`
 	RegexValidator  *StringRegexValidatorSchema  `hcl:"regex_validator,block"`
 	LengthValidator *StringLengthValidatorSchema `hcl:"length_validator,block"`
