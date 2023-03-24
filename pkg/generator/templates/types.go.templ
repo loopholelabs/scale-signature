@@ -438,7 +438,7 @@ func New{{ .Name }}() *{{ .Name }} {
 
         {{- range .StringArrays }}
 
-        {{- if .Accessor }}
+        {{- if (Deref .Accessor) }}
         {{ LowerFirst .Name }}: make([]string,  {{.InitialSize }}),
         {{- else }}
         {{ .Name }}: make([]string, {{ .InitialSize }}),
@@ -468,7 +468,7 @@ func New{{ .Name }}() *{{ .Name }} {
 
         {{- range .Int32Arrays }}
 
-        {{- if .Accessor }}
+        {{- if (Deref .Accessor) }}
         {{ LowerFirst .Name }}: make([]int32,  {{.InitialSize }}),
         {{- else }}
         {{ .Name }}: make([]int32, {{ .InitialSize }}),
@@ -498,7 +498,7 @@ func New{{ .Name }}() *{{ .Name }} {
 
         {{- range .Int64Arrays }}
 
-        {{- if .Accessor }}
+        {{- if (Deref .Accessor) }}
         {{ LowerFirst .Name }}: make([]int64,  {{.InitialSize }}),
         {{- else }}
         {{ .Name }}: make([]int64, {{ .InitialSize }}),
@@ -528,7 +528,7 @@ func New{{ .Name }}() *{{ .Name }} {
 
         {{- range .Uint32Arrays }}
 
-        {{- if .Accessor }}
+        {{- if (Deref .Accessor) }}
         {{ LowerFirst .Name }}: make([]uint32,  {{.InitialSize }}),
         {{- else }}
         {{ .Name }}: make([]uint32, {{ .InitialSize }}),
@@ -558,7 +558,7 @@ func New{{ .Name }}() *{{ .Name }} {
 
         {{- range .Uint64Arrays }}
 
-        {{- if .Accessor }}
+        {{- if (Deref .Accessor) }}
         {{ LowerFirst .Name }}: make([]uint64,  {{.InitialSize }}),
         {{- else }}
         {{ .Name }}: make([]uint64, {{ .InitialSize }}),
@@ -588,7 +588,7 @@ func New{{ .Name }}() *{{ .Name }} {
 
         {{- range .Float32Arrays }}
 
-        {{- if .Accessor }}
+        {{- if (Deref .Accessor) }}
         {{ LowerFirst .Name }}: make([]float32,  {{.InitialSize }}),
         {{- else }}
         {{ .Name }}: make([]float32, {{ .InitialSize }}),
@@ -618,7 +618,7 @@ func New{{ .Name }}() *{{ .Name }} {
 
         {{- range .Float64Arrays }}
 
-        {{- if .Accessor }}
+        {{- if (Deref .Accessor) }}
         {{ LowerFirst .Name }}: make([]float64,  {{.InitialSize }}),
         {{- else }}
         {{ .Name }}: make([]float64, {{ .InitialSize }}),
@@ -703,6 +703,16 @@ func New{{ .Name }}() *{{ .Name }} {
         {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
         {{ .Name }}: make(map[[]byte]*{{ .Value }}),
         {{- end }}
+
+        {{ end }}
+
+        {{- range .BoolArrays }}
+
+        {{- if .Accessor }}
+        {{ LowerFirst .Name }}: make([]bool,  {{.InitialSize }}),
+        {{- else }}
+        {{ .Name }}: make([]bool, {{ .InitialSize }}),
+        {{- end -}}
 
         {{ end }}
     }
@@ -2782,7 +2792,7 @@ func (x *{{ .Name }}) _decode(d *polyglot.Decoder) error {
         switch Enum{{ $current_model.Name }}{{ .Name }}(enumValue{{ .Name }}) {
         {{- range $index, $value := .Values }}
         case Enum{{ $current_model.Name }}{{ $current_enum.Name }}{{ $value }}:
-            x.{{ $current_enum.Name }} = Enum{{ $current_model.Name }}{{ $current_enum.Name }}{{ $value }}
+            x.{{ $current_enum.Name }}[i] = Enum{{ $current_model.Name }}{{ $current_enum.Name }}{{ $value }}
         {{- end }}
         default:
             return InvalidEnum
