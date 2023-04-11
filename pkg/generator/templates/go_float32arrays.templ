@@ -11,9 +11,9 @@
 {{ define "go_float32arrays_new_struct_reference" }}
     {{- range .Float32Arrays }}
         {{- if (Deref .Accessor) }}
-            {{ LowerFirst .Name }}: make([]float32, {{.InitialSize }}),
+            {{ LowerFirst .Name }}: make([]float32, 0, {{ .InitialSize }}),
         {{- else }}
-            {{ .Name }}: make([]float32, {{ .InitialSize }}),
+            {{ .Name }}: make([]float32, 0, {{ .InitialSize }}),
         {{- end -}}
     {{ end }}
 {{ end }}

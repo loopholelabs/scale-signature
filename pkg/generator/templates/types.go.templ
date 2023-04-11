@@ -221,6 +221,7 @@ var (
         return nil
     }
 
+    {{ template "go_models_accessor" . }}
     {{ template "go_modelarrays_accessor" . }}
 
 {{ end -}}

@@ -26,9 +26,9 @@
     {{ $current_model := . }}
     {{- range .EnumArrays }}
         {{- if .Accessor }}
-            {{ LowerFirst .Name }}: make([]Enum{{ $current_model.Name }}{{ .Name }}, {{.InitialSize }}),
+            {{ LowerFirst .Name }}: make([]Enum{{ $current_model.Name }}{{ .Name }}, 0, {{ .InitialSize }}),
         {{- else }}
-            {{ .Name }}: make([]Enum{{ $current_model.Name }}{{ .Name }}, {{ .InitialSize }}),
+            {{ .Name }}: make([]Enum{{ $current_model.Name }}{{ .Name }}, 0, {{ .InitialSize }}),
         {{- end -}}
     {{ end }}
 {{ end }}

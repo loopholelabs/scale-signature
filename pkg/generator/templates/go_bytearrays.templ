@@ -11,9 +11,9 @@
 {{ define "go_bytearrays_new_struct_reference" }}
     {{- range .BytesArrays }}
         {{- if .Accessor }}
-            {{ LowerFirst .Name }}: make([][]byte, {{.InitialSize }}),
+            {{ LowerFirst .Name }}: make([][]byte, 0, {{ .InitialSize }}),
         {{- else }}
-            {{ .Name }}: make([][]byte, {{ .InitialSize }}),
+            {{ .Name }}: make([][]byte, 0, {{ .InitialSize }}),
         {{- end -}}
     {{ end }}
 {{ end }}

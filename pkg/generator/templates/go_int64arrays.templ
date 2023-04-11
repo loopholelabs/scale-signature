@@ -11,9 +11,9 @@
 {{ define "go_int64arrays_new_struct_reference" }}
     {{- range .Int64Arrays }}
         {{- if (Deref .Accessor) }}
-            {{ LowerFirst .Name }}: make([]int64, {{.InitialSize }}),
+            {{ LowerFirst .Name }}: make([]int64, 0, {{ .InitialSize }}),
         {{- else }}
-            {{ .Name }}: make([]int64, {{ .InitialSize }}),
+            {{ .Name }}: make([]int64, 0, {{ .InitialSize }}),
         {{- end -}}
     {{ end }}
 {{ end }}

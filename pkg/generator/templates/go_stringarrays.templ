@@ -11,9 +11,9 @@
 {{ define "go_stringarrays_new_struct_reference" }}
     {{- range .StringArrays }}
         {{- if (Deref .Accessor) }}
-            {{ LowerFirst .Name }}: make([]string, {{.InitialSize }}),
+            {{ LowerFirst .Name }}: make([]string, 0, {{ .InitialSize }}),
         {{- else }}
-            {{ .Name }}: make([]string, {{ .InitialSize }}),
+            {{ .Name }}: make([]string, 0, {{ .InitialSize }}),
         {{- end -}}
     {{ end }}
 {{ end }}

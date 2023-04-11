@@ -11,9 +11,9 @@
 {{ define "go_modelarrays_new_struct_reference" }}
     {{- range .ModelArrays }}
         {{- if .Accessor }}
-            {{ LowerFirst .Name }}: make([]*{{ .Reference }},  {{.InitialSize }}),
+            {{ LowerFirst .Name }}: make([]*{{ .Reference }},  {{ .InitialSize }}),
         {{- else }}
-            {{ .Name }}: make([]*{{ .Reference }}, {{ .InitialSize }}),
+            {{ .Name }}: make([]*{{ .Reference }}, 0, {{ .InitialSize }}),
         {{- end -}}
     {{ end }}
 {{ end }}

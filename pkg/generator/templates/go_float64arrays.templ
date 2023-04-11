@@ -11,9 +11,9 @@
 {{ define "go_float64arrays_new_struct_reference" }}
     {{- range .Float64Arrays }}
         {{- if (Deref .Accessor) }}
-            {{ LowerFirst .Name }}: make([]float64, {{.InitialSize }}),
+            {{ LowerFirst .Name }}: make([]float64, 0, {{ .InitialSize }}),
         {{- else }}
-            {{ .Name }}: make([]float64, {{ .InitialSize }}),
+            {{ .Name }}: make([]float64, 0, {{ .InitialSize }}),
         {{- end -}}
     {{ end }}
 {{ end }}

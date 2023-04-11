@@ -49,3 +49,19 @@
         {{- end -}}
     {{ end }}
 {{ end }}
+
+{{ define "go_models_accessor" }}
+    {{ $current_model := . }}
+    {{- range .Models }}
+        {{- if .Accessor }}
+            func (x *{{ $current_model.Name }}) Get{{ .Name }}() (*{{ .Reference }}, error) {
+                return x.{{ LowerFirst .Name }}, nil
+            }
+
+            func (x *{{ $current_model.Name }}) Set{{ .Name }}(v *{{ .Reference }}) error {
+                x.{{ LowerFirst .Name }} = v
+                return nil
+            }
+        {{- end -}}
+    {{ end }}
+{{ end }}

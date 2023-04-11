@@ -11,9 +11,9 @@
 {{ define "go_boolarrays_new_struct_reference" }}
     {{- range .BoolArrays }}
         {{- if .Accessor }}
-            {{ LowerFirst .Name }}: make([]bool, {{.InitialSize }}),
+            {{ LowerFirst .Name }}: make([]bool, 0, {{ .InitialSize }}),
         {{- else }}
-            {{ .Name }}: make([]bool, {{ .InitialSize }}),
+            {{ .Name }}: make([]bool, 0, {{ .InitialSize }}),
         {{- end -}}
     {{ end }}
 {{ end }}
