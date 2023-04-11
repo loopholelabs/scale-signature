@@ -25,200 +25,202 @@ var (
     {{ end -}}
 
     type {{ .Name }} struct {
+        {{ template "go_models_struct_reference" . }}
+        {{ template "go_modelarrays_struct_reference" . }}
+        {{ template "go_modelmaps_struct_reference" . }}
 
-    {{ template "go_models_struct_reference" . }}
-    {{ template "go_modelarrays_struct_reference" . }}
-    {{ template "go_modelmaps_struct_reference" . }}
+        {{ template "go_strings_struct_reference" . }}
+        {{ template "go_stringarrays_struct_reference" . }}
+        {{ template "go_stringmaps_struct_reference" . }}
 
-    {{ template "go_strings_struct_reference" . }}
-    {{ template "go_stringarrays_struct_reference" . }}
-    {{ template "go_stringmaps_struct_reference" . }}
+        {{ template "go_int32s_struct_reference" .}}
+        {{ template "go_int32arrays_struct_reference" .}}
+        {{ template "go_int32maps_struct_reference" .}}
 
-    {{ template "go_int32s_struct_reference" .}}
-    {{ template "go_int32arrays_struct_reference" .}}
-    {{ template "go_int32maps_struct_reference" .}}
+        {{ template "go_int64s_struct_reference" .}}
+        {{ template "go_int64arrays_struct_reference" .}}
+        {{ template "go_int64maps_struct_reference" .}}
 
-    {{ template "go_int64s_struct_reference" .}}
-    {{ template "go_int64arrays_struct_reference" .}}
-    {{ template "go_int64maps_struct_reference" .}}
+        {{ template "go_uint32s_struct_reference" .}}
+        {{ template "go_uint32arrays_struct_reference" .}}
+        {{ template "go_uint32maps_struct_reference" .}}
 
-    {{ template "go_uint32s_struct_reference" .}}
-    {{ template "go_uint32arrays_struct_reference" .}}
-    {{ template "go_uint32maps_struct_reference" .}}
+        {{ template "go_uint64s_struct_reference" .}}
+        {{ template "go_uint64arrays_struct_reference" .}}
+        {{ template "go_uint64maps_struct_reference" .}}
 
-    {{ template "go_uint64s_struct_reference" .}}
-    {{ template "go_uint64arrays_struct_reference" .}}
-    {{ template "go_uint64maps_struct_reference" .}}
+        {{ template "go_float32s_struct_reference" .}}
+        {{ template "go_float32arrays_struct_reference" .}}
+        {{ template "go_float32maps_struct_reference" .}}
 
-    {{ template "go_float32s_struct_reference" .}}
-    {{ template "go_float32arrays_struct_reference" .}}
-    {{ template "go_float32maps_struct_reference" .}}
+        {{ template "go_float64s_struct_reference" .}}
+        {{ template "go_float64arrays_struct_reference" .}}
+        {{ template "go_float64maps_struct_reference" .}}
 
-    {{ template "go_float64s_struct_reference" .}}
-    {{ template "go_float64arrays_struct_reference" .}}
-    {{ template "go_float64maps_struct_reference" .}}
+        {{ template "go_enums_struct_reference" . }}
+        {{ template "go_enumarrays_struct_reference" . }}
+        {{ template "go_enummaps_struct_reference" . }}
 
-    {{ template "go_enums_struct_reference" . }}
-    {{ template "go_enumarrays_struct_reference" . }}
-    {{ template "go_enummaps_struct_reference" . }}
+        {{ template "go_bytes_struct_reference" . }}
+        {{ template "go_bytearrays_struct_reference" . }}
+        {{ template "go_bytemaps_struct_reference" . }}
 
-    {{ template "go_bytes_struct_reference" . }}
-    {{ template "go_bytearrays_struct_reference" . }}
-    {{ template "go_bytemaps_struct_reference" . }}
-
-    {{ template "go_bools_struct_reference" . }}
-    {{ template "go_boolarrays_struct_reference" . }}
-}
-
-func New{{ .Name }}() *{{ .Name }} {
-    return &{{ .Name }}{
-        {{ template "go_models_new_struct_reference" . }}
-        {{ template "go_modelarrays_new_struct_reference" . }}
-        {{ template "go_modelmaps_new_struct_reference" . }}
-
-        {{ template "go_stringarrays_new_struct_reference" . }}
-        {{ template "go_stringmaps_new_struct_reference" . }}
-
-        {{ template "go_int32arrays_new_struct_reference" . }}
-        {{ template "go_int32maps_new_struct_reference" . }}
-
-        {{ template "go_int64arrays_new_struct_reference" . }}
-        {{ template "go_int64maps_new_struct_reference" . }}
-
-        {{ template "go_uint32arrays_new_struct_reference" . }}
-        {{ template "go_uint32maps_new_struct_reference" . }}
-
-        {{ template "go_uint64arrays_new_struct_reference" . }}
-        {{ template "go_uint64maps_new_struct_reference" . }}
-
-        {{ template "go_float32arrays_new_struct_reference" . }}
-        {{ template "go_float32maps_new_struct_reference" . }}
-
-        {{ template "go_float64arrays_new_struct_reference" . }}
-        {{ template "go_float64maps_new_struct_reference" . }}
-
-        {{ template "go_enumarrays_new_struct_reference" . }}
-        {{ template "go_enummaps_new_struct_reference" . }}
-
-        {{ template "go_bytearrays_new_struct_reference" . }}
-        {{ template "go_bytemaps_new_struct_reference" . }}
-
-        {{ template "go_boolarrays_new_struct_reference" . }}
-    }
-}
-
-func (x *{{ .Name }}) encode(b *polyglot.Buffer) {
-    e := polyglot.Encoder(b)
-    if x == nil {
-        e.Nil()
-    } else {
-        {{ template "go_models_encode" . }}
-        {{ template "go_modelarrays_encode" . }}
-        {{ template "go_modelmaps_encode" .}}
-
-        {{ template "go_strings_encode" . }}
-        {{ template "go_stringarrays_encode" . }}
-        {{ template "go_stringmaps_encode" . }}
-
-        {{ template "go_int32s_encode" . }}
-        {{ template "go_int32arrays_encode" . }}
-        {{ template "go_int32maps_encode" . }}
-
-        {{ template "go_int64s_encode" . }}
-        {{ template "go_int64arrays_encode" . }}
-        {{ template "go_int64maps_encode" . }}
-
-        {{ template "go_uint32s_encode" . }}
-        {{ template "go_uint32arrays_encode" . }}
-        {{ template "go_uint32maps_encode" . }}
-
-        {{ template "go_uint64s_encode" . }}
-        {{ template "go_uint64arrays_encode" . }}
-        {{ template "go_uint64maps_encode" . }}
-
-        {{ template "go_float32s_encode" . }}
-        {{ template "go_float32arrays_encode" . }}
-        {{ template "go_float32maps_encode" . }}
-
-        {{ template "go_float64s_encode" . }}
-        {{ template "go_float64arrays_encode" . }}
-        {{ template "go_float64maps_encode" . }}
-
-        {{ template "go_enums_encode" . }}
-        {{ template "go_enumarrays_encode" . }}
-        {{ template "go_enummaps_encode" . }}
-
-        {{ template "go_bytes_encode" . }}
-        {{ template "go_bytearrays_encode" . }}
-        {{ template "go_bytemaps_encode" . }}
-
-        {{ template "go_bools_encode" . }}
-        {{ template "go_boolarrays_encode" . }}
-    }
-}
-
-func (x *{{ .Name }}) decode(b []byte) error {
-    if x == nil {
-        return NilDecode
-    }
-    d := polyglot.GetDecoder(b)
-    defer d.Return()
-    return x._decode(d)
-}
-
-func (x *{{ .Name }}) _decode(d *polyglot.Decoder) error {
-    if d.Nil() {
-		return nil
-	}
-
-	err, _ := d.Error()
-    if err != nil {
-        return err
+        {{ template "go_bools_struct_reference" . }}
+        {{ template "go_boolarrays_struct_reference" . }}
     }
 
-    {{ template "go_models_decode" . }}
-    {{ template "go_modelarrays_decode" . }}
-    {{ template "go_modelmaps_decode" . }}
+    func New{{ .Name }}() *{{ .Name }} {
+        return &{{ .Name }}{
+            {{ template "go_models_new_struct_reference" . }}
+            {{ template "go_modelarrays_new_struct_reference" . }}
+            {{ template "go_modelmaps_new_struct_reference" . }}
 
-    {{ template "go_strings_decode" . }}
-    {{ template "go_stringarrays_decode" . }}
-    {{ template "go_stringmaps_decode" . }}
+            {{ template "go_stringarrays_new_struct_reference" . }}
+            {{ template "go_stringmaps_new_struct_reference" . }}
 
-    {{ template "go_int32s_decode" . }}
-    {{ template "go_int32arrays_decode" . }}
-    {{ template "go_int32maps_decode" . }}
+            {{ template "go_int32arrays_new_struct_reference" . }}
+            {{ template "go_int32maps_new_struct_reference" . }}
 
-    {{ template "go_int64s_decode" . }}
-    {{ template "go_int64arrays_decode" . }}
-    {{ template "go_int64maps_decode" . }}
+            {{ template "go_int64arrays_new_struct_reference" . }}
+            {{ template "go_int64maps_new_struct_reference" . }}
 
-    {{ template "go_uint32s_decode" . }}
-    {{ template "go_uint32arrays_decode" . }}
-    {{ template "go_uint32maps_decode" . }}
+            {{ template "go_uint32arrays_new_struct_reference" . }}
+            {{ template "go_uint32maps_new_struct_reference" . }}
 
-    {{ template "go_uint64s_decode" . }}
-    {{ template "go_uint64arrays_decode" . }}
-    {{ template "go_uint64maps_decode" . }}
+            {{ template "go_uint64arrays_new_struct_reference" . }}
+            {{ template "go_uint64maps_new_struct_reference" . }}
 
-    {{ template "go_float32s_decode" . }}
-    {{ template "go_float32arrays_decode" . }}
-    {{ template "go_float32maps_decode" . }}
+            {{ template "go_float32arrays_new_struct_reference" . }}
+            {{ template "go_float32maps_new_struct_reference" . }}
 
-    {{ template "go_float64s_decode" . }}
-    {{ template "go_float64arrays_decode" . }}
-    {{ template "go_float64maps_decode" . }}
+            {{ template "go_float64arrays_new_struct_reference" . }}
+            {{ template "go_float64maps_new_struct_reference" . }}
 
-    {{ template "go_enums_decode" . }}
-    {{ template "go_enumarrays_decode" . }}
-    {{ template "go_enummaps_decode" . }}
+            {{ template "go_enumarrays_new_struct_reference" . }}
+            {{ template "go_enummaps_new_struct_reference" . }}
 
-    {{ template "go_bytes_decode" . }}
-    {{ template "go_bytearrays_decode" . }}
-    {{ template "go_bytemaps_decode" . }}
+            {{ template "go_bytearrays_new_struct_reference" . }}
+            {{ template "go_bytemaps_new_struct_reference" . }}
 
-    {{ template "go_bools_decode" . }}
-    {{ template "go_boolarrays_decode" . }}
+            {{ template "go_boolarrays_new_struct_reference" . }}
+        }
+    }
 
-    return nil
-}
+    func (x *{{ .Name }}) encode(b *polyglot.Buffer) {
+        e := polyglot.Encoder(b)
+        if x == nil {
+            e.Nil()
+        } else {
+            {{ template "go_models_encode" . }}
+            {{ template "go_modelarrays_encode" . }}
+            {{ template "go_modelmaps_encode" .}}
+
+            {{ template "go_strings_encode" . }}
+            {{ template "go_stringarrays_encode" . }}
+            {{ template "go_stringmaps_encode" . }}
+
+            {{ template "go_int32s_encode" . }}
+            {{ template "go_int32arrays_encode" . }}
+            {{ template "go_int32maps_encode" . }}
+
+            {{ template "go_int64s_encode" . }}
+            {{ template "go_int64arrays_encode" . }}
+            {{ template "go_int64maps_encode" . }}
+
+            {{ template "go_uint32s_encode" . }}
+            {{ template "go_uint32arrays_encode" . }}
+            {{ template "go_uint32maps_encode" . }}
+
+            {{ template "go_uint64s_encode" . }}
+            {{ template "go_uint64arrays_encode" . }}
+            {{ template "go_uint64maps_encode" . }}
+
+            {{ template "go_float32s_encode" . }}
+            {{ template "go_float32arrays_encode" . }}
+            {{ template "go_float32maps_encode" . }}
+
+            {{ template "go_float64s_encode" . }}
+            {{ template "go_float64arrays_encode" . }}
+            {{ template "go_float64maps_encode" . }}
+
+            {{ template "go_enums_encode" . }}
+            {{ template "go_enumarrays_encode" . }}
+            {{ template "go_enummaps_encode" . }}
+
+            {{ template "go_bytes_encode" . }}
+            {{ template "go_bytearrays_encode" . }}
+            {{ template "go_bytemaps_encode" . }}
+
+            {{ template "go_bools_encode" . }}
+            {{ template "go_boolarrays_encode" . }}
+        }
+    }
+
+    func (x *{{ .Name }}) decode(b []byte) error {
+        if x == nil {
+            return NilDecode
+        }
+        d := polyglot.GetDecoder(b)
+        defer d.Return()
+        return x._decode(d)
+    }
+
+    func (x *{{ .Name }}) _decode(d *polyglot.Decoder) error {
+        if d.Nil() {
+            return nil
+        }
+
+        err, _ := d.Error()
+        if err != nil {
+            return err
+        }
+
+        {{ template "go_models_decode" . }}
+        {{ template "go_modelarrays_decode" . }}
+        {{ template "go_modelmaps_decode" . }}
+
+        {{ template "go_strings_decode" . }}
+        {{ template "go_stringarrays_decode" . }}
+        {{ template "go_stringmaps_decode" . }}
+
+        {{ template "go_int32s_decode" . }}
+        {{ template "go_int32arrays_decode" . }}
+        {{ template "go_int32maps_decode" . }}
+
+        {{ template "go_int64s_decode" . }}
+        {{ template "go_int64arrays_decode" . }}
+        {{ template "go_int64maps_decode" . }}
+
+        {{ template "go_uint32s_decode" . }}
+        {{ template "go_uint32arrays_decode" . }}
+        {{ template "go_uint32maps_decode" . }}
+
+        {{ template "go_uint64s_decode" . }}
+        {{ template "go_uint64arrays_decode" . }}
+        {{ template "go_uint64maps_decode" . }}
+
+        {{ template "go_float32s_decode" . }}
+        {{ template "go_float32arrays_decode" . }}
+        {{ template "go_float32maps_decode" . }}
+
+        {{ template "go_float64s_decode" . }}
+        {{ template "go_float64arrays_decode" . }}
+        {{ template "go_float64maps_decode" . }}
+
+        {{ template "go_enums_decode" . }}
+        {{ template "go_enumarrays_decode" . }}
+        {{ template "go_enummaps_decode" . }}
+
+        {{ template "go_bytes_decode" . }}
+        {{ template "go_bytearrays_decode" . }}
+        {{ template "go_bytemaps_decode" . }}
+
+        {{ template "go_bools_decode" . }}
+        {{ template "go_boolarrays_decode" . }}
+
+        return nil
+    }
+
+    {{ template "go_modelarrays_accessor" . }}
+
 {{ end -}}

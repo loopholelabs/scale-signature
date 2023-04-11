@@ -24,29 +24,7 @@ import (
 
 func TestSchema(t *testing.T) {
 	s := new(Schema)
-	err := s.Decode([]byte(`
-name = "testName"
-tag = "1testTag"
-model testModel {
-	description = "this is a test model"
-    string testString {
-		default = "asdfsa"
-	    regex_validator {
-			expression = ".*"
-		}
-		length_validator {
-			min = 1
-			max = 3
-		}
-	}
-}
-
-model testModel2 {
-	model "myTest" {
-		reference = "testModel"
-	}
-}
-`))
+	err := s.Decode([]byte(MasterTestingSchema))
 	require.NoError(t, err)
 
 	require.NoError(t, s.Validate())

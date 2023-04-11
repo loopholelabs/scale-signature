@@ -55,12 +55,98 @@ func (g *Generator) Generate(schema *schema.Schema, version string) ([]byte, err
 
 func templateFunctions() template.FuncMap {
 	return template.FuncMap{
-		"Primitive":               schema.Primitive,
+		"Primitive":               Primitive,
 		"IsPrimitive":             schema.ValidPrimitiveType,
-		"PolyglotPrimitive":       schema.PolyglotPrimitive,
-		"PolyglotPrimitiveEncode": schema.PolyglotPrimitiveEncode,
-		"PolyglotPrimitiveDecode": schema.PolyglotPrimitiveDecode,
+		"PolyglotPrimitive":       PolyglotPrimitive,
+		"PolyglotPrimitiveEncode": PolyglotPrimitiveEncode,
+		"PolyglotPrimitiveDecode": PolyglotPrimitiveDecode,
 		"Deref":                   func(i *bool) bool { return *i },
 		"LowerFirst":              func(s string) string { return string(s[0]+32) + s[1:] },
+	}
+}
+
+func Primitive(t string) string {
+	switch t {
+	case "string", "int32", "int64", "uint32", "uint64", "float32", "float64", "bool":
+		return t
+	case "bytes":
+		return "[]byte"
+	default:
+		return ""
+	}
+}
+
+func PolyglotPrimitive(t string) string {
+	switch t {
+	case "string":
+		return "polyglot.StringKind"
+	case "int32":
+		return "polyglot.Int32Kind"
+	case "int64":
+		return "polyglot.Int64Kind"
+	case "uint32":
+		return "polyglot.Uint32Kind"
+	case "uint64":
+		return "polyglot.Uint64Kind"
+	case "float32":
+		return "polyglot.Float32Kind"
+	case "float64":
+		return "polyglot.Float64Kind"
+	case "bool":
+		return "polyglot.BoolKind"
+	case "bytes":
+		return "polyglot.BytesKind"
+	default:
+		return "polyglot.AnyKind"
+	}
+}
+
+func PolyglotPrimitiveEncode(t string) string {
+	switch t {
+	case "string":
+		return "String"
+	case "int32":
+		return "Int32"
+	case "int64":
+		return "Int64"
+	case "uint32":
+		return "Uint32"
+	case "uint64":
+		return "Uint64"
+	case "float32":
+		return "Float32"
+	case "float64":
+		return "Float64"
+	case "bool":
+		return "Bool"
+	case "bytes":
+		return "Bytes"
+	default:
+		return ""
+	}
+}
+
+func PolyglotPrimitiveDecode(t string) string {
+	switch t {
+	case "string":
+		return "String"
+	case "int32":
+		return "Int32"
+	case "int64":
+		return "Int64"
+	case "uint32":
+		return "Uint32"
+	case "uint64":
+		return "Uint64"
+	case "float32":
+		return "Float32"
+	case "float64":
+		return "Float64"
+	case "bool":
+		return "Bool"
+	case "bytes":
+		return "Bytes"
+	default:
+		return ""
 	}
 }

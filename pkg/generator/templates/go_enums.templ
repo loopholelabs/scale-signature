@@ -33,8 +33,8 @@
 {{ end }}
 
 {{ define "go_enums_decode" }}
+    {{ $current_model := . }}
     {{- range .Enums }}
-        {{ $current_model := . }}
         {{- if (Deref .Accessor) }}
             enumValue{{ LowerFirst .Name }}, err := d.Uint32()
             if err != nil {
@@ -64,6 +64,5 @@
                     return InvalidEnum
             }
         {{- end -}}
-
     {{ end }}
 {{ end }}

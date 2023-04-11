@@ -206,88 +206,98 @@ func ValidPrimitiveType(t string) bool {
 	}
 }
 
-func Primitive(t string) string {
-	switch t {
-	case "string", "int32", "int64", "uint32", "uint64", "float32", "float64", "bool":
-		return t
-	case "bytes":
-		return "[]byte"
-	default:
-		return ""
+const MasterTestingSchema = `
+name = "MasterSchema"
+tag = "MasterSchemaTag"
+
+model EmptyModel {}
+
+model EmptyModelWithDescription {
+	description = "Test Description"
+}
+
+model ModelWithSingleStringField {
+	string StringField {
+		default = "DefaultValue"
 	}
 }
 
-func PolyglotPrimitive(t string) string {
-	switch t {
-	case "string":
-		return "polyglot.StringKind"
-	case "int32":
-		return "polyglot.Int32Kind"
-	case "int64":
-		return "polyglot.Int64Kind"
-	case "uint32":
-		return "polyglot.Uint32Kind"
-	case "uint64":
-		return "polyglot.Uint64Kind"
-	case "float32":
-		return "polyglot.Float32Kind"
-	case "float64":
-		return "polyglot.Float64Kind"
-	case "bool":
-		return "polyglot.BoolKind"
-	case "bytes":
-		return "polyglot.BytesKind"
-	default:
-		return "polyglot.AnyKind"
+model ModelWithSingleInt32Field {
+	int32 Int32Field {
+		default = 32
 	}
 }
 
-func PolyglotPrimitiveEncode(t string) string {
-	switch t {
-	case "string":
-		return "String"
-	case "int32":
-		return "Int32"
-	case "int64":
-		return "Int64"
-	case "uint32":
-		return "Uint32"
-	case "uint64":
-		return "Uint64"
-	case "float32":
-		return "Float32"
-	case "float64":
-		return "Float64"
-	case "bool":
-		return "Bool"
-	case "bytes":
-		return "Bytes"
-	default:
-		return ""
+model ModelWithMultipleFields {
+	string StringField {
+		default = "DefaultValue"
+	}
+
+	int32 Int32Field {
+		default = 32
 	}
 }
 
-func PolyglotPrimitiveDecode(t string) string {
-	switch t {
-	case "string":
-		return "String"
-	case "int32":
-		return "Int32"
-	case "int64":
-		return "Int64"
-	case "uint32":
-		return "Uint32"
-	case "uint64":
-		return "Uint64"
-	case "float32":
-		return "Float32"
-	case "float64":
-		return "Float64"
-	case "bool":
-		return "Bool"
-	case "bytes":
-		return "Bytes"
-	default:
-		return ""
+model ModelWithMultipleFieldsAndDescription {
+	description = "Test Description"
+	
+	string StringField {
+		default = "DefaultValue"
+	}
+
+	int32 Int32Field {
+		default = 32
 	}
 }
+
+model ModelWithEnum {
+	enum EnumField {
+		default = "DefaultValue"
+		values = ["FirstValue", "SecondValue", "DefaultValue"]
+	}
+}
+
+model ModelWithEnumAccessor {
+	enum EnumField {
+		default = "DefaultValue"
+		values = ["FirstValue", "SecondValue", "DefaultValue"]
+		accessor = true
+	}
+}
+
+model ModelWithMultipleFieldsAccessor {
+	string StringField {
+		default = "DefaultValue"
+		accessor = true
+	}
+
+	int32 Int32Field {
+		default = 32
+		accessor = true
+	}
+}
+
+model ModelWithEmbeddedModels {
+	model EmbeddedEmptyModel {
+		reference = "EmptyModel"
+	}
+
+	model_array EmbeddedModelWithMultipleFieldsAccessor {
+		reference = "ModelWithMultipleFieldsAccessor"
+		initial_size = 0
+	}
+}
+
+model ModelWithEmbeddedModelsAccessor {
+	model EmbeddedEmptyModel {
+		reference = "EmptyModel"
+		accessor = true
+	}
+
+	model_array EmbeddedModelWithMultipleFieldsAccessor {
+		reference = "ModelWithMultipleFieldsAccessor"
+		initial_size = 0
+		accessor = true
+	}
+}
+`
