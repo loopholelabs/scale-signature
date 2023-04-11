@@ -1,0 +1,35 @@
+{{ define "go_bytes_struct_reference" }}
+    {{- range .Bytes }}
+        {{- if (Deref .Accessor) }}
+            {{ LowerFirst .Name }} []byte
+        {{- else }}
+            {{ .Name }} []byte
+        {{- end -}}
+    {{ end }}
+{{ end }}
+
+{{ define "go_bytes_encode" }}
+    {{- range .Bytes }}
+        {{- if (Deref .Accessor) }}
+            e.Bytes(x.{{ LowerFirst .Name }})
+        {{- else }}
+            e.Bytes(x.{{ .Name }})
+        {{- end -}}
+    {{ end }}
+{{ end }}
+
+{{ define "go_bytes_decode" }}
+    {{- range .Bytes }}
+        {{- if (Deref .Accessor) }}
+            x.{{ LowerFirst .Name }}, err = d.Bytes(nil)
+            if err != nil {
+                return err
+            }
+        {{- else }}
+            x.{{ .Name }}, err = d.Bytes(nil)
+            if err != nil {
+                return err
+            }
+        {{- end -}}
+    {{ end }}
+{{ end }}

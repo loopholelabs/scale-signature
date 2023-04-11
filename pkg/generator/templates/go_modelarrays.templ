@@ -1,0 +1,54 @@
+{{ define "go_modelarrays_struct_reference" }}
+    {{- range .ModelArrays }}
+        {{- if .Accessor }}
+            {{ LowerFirst .Name }} []*{{ .Reference }}
+        {{- else }}
+            {{ .Name }} []*{{ .Reference }}
+        {{- end -}}
+    {{ end }}
+{{ end }}
+
+{{ define "go_modelarrays_new_struct_reference" }}
+    {{- range .ModelArrays }}
+        {{- if .Accessor }}
+            {{ LowerFirst .Name }}: make([]*{{ .Reference }},  {{.InitialSize }}),
+        {{- else }}
+            {{ .Name }}: make([]*{{ .Reference }}, {{ .InitialSize }}),
+        {{- end -}}
+    {{ end }}
+{{ end }}
+
+{{ define "go_modelarrays_encode" }}
+    {{- range .ModelArrays }}
+        {{- if .Accessor }}
+            e.Slice(uint32(len(x.{{ LowerFirst .Name }})), polyglot.AnyKind)
+            for _, a := range x.{{ LowerFirst .Name }} {
+                a.encode(b)
+            }
+        {{- else }}
+            e.Slice(uint32(len(x.{{ .Name }})), polyglot.AnyKind)
+            for _, a := range x.{{ .Name }} {
+                a.encode(b)
+            }
+        {{- end -}}
+    {{ end }}
+{{ end }}
+
+{{ define "go_modelarrays_decode" }}
+    {{- range .ModelArrays }}
+        sliceSize{{ .Name }}, err := d.Slice(polyglot.AnyKind)
+        if err != nil {
+            return err
+        }
+        if uint32(len(x.{{ .Name }})) != sliceSize{{ .Name }} {
+            x.{{ .Name }} = make([]*{{ .Reference }}, sliceSize{{ .Name }})
+        }
+        for i := uint32(0); i < sliceSize{{ .Name }}; i++ {
+            x.{{ .Name }}[i] = New{{ .Reference }}()
+            err = x.{{ .Name }}[i]._decode(d)
+            if err != nil {
+                return err
+            }
+        }
+    {{ end }}
+{{ end }}

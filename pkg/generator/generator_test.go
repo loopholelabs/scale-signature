@@ -14,25 +14,13 @@
 package generator
 
 import (
-	"bytes"
-	"github.com/loopholelabs/scale-signature/pkg/generator/templates"
 	"github.com/loopholelabs/scale-signature/pkg/schema"
 	"github.com/stretchr/testify/require"
 	"testing"
-	"text/template"
 )
 
 func TestGenerator(t *testing.T) {
-	m := template.FuncMap{
-		"Primitive":               schema.Primitive,
-		"IsPrimitive":             schema.ValidPrimitiveType,
-		"PolyglotPrimitive":       schema.PolyglotPrimitive,
-		"PolyglotPrimitiveEncode": schema.PolyglotPrimitiveEncode,
-		"PolyglotPrimitiveDecode": schema.PolyglotPrimitiveDecode,
-		"Deref":                   func(i *bool) bool { return *i },
-		"LowerFirst":              func(s string) string { return string(s[0]+32) + s[1:] },
-	}
-	templ, err := template.New("").Funcs(m).ParseFS(templates.FS, "*.templ")
+	g, err := New()
 	require.NoError(t, err)
 
 	s := new(schema.Schema)
@@ -123,14 +111,7 @@ model testModel2 {
 
 	require.NoError(t, s.Validate())
 
-	buf := new(bytes.Buffer)
-	err = templ.ExecuteTemplate(buf, "types.go.templ", map[string]any{
-		"schema":  s,
-		"version": "v0.1.0",
-		"package": "types",
-	})
+	formatted, err := g.Generate(s, "v0.1.0")
 	require.NoError(t, err)
-
-	t.Log(buf.String())
-
+	t.Log(string(formatted))
 }

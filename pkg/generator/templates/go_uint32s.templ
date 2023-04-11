@@ -1,0 +1,35 @@
+{{ define "go_uint32s_struct_reference" }}
+    {{- range .Uint32s }}
+        {{- if (Deref .Accessor) }}
+            {{ LowerFirst .Name }} uint32
+        {{- else }}
+            {{ .Name }} uint32
+        {{- end -}}
+    {{ end }}
+{{ end }}
+
+{{ define "go_uint32s_encode" }}
+    {{- range .Uint32s }}
+        {{- if (Deref .Accessor) }}
+            e.Uint32(x.{{ LowerFirst .Name }})
+        {{- else }}
+            e.Uint32(x.{{ .Name }})
+        {{- end -}}
+    {{ end }}
+{{ end }}
+
+{{ define "go_uint32s_decode" }}
+    {{- range .Uint32s }}
+        {{- if (Deref .Accessor) }}
+            x.{{ LowerFirst .Name }}, err = d.Uint32()
+            if err != nil {
+                return err
+            }
+        {{- else }}
+            x.{{ .Name }}, err = d.Uint32()
+            if err != nil {
+                return err
+            }
+        {{- end -}}
+    {{ end }}
+{{ end }}

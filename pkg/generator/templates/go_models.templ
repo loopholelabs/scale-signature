@@ -1,0 +1,51 @@
+{{ define "go_models_struct_reference" }}
+    {{- range .Models }}
+        {{- if .Accessor }}
+            {{ LowerFirst .Name }} *{{ .Reference }}
+        {{- else }}
+            {{ .Name }} *{{ .Reference }}
+        {{- end -}}
+    {{ end }}
+{{ end }}
+
+{{ define "go_models_new_struct_reference" }}
+    {{- range .Models }}
+        {{- if .Accessor }}
+            {{ LowerFirst .Name }}: New{{ .Reference }}(),
+        {{- else }}
+            {{ .Name }}: New{{ .Reference }}(),
+        {{- end -}}
+    {{ end }}
+{{ end }}
+
+{{ define "go_models_encode" }}
+    {{- range .Models }}
+        {{- if .Accessor }}
+            x.{{ LowerFirst .Name }}.encode(b)
+        {{- else }}
+            x.{{ .Name }}.encode(b)
+        {{- end -}}
+    {{ end }}
+{{ end }}
+
+{{ define "go_models_decode" }}
+    {{- range .Models }}
+        {{- if .Accessor }}
+            if x.{{ LowerFirst .Name }} == nil {
+                x.{{ LowerFirst .Name }} = New{{ .Reference }}()
+            }
+            err = x.{{ LowerFirst .Name }}._decode(d)
+            if err != nil {
+                return err
+            }
+        {{- else }}
+            if x.{{ .Name }} == nil {
+                x.{{ .Name }} = New{{ .Reference }}()
+            }
+            err = x.{{ .Name }}._decode(d)
+            if err != nil {
+                return err
+            }
+        {{- end -}}
+    {{ end }}
+{{ end }}

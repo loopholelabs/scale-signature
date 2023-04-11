@@ -1,0 +1,35 @@
+{{ define "go_float32s_struct_reference" }}
+    {{- range .Float32s }}
+        {{- if (Deref .Accessor) }}
+            {{ LowerFirst .Name }} float32
+        {{- else }}
+            {{ .Name }} float32
+        {{- end -}}
+    {{ end }}
+{{ end }}
+
+{{ define "go_float32s_encode" }}
+    {{- range .Float32s }}
+        {{- if (Deref .Accessor) }}
+            e.Float32(x.{{ LowerFirst .Name }})
+        {{- else }}
+            e.Float32(x.{{ .Name }})
+        {{- end -}}
+    {{ end }}
+{{ end }}
+
+{{ define "go_float32s_decode" }}
+    {{- range .Float32s }}
+        {{- if (Deref .Accessor) }}
+            x.{{ LowerFirst .Name }}, err = d.Float32()
+            if err != nil {
+                return err
+            }
+        {{- else }}
+            x.{{ .Name }}, err = d.Float32()
+            if err != nil {
+                return err
+            }
+        {{- end -}}
+    {{ end }}
+{{ end }}

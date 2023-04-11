@@ -1,0 +1,73 @@
+{{ define "go_float32arrays_struct_reference" }}
+    {{- range .Float32Arrays }}
+        {{- if (Deref .Accessor) }}
+            {{ LowerFirst .Name }} []float32
+        {{- else }}
+            {{ .Name }} []float32
+        {{- end -}}
+    {{ end }}
+{{ end }}
+
+{{ define "go_float32arrays_new_struct_reference" }}
+    {{- range .Float32Arrays }}
+        {{- if (Deref .Accessor) }}
+            {{ LowerFirst .Name }}: make([]float32, {{.InitialSize }}),
+        {{- else }}
+            {{ .Name }}: make([]float32, {{ .InitialSize }}),
+        {{- end -}}
+    {{ end }}
+{{ end }}
+
+{{ define "go_float32arrays_encode" }}
+    {{- range .Float32Arrays }}
+        {{- if (Deref .Accessor) }}
+            e.Slice(uint32(len(x.{{ LowerFirst .Name }})), polyglot.Float32Kind)
+            for _, a := range x.{{ LowerFirst .Name }} {
+                e.Float32(a)
+            }
+        {{- else }}
+            e.Slice(uint32(len(x.{{ .Name }})), polyglot.Float32Kind)
+            for _, a := range x.{{ .Name }} {
+                e.Float32(a)
+            }
+        {{- end -}}
+    {{ end }}
+{{ end }}
+
+{{ define "go_float32arrays_decode" }}
+    {{- range .Float32Arrays }}
+        {{- if (Deref .Accessor) }}
+            sliceSize{{ LowerFirst .Name }}, err := d.Slice(polyglot.Float32Kind)
+            if err != nil {
+                return err
+            }
+
+            if uint32(len(x.{{ LowerFirst .Name }})) != sliceSize{{ LowerFirst .Name }} {
+                x.{{ LowerFirst .Name }} = make([]float32, sliceSize{{ LowerFirst .Name }})
+            }
+
+            for i := uint32(0); i < sliceSize{{ LowerFirst .Name }}; i++ {
+                x.{{ LowerFirst .Name }}[i], err = d.Float32()
+                if err != nil {
+                    return err
+                }
+            }
+        {{- else }}
+            sliceSize{{ .Name }}, err := d.Slice(polyglot.Float32Kind)
+            if err != nil {
+                return err
+            }
+
+            if uint32(len(x.{{ .Name }})) != sliceSize{{ .Name }} {
+                x.{{ .Name }} = make([]float32, sliceSize{{ .Name }})
+            }
+
+            for i := uint32(0); i < sliceSize{{ .Name }}; i++ {
+                x.{{ .Name }}[i], err = d.Float32()
+                if err != nil {
+                    return err
+                }
+            }
+        {{- end -}}
+    {{ end }}
+{{ end }}

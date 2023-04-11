@@ -1,0 +1,36 @@
+{{ define "go_strings_struct_reference" }}
+    {{- range .Strings }}
+        {{- if (Deref .Accessor) }}
+            {{ LowerFirst .Name }} string
+        {{- else }}
+            {{ .Name }} string
+        {{- end -}}
+    {{ end }}
+{{ end }}
+
+{{ define "go_strings_encode" }}
+    {{- range .Strings }}
+        {{- if (Deref .Accessor) }}
+            e.String(x.{{ LowerFirst .Name }})
+        {{- else }}
+            e.String(x.{{ .Name }})
+        {{- end -}}
+    {{ end }}
+{{ end }}
+
+{{ define "go_strings_decode" }}
+    {{- range .Strings }}
+        {{- if (Deref .Accessor) }}
+            x.{{ LowerFirst .Name }}, err = d.String()
+            if err != nil {
+                return err
+            }
+        {{- else }}
+            x.{{ .Name }}, err = d.String()
+            if err != nil {
+                return err
+            }
+        {{- end -}}
+    {{ end }}
+{{ end }}
+

@@ -1,0 +1,35 @@
+{{ define "go_int64s_struct_reference" }}
+    {{- range .Int64s }}
+        {{- if (Deref .Accessor) }}
+            {{ LowerFirst .Name }} int64
+        {{- else }}
+            {{ .Name }} int64
+        {{- end -}}
+    {{ end }}
+{{ end }}
+
+{{ define "go_int64s_encode" }}
+    {{- range .Int64s }}
+        {{- if (Deref .Accessor) }}
+            e.Int64(x.{{ LowerFirst .Name }})
+        {{- else }}
+            e.Int64(x.{{ .Name }})
+        {{- end -}}
+    {{ end }}
+{{ end }}
+
+{{ define "go_int64s_decode" }}
+    {{- range .Int64s }}
+        {{- if (Deref .Accessor) }}
+            x.{{ LowerFirst .Name }}, err = d.Int64()
+            if err != nil {
+                return err
+            }
+        {{- else }}
+            x.{{ .Name }}, err = d.Int64()
+            if err != nil {
+                return err
+            }
+        {{- end -}}
+    {{ end }}
+{{ end }}

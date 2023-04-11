@@ -1,0 +1,69 @@
+{{ define "go_enums_definition" }}
+    {{ $current_model := . }}
+    {{- range .Enums }}
+        type Enum{{ $current_model.Name }}{{ .Name }} uint32
+        {{ $current_enum := . }}
+        const (
+        {{- range $index, $value := .Values }}
+            Enum{{ $current_model.Name }}{{ $current_enum.Name }}{{ $value }} Enum{{ $current_model.Name }}{{ $current_enum.Name }} = {{ $index }}
+        {{ end }}
+        )
+    {{ end }}
+{{ end }}
+
+{{ define "go_enums_struct_reference" }}
+    {{ $current_model := . }}
+    {{- range .Enums }}
+        {{- if (Deref .Accessor) }}
+            {{ LowerFirst .Name }} Enum{{ $current_model.Name }}{{ .Name }}
+        {{- else }}
+            {{ .Name }} Enum{{ $current_model.Name }}{{ .Name }}
+        {{- end -}}
+    {{ end }}
+{{ end }}
+
+{{ define "go_enums_encode" }}
+    {{- range .Enums }}
+        {{- if (Deref .Accessor) }}
+            e.Uint32(uint32(x.{{ LowerFirst .Name }}))
+        {{- else }}
+            e.Uint32(uint32(x.{{ .Name }}))
+        {{- end -}}
+    {{ end }}
+{{ end }}
+
+{{ define "go_enums_decode" }}
+    {{- range .Enums }}
+        {{ $current_model := . }}
+        {{- if (Deref .Accessor) }}
+            enumValue{{ LowerFirst .Name }}, err := d.Uint32()
+            if err != nil {
+                return err
+            }
+            {{ $current_enum := . }}
+            switch Enum{{ $current_model.Name }}{{ .Name }}(enumValue{{ LowerFirst .Name }}) {
+            {{- range $index, $value := .Values }}
+                case Enum{{ $current_model.Name }}{{ $current_enum.Name }}{{ $value }}:
+                    x.{{ LowerFirst $current_enum.Name }} = Enum{{ $current_model.Name }}{{ $current_enum.Name }}{{ $value }}
+            {{- end }}
+                default:
+                    return InvalidEnum
+            }
+        {{- else }}
+            enumValue{{ .Name }}, err := d.Uint32()
+            if err != nil {
+                return err
+            }
+            {{ $current_enum := . }}
+            switch Enum{{ $current_model.Name }}{{ .Name }}(enumValue{{ .Name }}) {
+            {{- range $index, $value := .Values }}
+                case Enum{{ $current_model.Name }}{{ $current_enum.Name }}{{ $value }}:
+                    x.{{ $current_enum.Name }} = Enum{{ $current_model.Name }}{{ $current_enum.Name }}{{ $value }}
+            {{- end }}
+                default:
+                    return InvalidEnum
+            }
+        {{- end -}}
+
+    {{ end }}
+{{ end }}
