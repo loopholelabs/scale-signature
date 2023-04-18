@@ -16,7 +16,7 @@ package golang
 import (
 	"bytes"
 	"errors"
-	"github.com/loopholelabs/scale-signature/pkg/generator/golang/templates"
+	"github.com/loopholelabs/scale-signature/pkg/generator/templates"
 	"github.com/loopholelabs/scale-signature/pkg/schema"
 	"go/format"
 	"text/template"
