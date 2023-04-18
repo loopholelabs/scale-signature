@@ -28,6 +28,10 @@ import (
 	"regexp"
 )
 
+const (
+	V1Alpha1Version = "v1alpha1"
+)
+
 var (
 	ErrInvalidName = errors.New("invalid name")
 	ErrInvalidTag  = errors.New("invalid tag")
@@ -43,9 +47,10 @@ var (
 )
 
 type Schema struct {
-	Name   string         `hcl:"name,attr"`
-	Tag    string         `hcl:"tag,attr"`
-	Models []*ModelSchema `hcl:"model,block"`
+	Version string         `hcl:"version,attr"`
+	Name    string         `hcl:"name,attr"`
+	Tag     string         `hcl:"tag,attr"`
+	Models  []*ModelSchema `hcl:"model,block"`
 }
 
 func ReadSchema(path string) (*Schema, error) {
@@ -73,128 +78,133 @@ func (s *Schema) Decode(data []byte) error {
 }
 
 func (s *Schema) Validate() error {
-	if !ValidLabel.MatchString(s.Name) {
-		return ErrInvalidName
+	switch s.Version {
+	case V1Alpha1Version:
+		if !ValidLabel.MatchString(s.Name) {
+			return ErrInvalidName
+		}
+
+		if InvalidString.MatchString(s.Tag) {
+			return ErrInvalidTag
+		}
+
+		// Transform all model names and references to TitleCase (e.g. "myModel" -> "MyModel")
+		for _, model := range s.Models {
+			model.Normalize()
+		}
+
+		// Validate all models
+		knownModels := make(map[string]struct{})
+		for _, model := range s.Models {
+			err := model.Validate(knownModels)
+			if err != nil {
+				return err
+			}
+		}
+
+		// Ensure all model references are valid
+		for _, model := range s.Models {
+			for _, modelReference := range model.Models {
+				if _, ok := knownModels[modelReference.Reference]; !ok {
+					return fmt.Errorf("unknown %s.%s.reference: %s", model.Name, modelReference.Name, modelReference.Reference)
+				}
+			}
+
+			for _, modelReferenceArray := range model.ModelArrays {
+				if _, ok := knownModels[modelReferenceArray.Reference]; !ok {
+					return fmt.Errorf("unknown %s.%s.reference: %s", model.Name, modelReferenceArray.Name, modelReferenceArray.Reference)
+				}
+			}
+
+			for _, modelReferenceMap := range model.ModelMaps {
+				if _, ok := knownModels[modelReferenceMap.Reference]; !ok {
+					return fmt.Errorf("unknown %s.%s.reference: %s", model.Name, modelReferenceMap.Name, modelReferenceMap.Reference)
+				}
+
+				if !ValidPrimitiveType(modelReferenceMap.Value) {
+					if _, ok := knownModels[modelReferenceMap.Value]; !ok {
+						return fmt.Errorf("unknown %s.%s.value: %s", model.Name, modelReferenceMap.Name, modelReferenceMap.Value)
+					}
+				}
+			}
+
+			for _, strMap := range model.StringMaps {
+				if !ValidPrimitiveType(strMap.Value) {
+					if _, ok := knownModels[strMap.Value]; !ok {
+						return fmt.Errorf("unknown %s.%s.value: %s", model.Name, strMap.Name, strMap.Value)
+					}
+				}
+			}
+
+			for _, i32Map := range model.Int32Maps {
+				if !ValidPrimitiveType(i32Map.Value) {
+					if _, ok := knownModels[i32Map.Value]; !ok {
+						return fmt.Errorf("unknown %s.%s.value: %s", model.Name, i32Map.Name, i32Map.Value)
+					}
+				}
+			}
+
+			for _, i64Map := range model.Int64Maps {
+				if !ValidPrimitiveType(i64Map.Value) {
+					if _, ok := knownModels[i64Map.Value]; !ok {
+						return fmt.Errorf("unknown %s.%s.value: %s", model.Name, i64Map.Name, i64Map.Value)
+					}
+				}
+			}
+
+			for _, u32Map := range model.Uint32Maps {
+				if !ValidPrimitiveType(u32Map.Value) {
+					if _, ok := knownModels[u32Map.Value]; !ok {
+						return fmt.Errorf("unknown %s.%s.value: %s", model.Name, u32Map.Name, u32Map.Value)
+					}
+				}
+			}
+
+			for _, u64Map := range model.Uint64Maps {
+				if !ValidPrimitiveType(u64Map.Value) {
+					if _, ok := knownModels[u64Map.Value]; !ok {
+						return fmt.Errorf("unknown %s.%s.value: %s", model.Name, u64Map.Name, u64Map.Value)
+					}
+				}
+			}
+
+			for _, f32Map := range model.Float32Maps {
+				if !ValidPrimitiveType(f32Map.Value) {
+					if _, ok := knownModels[f32Map.Value]; !ok {
+						return fmt.Errorf("unknown %s.%s.value: %s", model.Name, f32Map.Name, f32Map.Value)
+					}
+				}
+			}
+
+			for _, f64Map := range model.Float64Maps {
+				if !ValidPrimitiveType(f64Map.Value) {
+					if _, ok := knownModels[f64Map.Value]; !ok {
+						return fmt.Errorf("unknown %s.%s.value: %s", model.Name, f64Map.Name, f64Map.Value)
+					}
+				}
+			}
+
+			for _, bMap := range model.BytesMaps {
+				if !ValidPrimitiveType(bMap.Value) {
+					if _, ok := knownModels[bMap.Value]; !ok {
+						return fmt.Errorf("unknown %s.%s.value: %s", model.Name, bMap.Name, bMap.Value)
+					}
+				}
+			}
+
+			for _, enumMap := range model.EnumMaps {
+				if !ValidPrimitiveType(enumMap.Value) {
+					if _, ok := knownModels[enumMap.Value]; !ok {
+						return fmt.Errorf("unknown %s.%s.value: %s", model.Name, enumMap.Name, enumMap.Value)
+					}
+				}
+			}
+		}
+
+		return nil
+	default:
+		return fmt.Errorf("unknown schema version: %s", s.Version)
 	}
-
-	if InvalidString.MatchString(s.Tag) {
-		return ErrInvalidTag
-	}
-
-	// Transform all model names and references to TitleCase (e.g. "myModel" -> "MyModel")
-	for _, model := range s.Models {
-		model.Normalize()
-	}
-
-	// Validate all models
-	knownModels := make(map[string]struct{})
-	for _, model := range s.Models {
-		err := model.Validate(knownModels)
-		if err != nil {
-			return err
-		}
-	}
-
-	// Ensure all model references are valid
-	for _, model := range s.Models {
-		for _, modelReference := range model.Models {
-			if _, ok := knownModels[modelReference.Reference]; !ok {
-				return fmt.Errorf("unknown %s.%s.reference: %s", model.Name, modelReference.Name, modelReference.Reference)
-			}
-		}
-
-		for _, modelReferenceArray := range model.ModelArrays {
-			if _, ok := knownModels[modelReferenceArray.Reference]; !ok {
-				return fmt.Errorf("unknown %s.%s.reference: %s", model.Name, modelReferenceArray.Name, modelReferenceArray.Reference)
-			}
-		}
-
-		for _, modelReferenceMap := range model.ModelMaps {
-			if _, ok := knownModels[modelReferenceMap.Reference]; !ok {
-				return fmt.Errorf("unknown %s.%s.reference: %s", model.Name, modelReferenceMap.Name, modelReferenceMap.Reference)
-			}
-
-			if !ValidPrimitiveType(modelReferenceMap.Value) {
-				if _, ok := knownModels[modelReferenceMap.Value]; !ok {
-					return fmt.Errorf("unknown %s.%s.value: %s", model.Name, modelReferenceMap.Name, modelReferenceMap.Value)
-				}
-			}
-		}
-
-		for _, strMap := range model.StringMaps {
-			if !ValidPrimitiveType(strMap.Value) {
-				if _, ok := knownModels[strMap.Value]; !ok {
-					return fmt.Errorf("unknown %s.%s.value: %s", model.Name, strMap.Name, strMap.Value)
-				}
-			}
-		}
-
-		for _, i32Map := range model.Int32Maps {
-			if !ValidPrimitiveType(i32Map.Value) {
-				if _, ok := knownModels[i32Map.Value]; !ok {
-					return fmt.Errorf("unknown %s.%s.value: %s", model.Name, i32Map.Name, i32Map.Value)
-				}
-			}
-		}
-
-		for _, i64Map := range model.Int64Maps {
-			if !ValidPrimitiveType(i64Map.Value) {
-				if _, ok := knownModels[i64Map.Value]; !ok {
-					return fmt.Errorf("unknown %s.%s.value: %s", model.Name, i64Map.Name, i64Map.Value)
-				}
-			}
-		}
-
-		for _, u32Map := range model.Uint32Maps {
-			if !ValidPrimitiveType(u32Map.Value) {
-				if _, ok := knownModels[u32Map.Value]; !ok {
-					return fmt.Errorf("unknown %s.%s.value: %s", model.Name, u32Map.Name, u32Map.Value)
-				}
-			}
-		}
-
-		for _, u64Map := range model.Uint64Maps {
-			if !ValidPrimitiveType(u64Map.Value) {
-				if _, ok := knownModels[u64Map.Value]; !ok {
-					return fmt.Errorf("unknown %s.%s.value: %s", model.Name, u64Map.Name, u64Map.Value)
-				}
-			}
-		}
-
-		for _, f32Map := range model.Float32Maps {
-			if !ValidPrimitiveType(f32Map.Value) {
-				if _, ok := knownModels[f32Map.Value]; !ok {
-					return fmt.Errorf("unknown %s.%s.value: %s", model.Name, f32Map.Name, f32Map.Value)
-				}
-			}
-		}
-
-		for _, f64Map := range model.Float64Maps {
-			if !ValidPrimitiveType(f64Map.Value) {
-				if _, ok := knownModels[f64Map.Value]; !ok {
-					return fmt.Errorf("unknown %s.%s.value: %s", model.Name, f64Map.Name, f64Map.Value)
-				}
-			}
-		}
-
-		for _, bMap := range model.BytesMaps {
-			if !ValidPrimitiveType(bMap.Value) {
-				if _, ok := knownModels[bMap.Value]; !ok {
-					return fmt.Errorf("unknown %s.%s.value: %s", model.Name, bMap.Name, bMap.Value)
-				}
-			}
-		}
-
-		for _, enumMap := range model.EnumMaps {
-			if !ValidPrimitiveType(enumMap.Value) {
-				if _, ok := knownModels[enumMap.Value]; !ok {
-					return fmt.Errorf("unknown %s.%s.value: %s", model.Name, enumMap.Name, enumMap.Value)
-				}
-			}
-		}
-	}
-
-	return nil
 }
 
 func ValidPrimitiveType(t string) bool {
@@ -207,6 +217,7 @@ func ValidPrimitiveType(t string) bool {
 }
 
 const MasterTestingSchema = `
+version = "v1alpha1"
 name = "MasterSchema"
 tag = "MasterSchemaTag"
 
@@ -222,7 +233,23 @@ model ModelWithSingleStringField {
 	}
 }
 
+model ModelWithSingleStringFieldAndDescription {
+	description = "Test Description"
+
+	string StringField {
+		default = "DefaultValue"
+	}
+}
+
 model ModelWithSingleInt32Field {
+	int32 Int32Field {
+		default = 32
+	}
+}
+
+model ModelWithSingleInt32FieldAndDescription {
+	description = "Test Description"
+
 	int32 Int32Field {
 		default = 32
 	}
@@ -257,7 +284,26 @@ model ModelWithEnum {
 	}
 }
 
+model ModelWithEnumAndDescription {
+	description = "Test Description"
+
+	enum EnumField {
+		default = "DefaultValue"
+		values = ["FirstValue", "SecondValue", "DefaultValue"]
+	}
+}
+
 model ModelWithEnumAccessor {
+	enum EnumField {
+		default = "DefaultValue"
+		values = ["FirstValue", "SecondValue", "DefaultValue"]
+		accessor = true
+	}
+}
+
+model ModelWithEnumAccessorAndDescription {
+	description = "Test Description"
+
 	enum EnumField {
 		default = "DefaultValue"
 		values = ["FirstValue", "SecondValue", "DefaultValue"]
@@ -277,12 +323,39 @@ model ModelWithMultipleFieldsAccessor {
 	}
 }
 
+model ModelWithMultipleFieldsAccessorAndDescription {
+	description = "Test Description"
+
+	string StringField {
+		default = "DefaultValue"
+		accessor = true
+	}
+
+	int32 Int32Field {
+		default = 32
+		accessor = true
+	}
+}
+
 model ModelWithEmbeddedModels {
 	model EmbeddedEmptyModel {
 		reference = "EmptyModel"
 	}
 
-	model_array EmbeddedModelWithMultipleFieldsAccessor {
+	model_array EmbeddedModelArrayWithMultipleFieldsAccessor {
+		reference = "ModelWithMultipleFieldsAccessor"
+		initial_size = 0
+	}
+}
+
+model ModelWithEmbeddedModelsAndDescription {
+	description = "Test Description"
+
+	model EmbeddedEmptyModel {
+		reference = "EmptyModel"
+	}
+
+	model_array EmbeddedModelArrayWithMultipleFieldsAccessor {
 		reference = "ModelWithMultipleFieldsAccessor"
 		initial_size = 0
 	}
@@ -294,10 +367,200 @@ model ModelWithEmbeddedModelsAccessor {
 		accessor = true
 	}
 
-	model_array EmbeddedModelWithMultipleFieldsAccessor {
+	model_array EmbeddedModelArrayWithMultipleFieldsAccessor {
 		reference = "ModelWithMultipleFieldsAccessor"
 		initial_size = 0
 		accessor = true
+	}
+}
+
+model ModelWithEmbeddedModelsAccessorAndDescription {
+	description = "Test Description"
+
+	model EmbeddedEmptyModel {
+		reference = "EmptyModel"
+		accessor = true
+	}
+
+	model_array EmbeddedModelArrayWithMultipleFieldsAccessor {
+		reference = "ModelWithMultipleFieldsAccessor"
+		initial_size = 0
+		accessor = true
+	}
+}
+
+model ModelWithAllFieldTypes {
+	string StringField {
+		default = "DefaultValue"
+	}
+
+	string_array StringArrayField {
+		initial_size = 0
+	}
+
+	string_map StringMapField {
+		value = "string"
+	}
+
+	string_map StringMapFieldEmbedded {
+		value = "EmptyModel"
+	}
+
+	int32 Int32Field {
+		default = 32
+	}
+
+	int32_array Int32ArrayField {
+		initial_size = 0
+	}
+
+	int32_map Int32MapField {
+		value = "int32"
+	}
+
+	int32_map Int32MapFieldEmbedded {
+		value = "EmptyModel"
+	}
+
+	int64 Int64Field {
+		default = 64
+	}
+
+	int64_array Int64ArrayField {
+		initial_size = 0
+	}
+
+	int64_map Int64MapField {
+		value = "int64"
+	}
+
+	int64_map Int64MapFieldEmbedded {
+		value = "EmptyModel"
+	}
+
+	uint32 Uint32Field {
+		default = 32
+	}
+
+	uint32_array Uint32ArrayField {
+		initial_size = 0
+	}
+
+	uint32_map Uint32MapField {
+		value = "uint32"
+	}
+
+	uint32_map Uint32MapFieldEmbedded {
+		value = "EmptyModel"
+	}
+
+	uint64 Uint64Field {
+		default = 64
+	}
+
+	uint64_array Uint64ArrayField {
+		initial_size = 0
+	}
+
+	uint64_map Uint64MapField {
+		value = "uint64"
+	}
+
+	uint64_map Uint64MapFieldEmbedded {
+		value = "EmptyModel"
+	}
+
+	float32 Float32Field {
+		default = 32.32
+	}
+
+	float32_array Float32ArrayField {
+		initial_size = 0
+	}
+
+	float32_map Float32MapField {
+		value = "float32"
+	}
+
+	float32_map Float32MapFieldEmbedded {
+		value = "EmptyModel"
+	}
+
+	float64 Float64Field {
+		default = 64.64
+	}
+
+	float64_array Float64ArrayField {
+		initial_size = 0
+	}
+
+	float64_map Float64MapField {
+		value = "float64"
+	}
+
+	float64_map Float64MapFieldEmbedded {
+		value = "EmptyModel"
+	}
+
+	bool BoolField {
+		default = true
+	}
+
+	bool_array BoolArrayField {
+		initial_size = 0
+	}
+
+	bytes BytesField {}
+
+	bytes_array BytesArrayField {
+		initial_size = 0
+	}
+
+	bytes_map BytesMapField {
+		value = "bytes"
+	}
+
+	bytes_map BytesMapFieldEmbedded {
+		value = "EmptyModel"
+	}
+
+	enum EnumField {
+		default = "DefaultValue"
+		values = ["FirstValue", "SecondValue", "DefaultValue"]
+	}
+
+	enum_array EnumArrayField {
+		values = ["FirstValue", "SecondValue"]
+		initial_size = 0
+	}
+
+	enum_map EnumMapField {
+		values = ["FirstValue", "SecondValue"]
+		value = "string"
+	}
+
+	enum_map EnumMapFieldEmbedded {
+		values = ["FirstValue", "SecondValue"]
+		value = "EmptyModel"
+	}
+
+	model ModelField {
+		reference = "EmptyModel"
+	}
+
+	model_array ModelArrayField {
+		reference = "EmptyModel"
+		initial_size = 0
+	}
+
+	model_map ModelMapField {
+		reference = "EmptyModel"
+		value = "string"
+	}
+
+	model_map ModelMapFieldEmbedded {
+		reference = "EmptyModel"
+		value = "EmptyModel"
 	}
 }
 `
