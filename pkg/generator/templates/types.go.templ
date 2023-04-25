@@ -76,33 +76,44 @@ var (
             {{ template "go_modelarrays_new_struct_reference" . }}
             {{ template "go_modelmaps_new_struct_reference" . }}
 
-            {{ template "go_arrays_new_struct_reference" Params "Entries" .Strings "Type" "string" }}
+            {{ template "go_strings_new_struct_reference" Params "Entries" .Strings }}
+            {{ template "go_arrays_new_struct_reference" Params "Entries" .StringArrays "Type" "string" }}
             {{ template "go_maps_new_struct_reference" Params "Entries" .StringMaps "Type" "string" }}
 
-            {{ template "go_arrays_new_struct_reference" Params "Entries" .Int32s "Type" "int32" }}
+            {{ template "go_primitives_new_struct_reference" Params "Entries" .Int32s }}
+            {{ template "go_arrays_new_struct_reference" Params "Entries" .Int32Arrays "Type" "int32" }}
             {{ template "go_maps_new_struct_reference" Params "Entries" .Int32Maps "Type" "int32" }}
 
-            {{ template "go_arrays_new_struct_reference" Params "Entries" .Int64s "Type" "int64" }}
+            {{ template "go_primitives_new_struct_reference" Params "Entries" .Int64s }}
+            {{ template "go_arrays_new_struct_reference" Params "Entries" .Int64Arrays "Type" "int64" }}
             {{ template "go_maps_new_struct_reference" Params "Entries" .Int64Maps "Type" "int64" }}
 
-            {{ template "go_arrays_new_struct_reference" Params "Entries" .Uint32s "Type" "uint32" }}
+
+            {{ template "go_primitives_new_struct_reference" Params "Entries" .Uint32s }}
+            {{ template "go_arrays_new_struct_reference" Params "Entries" .Uint32Arrays "Type" "uint32" }}
             {{ template "go_maps_new_struct_reference" Params "Entries" .Uint32Maps "Type" "uint32" }}
 
-            {{ template "go_arrays_new_struct_reference" Params "Entries" .Uint64s "Type" "uint64" }}
+            {{ template "go_primitives_new_struct_reference" Params "Entries" .Uint64s }}
+            {{ template "go_arrays_new_struct_reference" Params "Entries" .Uint64Arrays "Type" "uint64" }}
             {{ template "go_maps_new_struct_reference" Params "Entries" .Uint64Maps "Type" "uint64" }}
 
-            {{ template "go_arrays_new_struct_reference" Params "Entries" .Float32s "Type" "float32" }}
+            {{ template "go_primitives_new_struct_reference" Params "Entries" .Float32s }}
+            {{ template "go_arrays_new_struct_reference" Params "Entries" .Float32Arrays "Type" "float32" }}
             {{ template "go_maps_new_struct_reference" Params "Entries" .Float32Maps "Type" "float32" }}
 
-            {{ template "go_arrays_new_struct_reference" Params "Entries" .Float64s "Type" "float64" }}
+            {{ template "go_primitives_new_struct_reference" Params "Entries" .Float64s }}
+            {{ template "go_arrays_new_struct_reference" Params "Entries" .Float64Arrays "Type" "float64" }}
             {{ template "go_maps_new_struct_reference" Params "Entries" .Float64Maps "Type" "float64" }}
 
+            {{ template "go_enums_new_struct_reference" . }}
             {{ template "go_enumarrays_new_struct_reference" . }}
             {{ template "go_enummaps_new_struct_reference" . }}
 
             {{ template "go_arrays_new_struct_reference" Params "Entries" .Bytes "Type" "bytes" }}
             {{ template "go_maps_new_struct_reference" Params "Entries" .BytesMaps "Type" "bytes" }}
 
+
+            {{ template "go_primitives_new_struct_reference" Params "Entries" .Bools }}
             {{ template "go_arrays_new_struct_reference" Params "Entries" .BoolArrays "Type" "bool" }}
         }
     }

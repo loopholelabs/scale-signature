@@ -31,7 +31,7 @@ type Generator struct {
 }
 
 func New() (*Generator, error) {
-	templ, err := template.New("").Funcs(templateFunctions()).ParseFS(templates.FS, "*.templ")
+	templ, err := template.New("").Funcs(templateFunctions()).ParseFS(templates.FS, "*go.templ")
 	if err != nil {
 		return nil, err
 	}

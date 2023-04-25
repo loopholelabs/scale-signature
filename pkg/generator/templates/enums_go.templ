@@ -22,6 +22,17 @@
     {{ end }}
 {{ end }}
 
+{{ define "go_enums_new_struct_reference" }}
+    {{ $current_model := . }}
+    {{- range .Enums }}
+        {{- if .Accessor }}
+            {{ LowerFirst .Name }}: Enum{{ $current_model.Name }}{{ .Default }},
+        {{- else }}
+            {{ .Name }}: Enum{{ $current_model.Name }}{{ .Default }},
+        {{- end -}}
+    {{ end }}
+{{ end }}
+
 {{ define "go_enums_encode" }}
     {{- range .Enums }}
         {{- if (Deref .Accessor) }}

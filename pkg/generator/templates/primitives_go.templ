@@ -9,6 +9,28 @@
     {{ end }}
 {{ end }}
 
+{{ define "go_primitives_new_struct_reference" }}
+    {{ $type := .Type }}
+    {{- range .Entries }}
+        {{- if .Accessor }}
+            {{ LowerFirst .Name }}: {{ .Default }},
+        {{- else }}
+            {{ .Name }}: {{ .Default }},
+        {{- end -}}
+    {{ end }}
+{{ end }}
+
+{{ define "go_strings_new_struct_reference" }}
+    {{ $type := .Type }}
+    {{- range .Entries }}
+        {{- if .Accessor }}
+            {{ LowerFirst .Name }}: "{{ .Default }}",
+        {{- else }}
+            {{ .Name }}: "{{ .Default }}",
+        {{- end -}}
+    {{ end }}
+{{ end }}
+
 {{ define "go_primitives_encode" }}
     {{ $type := .Type }}
     {{- range .Entries }}
