@@ -11,10 +11,11 @@
 	limitations under the License.
 */
 
-package generator
+package golang
 
 import (
 	"bytes"
+	"errors"
 	"github.com/loopholelabs/scale-signature/pkg/generator/templates"
 	"github.com/loopholelabs/scale-signature/pkg/schema"
 	"go/format"
@@ -30,7 +31,7 @@ type Generator struct {
 }
 
 func New() (*Generator, error) {
-	templ, err := template.New("").Funcs(templateFunctions()).ParseFS(templates.FS, "*.templ")
+	templ, err := template.New("").Funcs(templateFunctions()).ParseFS(templates.FS, "*go.templ")
 	if err != nil {
 		return nil, err
 	}
@@ -62,6 +63,7 @@ func templateFunctions() template.FuncMap {
 		"PolyglotPrimitiveDecode": PolyglotPrimitiveDecode,
 		"Deref":                   func(i *bool) bool { return *i },
 		"LowerFirst":              func(s string) string { return string(s[0]+32) + s[1:] },
+		"Params":                  Params,
 	}
 }
 
@@ -149,4 +151,19 @@ func PolyglotPrimitiveDecode(t string) string {
 	default:
 		return ""
 	}
+}
+
+func Params(values ...interface{}) (map[string]interface{}, error) {
+	if len(values)%2 != 0 {
+		return nil, errors.New("parameters must be a list of key/value pairs")
+	}
+	params := make(map[string]interface{}, len(values)/2)
+	for i := 0; i < len(values); i += 2 {
+		key, ok := values[i].(string)
+		if !ok {
+			return nil, errors.New("keys must be strings")
+		}
+		params[key] = values[i+1]
+	}
+	return params, nil
 }

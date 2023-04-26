@@ -11,7 +11,7 @@
 	limitations under the License.
 */
 
-package generator
+package golang
 
 import (
 	"github.com/loopholelabs/scale-signature/pkg/schema"
