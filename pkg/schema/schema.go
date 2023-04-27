@@ -29,7 +29,7 @@ import (
 )
 
 const (
-	V1Alpha1Version = "v1alpha1"
+	V1AlphaVersion = "v1alpha"
 )
 
 var (
@@ -50,6 +50,7 @@ type Schema struct {
 	Version string         `hcl:"version,attr"`
 	Name    string         `hcl:"name,attr"`
 	Tag     string         `hcl:"tag,attr"`
+	Enums   []*EnumSchema  `hcl:"enum,block"`
 	Models  []*ModelSchema `hcl:"model,block"`
 }
 
@@ -79,7 +80,7 @@ func (s *Schema) Decode(data []byte) error {
 
 func (s *Schema) Validate() error {
 	switch s.Version {
-	case V1Alpha1Version:
+	case V1AlphaVersion:
 		if !ValidLabel.MatchString(s.Name) {
 			return ErrInvalidName
 		}
@@ -93,6 +94,11 @@ func (s *Schema) Validate() error {
 			model.Normalize()
 		}
 
+		// Transform all model names and references to TitleCase (e.g. "myModel" -> "MyModel")
+		for _, enum := range s.Enums {
+			enum.Normalize()
+		}
+
 		// Validate all models
 		knownModels := make(map[string]struct{})
 		for _, model := range s.Models {
@@ -102,7 +108,16 @@ func (s *Schema) Validate() error {
 			}
 		}
 
-		// Ensure all model references are valid
+		// Validate all enums
+		knownEnums := make(map[string]struct{})
+		for _, enum := range s.Enums {
+			err := enum.Validate(knownEnums)
+			if err != nil {
+				return err
+			}
+		}
+
+		// Ensure all model and enum references are valid
 		for _, model := range s.Models {
 			for _, modelReference := range model.Models {
 				if _, ok := knownModels[modelReference.Reference]; !ok {
@@ -192,10 +207,26 @@ func (s *Schema) Validate() error {
 				}
 			}
 
-			for _, enumMap := range model.EnumMaps {
-				if !ValidPrimitiveType(enumMap.Value) {
-					if _, ok := knownModels[enumMap.Value]; !ok {
-						return fmt.Errorf("unknown %s.%s.value: %s", model.Name, enumMap.Name, enumMap.Value)
+			for _, enumReference := range model.Enums {
+				if _, ok := knownEnums[enumReference.Reference]; !ok {
+					return fmt.Errorf("unknown %s.%s.reference: %s", model.Name, enumReference.Name, enumReference.Reference)
+				}
+			}
+
+			for _, enumReferenceArray := range model.EnumArrays {
+				if _, ok := knownEnums[enumReferenceArray.Reference]; !ok {
+					return fmt.Errorf("unknown %s.%s.reference: %s", model.Name, enumReferenceArray.Name, enumReferenceArray.Reference)
+				}
+			}
+
+			for _, enumReferenceMap := range model.EnumMaps {
+				if _, ok := knownEnums[enumReferenceMap.Reference]; !ok {
+					return fmt.Errorf("unknown %s.%s.reference: %s", model.Name, enumReferenceMap.Name, enumReferenceMap.Reference)
+				}
+
+				if !ValidPrimitiveType(enumReferenceMap.Value) {
+					if _, ok := knownModels[enumReferenceMap.Value]; !ok {
+						return fmt.Errorf("unknown %s.%s.value: %s", model.Name, enumReferenceMap.Name, enumReferenceMap.Value)
 					}
 				}
 			}
@@ -217,7 +248,7 @@ func ValidPrimitiveType(t string) bool {
 }
 
 const MasterTestingSchema = `
-version = "v1alpha1"
+version = "v1alpha"
 name = "MasterSchema"
 tag = "MasterSchemaTag"
 
@@ -277,10 +308,14 @@ model ModelWithMultipleFieldsAndDescription {
 	}
 }
 
+enum GenericEnum {
+	default = "DefaultValue"
+	values = ["FirstValue", "SecondValue", "DefaultValue"]
+}
+
 model ModelWithEnum {
 	enum EnumField {
-		default = "DefaultValue"
-		values = ["FirstValue", "SecondValue", "DefaultValue"]
+		reference = "GenericEnum"
 	}
 }
 
@@ -288,15 +323,13 @@ model ModelWithEnumAndDescription {
 	description = "Test Description"
 
 	enum EnumField {
-		default = "DefaultValue"
-		values = ["FirstValue", "SecondValue", "DefaultValue"]
+		reference = "GenericEnum"
 	}
 }
 
 model ModelWithEnumAccessor {
 	enum EnumField {
-		default = "DefaultValue"
-		values = ["FirstValue", "SecondValue", "DefaultValue"]
+		reference = "GenericEnum"
 		accessor = true
 	}
 }
@@ -305,8 +338,7 @@ model ModelWithEnumAccessorAndDescription {
 	description = "Test Description"
 
 	enum EnumField {
-		default = "DefaultValue"
-		values = ["FirstValue", "SecondValue", "DefaultValue"]
+		reference = "GenericEnum"
 		accessor = true
 	}
 }
@@ -525,22 +557,21 @@ model ModelWithAllFieldTypes {
 	}
 
 	enum EnumField {
-		default = "DefaultValue"
-		values = ["FirstValue", "SecondValue", "DefaultValue"]
+		reference = "GenericEnum"
 	}
 
 	enum_array EnumArrayField {
-		values = ["FirstValue", "SecondValue"]
+		reference = "GenericEnum"
 		initial_size = 0
 	}
 
 	enum_map EnumMapField {
-		values = ["FirstValue", "SecondValue"]
+		reference = "GenericEnum"
 		value = "string"
 	}
 
 	enum_map EnumMapFieldEmbedded {
-		values = ["FirstValue", "SecondValue"]
+		reference = "GenericEnum"
 		value = "EmptyModel"
 	}
 

@@ -16,24 +16,35 @@
 
 package schema
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type EnumSchema struct {
-	Name     string   `hcl:"name,label"`
-	Default  string   `hcl:"default,attr"`
-	Accessor bool     `hcl:"accessor,optional"`
-	Values   []string `hcl:"values,attr"`
+	Name    string   `hcl:"name,label"`
+	Default string   `hcl:"default,attr"`
+	Values  []string `hcl:"values,attr"`
 }
 
-func (s *EnumSchema) Validate(model *ModelSchema) error {
+func (s *EnumSchema) Normalize() {
+	s.Name = TitleCaser.String(s.Name)
+}
+
+func (s *EnumSchema) Validate(knownEnums map[string]struct{}) error {
 	if !ValidLabel.MatchString(s.Name) {
-		return fmt.Errorf("invalid %s.enum name: %s", model.Name, s.Name)
+		return fmt.Errorf("invalid enum name: %s", s.Name)
+	}
+
+	if _, ok := knownEnums[s.Name]; ok {
+		return fmt.Errorf("duplicate enum name: %s", s.Name)
+	} else {
+		knownEnums[s.Name] = struct{}{}
 	}
 
 	visitedValues := make(map[string]struct{}, 0)
 	for i := 0; i < len(s.Values); i++ {
 		if _, ok := visitedValues[s.Values[i]]; ok {
-			return fmt.Errorf("duplicate value in %s.%s: %s", model.Name, s.Name, s.Values[i])
+			return fmt.Errorf("duplicate value in %s: %s", s.Name, s.Values[i])
 		} else {
 			visitedValues[s.Values[i]] = struct{}{}
 		}
@@ -49,14 +60,31 @@ func (s *EnumSchema) Validate(model *ModelSchema) error {
 		}
 	}
 
-	return fmt.Errorf("invalid %s.%s.default: %s is not a valid value", model.Name, s.Name, s.Default)
+	return fmt.Errorf("invalid %s.default: %s is not a valid value", s.Name, s.Default)
+}
+
+type EnumReferenceSchema struct {
+	Name      string `hcl:"name,label"`
+	Reference string `hcl:"reference,attr"`
+	Accessor  bool   `hcl:"accessor,optional"`
+}
+
+func (s *EnumReferenceSchema) Validate(model *ModelSchema) error {
+	if !ValidLabel.MatchString(s.Name) {
+		return fmt.Errorf("invalid %s.enum name: %s", model.Name, s.Name)
+	}
+
+	if !ValidLabel.MatchString(s.Reference) {
+		return fmt.Errorf("invalid %s.%s.reference: %s", model.Name, s.Name, s.Reference)
+	}
+
+	return nil
 }
 
 type EnumArraySchema struct {
-	Name        string   `hcl:"name,label"`
-	Values      []string `hcl:"values,attr"`
-	Accessor    bool     `hcl:"accessor,optional"`
-	InitialSize uint32   `hcl:"initial_size,attr"`
+	Name        string `hcl:"name,label"`
+	Reference   string `hcl:"reference,attr"`
+	InitialSize uint32 `hcl:"initial_size,attr"`
 }
 
 func (s *EnumArraySchema) Validate(model *ModelSchema) error {
@@ -64,23 +92,18 @@ func (s *EnumArraySchema) Validate(model *ModelSchema) error {
 		return fmt.Errorf("invalid %s.enum_array name: %s", model.Name, s.Name)
 	}
 
-	visitedValues := make(map[string]struct{}, 0)
-	for i := 0; i < len(s.Values); i++ {
-		if _, ok := visitedValues[s.Values[i]]; ok {
-			return fmt.Errorf("duplicate value in %s.%s: %s", model.Name, s.Name, s.Values[i])
-		} else {
-			visitedValues[s.Values[i]] = struct{}{}
-		}
+	if !ValidLabel.MatchString(s.Reference) {
+		return fmt.Errorf("invalid %s.%s.reference: %s", model.Name, s.Name, s.Reference)
 	}
 
 	return nil
 }
 
 type EnumMapSchema struct {
-	Name     string   `hcl:"name,label"`
-	Values   []string `hcl:"values,attr"`
-	Value    string   `hcl:"value,attr"`
-	Accessor bool     `hcl:"accessor,optional"`
+	Name      string `hcl:"name,label"`
+	Reference string `hcl:"reference,attr"`
+	Value     string `hcl:"value,attr"`
+	Accessor  bool   `hcl:"accessor,optional"`
 }
 
 func (s *EnumMapSchema) Validate(model *ModelSchema) error {
@@ -88,13 +111,8 @@ func (s *EnumMapSchema) Validate(model *ModelSchema) error {
 		return fmt.Errorf("invalid %s.enum_map name: %s", model.Name, s.Name)
 	}
 
-	visitedValues := make(map[string]struct{}, 0)
-	for i := 0; i < len(s.Values); i++ {
-		if _, ok := visitedValues[s.Values[i]]; ok {
-			return fmt.Errorf("duplicate value in %s.%s: %s", model.Name, s.Name, s.Values[i])
-		} else {
-			visitedValues[s.Values[i]] = struct{}{}
-		}
+	if !ValidLabel.MatchString(s.Reference) {
+		return fmt.Errorf("invalid %s.%s.reference: %s", model.Name, s.Name, s.Reference)
 	}
 
 	return nil
