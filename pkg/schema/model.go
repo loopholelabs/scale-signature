@@ -40,9 +40,9 @@ type ModelSchema struct {
 	BytesArrays []*BytesArraySchema `hcl:"bytes_array,block"`
 	BytesMaps   []*BytesMapSchema   `hcl:"bytes_map,block"`
 
-	Enums      []*EnumSchema      `hcl:"enum,block"`
-	EnumArrays []*EnumArraySchema `hcl:"enum_array,block"`
-	EnumMaps   []*EnumMapSchema   `hcl:"enum_map,block"`
+	Enums      []*EnumReferenceSchema `hcl:"enum,block"`
+	EnumArrays []*EnumArraySchema     `hcl:"enum_array,block"`
+	EnumMaps   []*EnumMapSchema       `hcl:"enum_map,block"`
 
 	Int32s      []*Int32Schema      `hcl:"int32,block"`
 	Int32Arrays []*Int32ArraySchema `hcl:"int32_array,block"`
@@ -69,62 +69,6 @@ type ModelSchema struct {
 	Float64Maps   []*Float64MapSchema   `hcl:"float64_map,block"`
 }
 
-type ModelReferenceSchema struct {
-	Name      string `hcl:"name,label"`
-	Reference string `hcl:"reference,attr"`
-	Accessor  bool   `hcl:"accessor,optional"`
-}
-
-func (m *ModelReferenceSchema) Validate(model *ModelSchema) error {
-	if !ValidLabel.MatchString(m.Name) {
-		return fmt.Errorf("invalid %s.model name: %s", model.Name, m.Name)
-	}
-
-	if !ValidLabel.MatchString(m.Reference) {
-		return fmt.Errorf("invalid %s.%s.reference: %s", model.Name, m.Name, m.Reference)
-	}
-
-	return nil
-}
-
-type ModelReferenceArraySchema struct {
-	Name        string `hcl:"name,label"`
-	Reference   string `hcl:"reference,attr"`
-	InitialSize uint32 `hcl:"initial_size,attr"`
-	Accessor    bool   `hcl:"accessor,optional"`
-}
-
-func (m *ModelReferenceArraySchema) Validate(model *ModelSchema) error {
-	if !ValidLabel.MatchString(m.Name) {
-		return fmt.Errorf("invalid %s.model name: %s", model.Name, m.Name)
-	}
-
-	if !ValidLabel.MatchString(m.Reference) {
-		return fmt.Errorf("invalid %s.%s.reference: %s", model.Name, m.Name, m.Reference)
-	}
-
-	return nil
-}
-
-type ModelReferenceMapSchema struct {
-	Name      string `hcl:"name,label"`
-	Reference string `hcl:"reference,attr"`
-	Value     string `hcl:"value,attr"`
-	Accessor  bool   `hcl:"accessor,optional"`
-}
-
-func (m *ModelReferenceMapSchema) Validate(model *ModelSchema) error {
-	if !ValidLabel.MatchString(m.Name) {
-		return fmt.Errorf("invalid %s.model name: %s", model.Name, m.Name)
-	}
-
-	if !ValidLabel.MatchString(m.Reference) {
-		return fmt.Errorf("invalid %s.%s.reference: %s", model.Name, m.Name, m.Reference)
-	}
-
-	return nil
-}
-
 func (m *ModelSchema) Normalize() {
 	m.Name = TitleCaser.String(m.Name)
 	for _, modelReference := range m.Models {
@@ -145,6 +89,27 @@ func (m *ModelSchema) Normalize() {
 			modelReferenceMap.Value = TitleCaser.String(modelReferenceMap.Value)
 		} else {
 			modelReferenceMap.Value = strings.ToLower(modelReferenceMap.Value)
+		}
+	}
+
+	for _, enumReference := range m.Enums {
+		enumReference.Name = TitleCaser.String(enumReference.Name)
+		enumReference.Reference = TitleCaser.String(enumReference.Reference)
+	}
+
+	for _, enumReferenceArray := range m.EnumArrays {
+		enumReferenceArray.Name = TitleCaser.String(enumReferenceArray.Name)
+		enumReferenceArray.Reference = TitleCaser.String(enumReferenceArray.Reference)
+	}
+
+	for _, enumReferenceMap := range m.ModelMaps {
+		enumReferenceMap.Name = TitleCaser.String(enumReferenceMap.Name)
+		enumReferenceMap.Reference = TitleCaser.String(enumReferenceMap.Reference)
+
+		if !ValidPrimitiveType(strings.ToLower(enumReferenceMap.Value)) {
+			enumReferenceMap.Value = TitleCaser.String(enumReferenceMap.Value)
+		} else {
+			enumReferenceMap.Value = strings.ToLower(enumReferenceMap.Value)
 		}
 	}
 
@@ -280,34 +245,6 @@ func (m *ModelSchema) Normalize() {
 
 	for _, bArray := range m.BoolArrays {
 		bArray.Name = TitleCaser.String(bArray.Name)
-	}
-
-	for _, enum := range m.Enums {
-		enum.Name = TitleCaser.String(enum.Name)
-		enum.Default = TitleCaser.String(enum.Default)
-		for i := range enum.Values {
-			enum.Values[i] = TitleCaser.String(enum.Values[i])
-		}
-	}
-
-	for _, enumArray := range m.EnumArrays {
-		enumArray.Name = TitleCaser.String(enumArray.Name)
-		for i := range enumArray.Values {
-			enumArray.Values[i] = TitleCaser.String(enumArray.Values[i])
-		}
-	}
-
-	for _, enumMap := range m.EnumMaps {
-		enumMap.Name = TitleCaser.String(enumMap.Name)
-		for i := range enumMap.Values {
-			enumMap.Values[i] = TitleCaser.String(enumMap.Values[i])
-		}
-
-		if !ValidPrimitiveType(strings.ToLower(enumMap.Value)) {
-			enumMap.Value = TitleCaser.String(enumMap.Value)
-		} else {
-			enumMap.Value = strings.ToLower(enumMap.Value)
-		}
 	}
 
 	for _, b := range m.Bytes {
@@ -757,6 +694,62 @@ func (m *ModelSchema) Validate(knownModels map[string]struct{}) error {
 		} else {
 			knownFields[enumMap.Name] = struct{}{}
 		}
+	}
+
+	return nil
+}
+
+type ModelReferenceSchema struct {
+	Name      string `hcl:"name,label"`
+	Reference string `hcl:"reference,attr"`
+	Accessor  bool   `hcl:"accessor,optional"`
+}
+
+func (m *ModelReferenceSchema) Validate(model *ModelSchema) error {
+	if !ValidLabel.MatchString(m.Name) {
+		return fmt.Errorf("invalid %s.model name: %s", model.Name, m.Name)
+	}
+
+	if !ValidLabel.MatchString(m.Reference) {
+		return fmt.Errorf("invalid %s.%s.reference: %s", model.Name, m.Name, m.Reference)
+	}
+
+	return nil
+}
+
+type ModelReferenceArraySchema struct {
+	Name        string `hcl:"name,label"`
+	Reference   string `hcl:"reference,attr"`
+	InitialSize uint32 `hcl:"initial_size,attr"`
+	Accessor    bool   `hcl:"accessor,optional"`
+}
+
+func (m *ModelReferenceArraySchema) Validate(model *ModelSchema) error {
+	if !ValidLabel.MatchString(m.Name) {
+		return fmt.Errorf("invalid %s.model name: %s", model.Name, m.Name)
+	}
+
+	if !ValidLabel.MatchString(m.Reference) {
+		return fmt.Errorf("invalid %s.%s.reference: %s", model.Name, m.Name, m.Reference)
+	}
+
+	return nil
+}
+
+type ModelReferenceMapSchema struct {
+	Name      string `hcl:"name,label"`
+	Reference string `hcl:"reference,attr"`
+	Value     string `hcl:"value,attr"`
+	Accessor  bool   `hcl:"accessor,optional"`
+}
+
+func (m *ModelReferenceMapSchema) Validate(model *ModelSchema) error {
+	if !ValidLabel.MatchString(m.Name) {
+		return fmt.Errorf("invalid %s.model name: %s", model.Name, m.Name)
+	}
+
+	if !ValidLabel.MatchString(m.Reference) {
+		return fmt.Errorf("invalid %s.%s.reference: %s", model.Name, m.Name, m.Reference)
 	}
 
 	return nil
