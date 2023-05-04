@@ -102,7 +102,7 @@ func (s *Schema) Validate() error {
 		// Validate all models
 		knownModels := make(map[string]struct{})
 		for _, model := range s.Models {
-			err := model.Validate(knownModels)
+			err := model.Validate(knownModels, s.Enums)
 			if err != nil {
 				return err
 			}
@@ -195,14 +195,6 @@ func (s *Schema) Validate() error {
 				if !ValidPrimitiveType(f64Map.Value) {
 					if _, ok := knownModels[f64Map.Value]; !ok {
 						return fmt.Errorf("unknown %s.%s.value: %s", model.Name, f64Map.Name, f64Map.Value)
-					}
-				}
-			}
-
-			for _, bMap := range model.BytesMaps {
-				if !ValidPrimitiveType(bMap.Value) {
-					if _, ok := knownModels[bMap.Value]; !ok {
-						return fmt.Errorf("unknown %s.%s.value: %s", model.Name, bMap.Name, bMap.Value)
 					}
 				}
 			}
@@ -309,12 +301,12 @@ model ModelWithMultipleFieldsAndDescription {
 }
 
 enum GenericEnum {
-	default = "DefaultValue"
 	values = ["FirstValue", "SecondValue", "DefaultValue"]
 }
 
 model ModelWithEnum {
 	enum EnumField {
+		default = "DefaultValue"
 		reference = "GenericEnum"
 	}
 }
@@ -323,12 +315,14 @@ model ModelWithEnumAndDescription {
 	description = "Test Description"
 
 	enum EnumField {
+		default = "DefaultValue"
 		reference = "GenericEnum"
 	}
 }
 
 model ModelWithEnumAccessor {
 	enum EnumField {
+		default = "DefaultValue"
 		reference = "GenericEnum"
 		accessor = true
 	}
@@ -338,6 +332,7 @@ model ModelWithEnumAccessorAndDescription {
 	description = "Test Description"
 
 	enum EnumField {
+		default = "DefaultValue"
 		reference = "GenericEnum"
 		accessor = true
 	}
@@ -347,11 +342,25 @@ model ModelWithMultipleFieldsAccessor {
 	string StringField {
 		default = "DefaultValue"
 		accessor = true
+		regex_validator {
+			expression = "^[a-zA-Z0-9]*$"
+		}
+		length_validator {
+			min = 1
+			max= 20
+		}
+		case_modifier {
+			kind = "upper"
+		}
 	}
 
 	int32 Int32Field {
 		default = 32
 		accessor = true
+		limit_validator {
+			min = 0
+			max = 100
+		}
 	}
 }
 
@@ -548,16 +557,9 @@ model ModelWithAllFieldTypes {
 		initial_size = 0
 	}
 
-	bytes_map BytesMapField {
-		value = "bytes"
-	}
-
-	bytes_map BytesMapFieldEmbedded {
-		value = "EmptyModel"
-	}
-
 	enum EnumField {
 		reference = "GenericEnum"
+		default = "DefaultValue"
 	}
 
 	enum_array EnumArrayField {

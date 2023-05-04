@@ -23,7 +23,7 @@ import (
 )
 
 const (
-	packageName = "types"
+	defaultPackageName = "types"
 )
 
 type Generator struct {
@@ -41,7 +41,11 @@ func New() (*Generator, error) {
 	}, nil
 }
 
-func (g *Generator) Generate(schema *schema.Schema, version string) ([]byte, error) {
+func (g *Generator) Generate(schema *schema.Schema, packageName string, version string) ([]byte, error) {
+	if packageName == "" {
+		packageName = defaultPackageName
+	}
+
 	buf := new(bytes.Buffer)
 	err := g.templ.ExecuteTemplate(buf, "types.go.templ", map[string]any{
 		"schema":  schema,

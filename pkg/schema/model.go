@@ -38,35 +38,34 @@ type ModelSchema struct {
 
 	Bytes       []*BytesSchema      `hcl:"bytes,block"`
 	BytesArrays []*BytesArraySchema `hcl:"bytes_array,block"`
-	BytesMaps   []*BytesMapSchema   `hcl:"bytes_map,block"`
 
 	Enums      []*EnumReferenceSchema `hcl:"enum,block"`
 	EnumArrays []*EnumArraySchema     `hcl:"enum_array,block"`
 	EnumMaps   []*EnumMapSchema       `hcl:"enum_map,block"`
 
-	Int32s      []*Int32Schema      `hcl:"int32,block"`
-	Int32Arrays []*Int32ArraySchema `hcl:"int32_array,block"`
-	Int32Maps   []*Int32MapSchema   `hcl:"int32_map,block"`
+	Int32s      []*NumberSchema[int32]      `hcl:"int32,block"`
+	Int32Arrays []*NumberArraySchema[int32] `hcl:"int32_array,block"`
+	Int32Maps   []*NumberMapSchema[int32]   `hcl:"int32_map,block"`
 
-	Int64s      []*Int64Schema      `hcl:"int64,block"`
-	Int64Arrays []*Int64ArraySchema `hcl:"int64_array,block"`
-	Int64Maps   []*Int64MapSchema   `hcl:"int64_map,block"`
+	Int64s      []*NumberSchema[int64]      `hcl:"int64,block"`
+	Int64Arrays []*NumberArraySchema[int64] `hcl:"int64_array,block"`
+	Int64Maps   []*NumberMapSchema[int64]   `hcl:"int64_map,block"`
 
-	Uint32s      []*Uint32Schema      `hcl:"uint32,block"`
-	Uint32Arrays []*Uint32ArraySchema `hcl:"uint32_array,block"`
-	Uint32Maps   []*Uint32MapSchema   `hcl:"uint32_map,block"`
+	Uint32s      []*NumberSchema[uint32]      `hcl:"uint32,block"`
+	Uint32Arrays []*NumberArraySchema[uint32] `hcl:"uint32_array,block"`
+	Uint32Maps   []*NumberMapSchema[uint32]   `hcl:"uint32_map,block"`
 
-	Uint64s      []*Uint64Schema      `hcl:"uint64,block"`
-	Uint64Arrays []*Uint64ArraySchema `hcl:"uint64_array,block"`
-	Uint64Maps   []*Uint64MapSchema   `hcl:"uint64_map,block"`
+	Uint64s      []*NumberSchema[uint64]      `hcl:"uint64,block"`
+	Uint64Arrays []*NumberArraySchema[uint64] `hcl:"uint64_array,block"`
+	Uint64Maps   []*NumberMapSchema[uint64]   `hcl:"uint64_map,block"`
 
-	Float32s      []*Float32Schema      `hcl:"float32,block"`
-	Float32Arrays []*Float32ArraySchema `hcl:"float32_array,block"`
-	Float32Maps   []*Float32MapSchema   `hcl:"float32_map,block"`
+	Float32s      []*NumberSchema[float32]      `hcl:"float32,block"`
+	Float32Arrays []*NumberArraySchema[float32] `hcl:"float32_array,block"`
+	Float32Maps   []*NumberMapSchema[float32]   `hcl:"float32_map,block"`
 
-	Float64s      []*Float64Schema      `hcl:"float64,block"`
-	Float64Arrays []*Float64ArraySchema `hcl:"float64_array,block"`
-	Float64Maps   []*Float64MapSchema   `hcl:"float64_map,block"`
+	Float64s      []*NumberSchema[float64]      `hcl:"float64,block"`
+	Float64Arrays []*NumberArraySchema[float64] `hcl:"float64_array,block"`
+	Float64Maps   []*NumberMapSchema[float64]   `hcl:"float64_map,block"`
 }
 
 func (m *ModelSchema) Normalize() {
@@ -255,19 +254,9 @@ func (m *ModelSchema) Normalize() {
 		bArray.Name = TitleCaser.String(bArray.Name)
 	}
 
-	for _, bMap := range m.BytesMaps {
-		bMap.Name = TitleCaser.String(bMap.Name)
-
-		if !ValidPrimitiveType(strings.ToLower(bMap.Value)) {
-			bMap.Value = TitleCaser.String(bMap.Value)
-		} else {
-			bMap.Value = strings.ToLower(bMap.Value)
-		}
-	}
-
 }
 
-func (m *ModelSchema) Validate(knownModels map[string]struct{}) error {
+func (m *ModelSchema) Validate(knownModels map[string]struct{}, enums []*EnumSchema) error {
 	if !ValidLabel.MatchString(m.Name) {
 		return fmt.Errorf("invalid model name: %s", m.Name)
 	}
@@ -644,21 +633,8 @@ func (m *ModelSchema) Validate(knownModels map[string]struct{}) error {
 		}
 	}
 
-	for _, bMap := range m.BytesMaps {
-		err := bMap.Validate(m)
-		if err != nil {
-			return err
-		}
-
-		if _, ok := knownFields[bMap.Name]; ok {
-			return fmt.Errorf("duplicate %s.bytes_map name: %s", m.Name, bMap.Name)
-		} else {
-			knownFields[bMap.Name] = struct{}{}
-		}
-	}
-
 	for _, enum := range m.Enums {
-		err := enum.Validate(m)
+		err := enum.Validate(m, enums)
 		if err != nil {
 			return err
 		}

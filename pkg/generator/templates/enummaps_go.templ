@@ -1,11 +1,11 @@
 {{ define "go_enummaps_definition" }}
     {{ $current_model := . }}
     {{- range .EnumMaps }}
-        type Enum{{ $current_model.Name }}{{ .Name }} uint32
+        type {{ .Name }} uint32
         {{ $current_enum := . }}
         const (
         {{- range $index, $value := .Values }}
-            Enum{{ $current_model.Name }}{{ $current_enum.Name }}{{ $value }} Enum{{ $current_model.Name }}{{ $current_enum.Name }} = {{ $index }}
+            {{ $current_enum.Name }}{{ $value }} {{ $current_enum.Name }} = {{ $index }}
         {{ end }}
         )
     {{ end }}
@@ -15,19 +15,19 @@
     {{ $current_model := . }}
     {{- range .EnumMaps }}
         {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
-            {{ LowerFirst .Name }} map[Enum{{ $current_model.Name }}{{ .Name }}]{{ Primitive .Value }}
+            {{ LowerFirst .Name }} map[{{ .Reference }}]{{ Primitive .Value }}
         {{- end }}
 
         {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
-            {{ LowerFirst .Name }} map[Enum{{ $current_model.Name }}{{ .Name }}]*{{ .Value }}
+            {{ LowerFirst .Name }} map[{{ .Reference }}]*{{ .Value }}
         {{- end }}
 
         {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
-            {{ .Name }} map[Enum{{ $current_model.Name }}{{ .Name }}]{{ Primitive .Value }}
+            {{ .Name }} map[{{ .Reference }}]{{ Primitive .Value }}
         {{- end }}
 
         {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
-            {{ .Name }} map[Enum{{ $current_model.Name }}{{ .Name }}]*{{ .Value }}
+            {{ .Name }} map[{{ .Reference }}]*{{ .Value }}
         {{- end }}
     {{ end }}
 {{ end }}
@@ -36,19 +36,19 @@
     {{ $current_model := . }}
     {{- range .EnumMaps }}
         {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
-            {{ LowerFirst .Name }}: make(map[Enum{{ $current_model.Name }}{{ .Name }}]{{ Primitive .Value }}),
+            {{ LowerFirst .Name }}: make(map[{{ .Reference }}]{{ Primitive .Value }}),
         {{- end }}
 
         {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
-            {{ LowerFirst .Name }}: make(map[Enum{{ $current_model.Name }}{{ .Name }}]*{{ .Value }}),
+            {{ LowerFirst .Name }}: make(map[{{ .Reference }}]*{{ .Value }}),
         {{- end }}
 
         {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
-            {{ .Name }}: make(map[Enum{{ $current_model.Name }}{{ .Name }}]{{ Primitive .Value }}),
+            {{ .Name }}: make(map[{{ .Reference }}]{{ Primitive .Value }}),
         {{- end }}
 
         {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
-            {{ .Name }}: make(map[Enum{{ $current_model.Name }}{{ .Name }}]*{{ .Value }}),
+            {{ .Name }}: make(map[{{ .Reference }}]*{{ .Value }}),
         {{- end }}
     {{ end }}
 {{ end }}
@@ -67,7 +67,7 @@
             e.Map(uint32(len(x.{{ LowerFirst .Name }})), polyglot.Uint32Kind, polyglot.AnyKind)
             for k, v := range x.{{ LowerFirst .Name }} {
                 e.Uint32(uint32(k))
-                v.encode(b)
+                v.Encode(e)
             }
         {{- end }}
 
@@ -83,7 +83,7 @@
             e.Map(uint32(len(x.{{ .Name }})), polyglot.Uint32Kind, polyglot.AnyKind)
             for k, v := range x.{{ .Name }} {
                 e.Uint32(uint32(k))
-                v.encode(b)
+                v.Encode(b)
             }
         {{- end }}
     {{ end }}
@@ -99,20 +99,20 @@
             }
 
             if uint32(len(x.{{ LowerFirst .Name }})) != mapSize{{ LowerFirst .Name }} {
-                x.{{ LowerFirst .Name }} = make(map[Enum{{ $current_model.Name }}{{ .Name }}]{{ Primitive .Value }}, mapSize{{ LowerFirst .Name }})
+                x.{{ LowerFirst .Name }} = make(map[{{ .Reference }}]{{ Primitive .Value }}, mapSize{{ LowerFirst .Name }})
             }
 
             for i := uint32(0); i < mapSize{{ LowerFirst .Name }}; i++ {
-                var k Enum{{ $current_model.Name }}{{ .Name }}
+                var k {{ .Reference }}
                 enumValue{{ LowerFirst .Name }}, err := d.Uint32()
                 if err != nil {
                     return err
                 }
                 {{ $current_enum := . }}
-                switch Enum{{ $current_model.Name }}{{ .Name }}(enumValue{{ LowerFirst .Name }}) {
+                switch {{ .Reference }}(enumValue{{ LowerFirst .Name }}) {
                 {{- range $index, $value := .Values }}
-                    case Enum{{ $current_model.Name }}{{ $current_enum.Name }}{{ $value }}:
-                        k = Enum{{ $current_model.Name }}{{ $current_enum.Name }}{{ $value }}
+                    case {{ .Reference }}{{ $value }}:
+                        k = {{ .Reference }}{{ $value }}
                 {{- end }}
                     default:
                         return InvalidEnum
@@ -131,20 +131,20 @@
             }
 
             if uint32(len(x.{{ LowerFirst .Name }})) != mapSize{{ LowerFirst .Name }} {
-                x.{{ LowerFirst .Name }} = make(map[Enum{{ $current_model.Name }}{{ .Name }}]*{{ .Value }}, mapSize{{ LowerFirst .Name }})
+                x.{{ LowerFirst .Name }} = make(map[{{ .Reference }}]*{{ .Value }}, mapSize{{ LowerFirst .Name }})
             }
 
             for i := uint32(0); i < mapSize{{ LowerFirst .Name }}; i++ {
-                var k Enum{{ $current_model.Name }}{{ .Name }}
+                var k {{ .Reference }}
                 enumValue{{ LowerFirst .Name }}, err := d.Uint32()
                 if err != nil {
                     return err
                 }
                 {{ $current_enum := . }}
-                switch Enum{{ $current_model.Name }}{{ .Name }}(enumValue{{ LowerFirst .Name }}) {
+                switch {{ .Reference }}(enumValue{{ LowerFirst .Name }}) {
                 {{- range $index, $value := .Values }}
-                    case Enum{{ $current_model.Name }}{{ $current_enum.Name }}{{ $value }}:
-                        k = Enum{{ $current_model.Name }}{{ $current_enum.Name }}{{ $value }}
+                    case {{ .Reference }}{{ $value }}:
+                        k = {{ .Reference }}{{ $value }}
                 {{- end }}
                     default:
                         return InvalidEnum
@@ -165,23 +165,13 @@
             }
 
             if uint32(len(x.{{ .Name }})) != mapSize{{ .Name }} {
-                x.{{ .Name }} = make(map[Enum{{ $current_model.Name }}{{ .Name }}]{{ Primitive .Value }}, mapSize{{ .Name }})
+                x.{{ .Name }} = make(map[{{ .Reference }}]{{ Primitive .Value }}, mapSize{{ .Name }})
             }
 
             for i := uint32(0); i < mapSize{{ .Name }}; i++ {
-                var k Enum{{ $current_model.Name }}{{ .Name }}
-                enumValue{{ .Name }}, err := d.Uint32()
+                k, err := decode{{ .Reference }}(d)
                 if err != nil {
                     return err
-                }
-                {{ $current_enum := . }}
-                switch Enum{{ $current_model.Name }}{{ .Name }}(enumValue{{ .Name }}) {
-                {{- range $index, $value := .Values }}
-                    case Enum{{ $current_model.Name }}{{ $current_enum.Name }}{{ $value }}:
-                        k = Enum{{ $current_model.Name }}{{ $current_enum.Name }}{{ $value }}
-                {{- end }}
-                    default:
-                        return InvalidEnum
                 }
                 x.{{ .Name }}[k], err = d.{{ PolyglotPrimitiveDecode .Value }}()
                 if err != nil {
@@ -197,23 +187,13 @@
             }
 
             if uint32(len(x.{{ .Name }})) != mapSize{{ .Name }} {
-                x.{{ .Name }} = make(map[Enum{{ $current_model.Name }}{{ .Name }}]*{{ .Value }}, mapSize{{ .Name }})
+                x.{{ .Name }} = make(map[{{ .Reference }}]*{{ .Value }}, mapSize{{ .Name }})
             }
 
             for i := uint32(0); i < mapSize{{ .Name }}; i++ {
-                var k Enum{{ $current_model.Name }}{{ .Name }}
-                enumValue{{ .Name }}, err := d.Uint32()
+                k, err := decode{{ .Reference }}(d)
                 if err != nil {
                     return err
-                }
-                {{ $current_enum := . }}
-                switch Enum{{ $current_model.Name }}{{ .Name }}(enumValue{{ .Name }}) {
-                {{- range $index, $value := .Values }}
-                    case Enum{{ $current_model.Name }}{{ $current_enum.Name }}{{ $value }}:
-                        k = Enum{{ $current_model.Name }}{{ $current_enum.Name }}{{ $value }}
-                {{- end }}
-                    default:
-                        return InvalidEnum
                 }
                 v := New{{ .Value }}()
                 err = v._decode(d)

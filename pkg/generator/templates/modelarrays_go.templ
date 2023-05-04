@@ -23,12 +23,12 @@
         {{- if .Accessor }}
             e.Slice(uint32(len(x.{{ LowerFirst .Name }})), polyglot.AnyKind)
             for _, a := range x.{{ LowerFirst .Name }} {
-                a.encode(b)
+                a.Encode(b)
             }
         {{- else }}
             e.Slice(uint32(len(x.{{ .Name }})), polyglot.AnyKind)
             for _, a := range x.{{ .Name }} {
-                a.encode(b)
+                a.Encode(b)
             }
         {{- end -}}
     {{ end }}

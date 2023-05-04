@@ -19,6 +19,7 @@ package schema
 import (
 	"fmt"
 	"regexp"
+	"strings"
 )
 
 type StringRegexValidatorSchema struct {
@@ -40,7 +41,7 @@ type StringSchema struct {
 	Accessor        *bool                        `hcl:"accessor,optional"`
 	RegexValidator  *StringRegexValidatorSchema  `hcl:"regex_validator,block"`
 	LengthValidator *StringLengthValidatorSchema `hcl:"length_validator,block"`
-	CaseModifier    *StringCaseModifierSchema    `hcl:"caseModifier,block"`
+	CaseModifier    *StringCaseModifierSchema    `hcl:"case_modifier,block"`
 }
 
 func (s *StringSchema) Validate(model *ModelSchema) error {
@@ -60,11 +61,29 @@ func (s *StringSchema) Validate(model *ModelSchema) error {
 				}
 			}
 		}
+
+		if s.LengthValidator.Minimum != nil && s.LengthValidator.Maximum != nil {
+			if len(s.Default) < int(*s.LengthValidator.Minimum) || len(s.Default) > int(*s.LengthValidator.Maximum) {
+				return fmt.Errorf("invalid %s.%s.default: length must be between %d and %d", model.Name, s.Name, *s.LengthValidator.Minimum, *s.LengthValidator.Maximum)
+			}
+		} else if s.LengthValidator.Minimum != nil {
+			if len(s.Default) < int(*s.LengthValidator.Minimum) {
+				return fmt.Errorf("invalid %s.%s.default: length must be greater than %d", model.Name, s.Name, *s.LengthValidator.Minimum)
+			}
+		} else if s.LengthValidator.Maximum != nil {
+			if len(s.Default) > int(*s.LengthValidator.Maximum) {
+				return fmt.Errorf("invalid %s.%s.default: length must be less than %d", model.Name, s.Name, *s.LengthValidator.Maximum)
+			}
+		}
 	}
 
 	if s.RegexValidator != nil {
-		if _, err := regexp.Compile(s.RegexValidator.Expression); err != nil {
+		regex, err := regexp.Compile(s.RegexValidator.Expression)
+		if err != nil {
 			return fmt.Errorf("invalid %s.%s.regex_validator: %w", model.Name, s.Name, err)
+		}
+		if !regex.MatchString(s.Default) {
+			return fmt.Errorf("invalid %s.%s.default: does not match regex", model.Name, s.Name)
 		}
 	}
 
@@ -73,6 +92,12 @@ func (s *StringSchema) Validate(model *ModelSchema) error {
 		case "upper", "lower", "none":
 		default:
 			return fmt.Errorf("invalid %s.%s.caseModifier: kind must be upper, lower or none", model.Name, s.Name)
+		}
+
+		if s.CaseModifier.Kind == "upper" {
+			s.Default = strings.ToUpper(s.Default)
+		} else if s.CaseModifier.Kind == "lower" {
+			s.Default = strings.ToLower(s.Default)
 		}
 	}
 

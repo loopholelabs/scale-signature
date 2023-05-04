@@ -70,7 +70,7 @@ func TestSchema(t *testing.T) {
 	assert.Equal(t, int32(32), s.Models[7].Int32s[0].Default)
 
 	assert.Equal(t, "GenericEnum", s.Enums[0].Name)
-	assert.Equal(t, []string{"DefaultValue", "SecondValue", "FirstValue"}, s.Enums[0].Values)
+	assert.Equal(t, []string{"FirstValue", "SecondValue", "DefaultValue"}, s.Enums[0].Values)
 
 	assert.Equal(t, "ModelWithEnum", s.Models[8].Name)
 	assert.Equal(t, "EnumField", s.Models[8].Enums[0].Name)
@@ -94,7 +94,7 @@ func TestSchema(t *testing.T) {
 
 	assert.Equal(t, "ModelWithMultipleFieldsAccessor", s.Models[12].Name)
 	assert.Equal(t, "StringField", s.Models[12].Strings[0].Name)
-	assert.Equal(t, "DefaultValue", s.Models[12].Strings[0].Default)
+	assert.Equal(t, "DEFAULTVALUE", s.Models[12].Strings[0].Default)
 	assert.Equal(t, true, *s.Models[12].Strings[0].Accessor)
 	assert.Equal(t, "Int32Field", s.Models[12].Int32s[0].Name)
 	assert.Equal(t, int32(32), s.Models[12].Int32s[0].Default)
@@ -191,10 +191,6 @@ func TestSchema(t *testing.T) {
 	assert.Equal(t, "BytesField", s.Models[18].Bytes[0].Name)
 	assert.Equal(t, "BytesArrayField", s.Models[18].BytesArrays[0].Name)
 	assert.Equal(t, uint32(0), s.Models[18].BytesArrays[0].InitialSize)
-	assert.Equal(t, "BytesMapField", s.Models[18].BytesMaps[0].Name)
-	assert.Equal(t, "bytes", s.Models[18].BytesMaps[0].Value)
-	assert.Equal(t, "BytesMapFieldEmbedded", s.Models[18].BytesMaps[1].Name)
-	assert.Equal(t, "EmptyModel", s.Models[18].BytesMaps[1].Value)
 	assert.Equal(t, "EnumField", s.Models[18].Enums[0].Name)
 	assert.Equal(t, "GenericEnum", s.Models[18].Enums[0].Reference)
 	assert.Equal(t, "EnumArrayField", s.Models[18].EnumArrays[0].Name)

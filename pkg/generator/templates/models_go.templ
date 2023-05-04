@@ -21,9 +21,9 @@
 {{ define "go_models_encode" }}
     {{- range .Models }}
         {{- if .Accessor }}
-            x.{{ LowerFirst .Name }}.encode(b)
+            x.{{ LowerFirst .Name }}.Encode(b)
         {{- else }}
-            x.{{ .Name }}.encode(b)
+            x.{{ .Name }}.Encode(b)
         {{- end -}}
     {{ end }}
 {{ end }}

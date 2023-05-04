@@ -18,21 +18,78 @@ package schema
 
 import "fmt"
 
-type Int32LimitValidatorSchema struct {
-	Maximum *int32 `hcl:"maximum,optional"`
-	Minimum *int32 `hcl:"minimum,optional"`
+type Number interface {
+	~int | ~int8 | ~int16 | ~int32 | ~int64 | ~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64 | ~float32 | ~float64
 }
 
-type Int32Schema struct {
-	Name           string                     `hcl:"name,label"`
-	Default        int32                      `hcl:"default,attr"`
-	Accessor       *bool                      `hcl:"accessor,optional"`
-	LimitValidator *Int32LimitValidatorSchema `hcl:"limit_validator,block"`
+type NumberLimitValidatorSchema[T Number] struct {
+	Maximum *T `hcl:"max,optional"`
+	Minimum *T `hcl:"min,optional"`
 }
 
-func (s *Int32Schema) Validate(model *ModelSchema) error {
+type NumberSchema[T Number] struct {
+	Name           string                         `hcl:"name,label"`
+	Default        T                              `hcl:"default,attr"`
+	Accessor       *bool                          `hcl:"accessor,optional"`
+	LimitValidator *NumberLimitValidatorSchema[T] `hcl:"limit_validator,block"`
+}
+
+func (s *NumberSchema[T]) Validate(model *ModelSchema) error {
 	if !ValidLabel.MatchString(s.Name) {
-		return fmt.Errorf("invalid %s.int32 name: %s", model.Name, s.Name)
+		return fmt.Errorf("invalid %s.%T name: %s", model.Name, *new(T), s.Name)
+	}
+
+	if s.LimitValidator != nil {
+		if s.LimitValidator.Maximum != nil {
+			if s.LimitValidator.Minimum != nil {
+				if *s.LimitValidator.Minimum > *s.LimitValidator.Maximum {
+					return fmt.Errorf("invalid %s.%s.limit_validator: minimum cannot be greater than maximum", model.Name, s.Name)
+				}
+			}
+		}
+
+		if s.LimitValidator.Minimum != nil && s.LimitValidator.Maximum != nil {
+			if s.Default < *s.LimitValidator.Minimum || s.Default > *s.LimitValidator.Maximum {
+				return fmt.Errorf("invalid %s.%s.default: value must be between %v and %v", model.Name, s.Name, *s.LimitValidator.Minimum, *s.LimitValidator.Maximum)
+			}
+		} else if s.LimitValidator != nil {
+			if s.Default < *s.LimitValidator.Minimum {
+				return fmt.Errorf("invalid %s.%s.default: value must be greater than %v", model.Name, s.Name, *s.LimitValidator.Minimum)
+			}
+		} else if s.LimitValidator.Maximum != nil {
+			if s.Default > *s.LimitValidator.Maximum {
+				return fmt.Errorf("invalid %s.%s.default: value must be less than %v", model.Name, s.Name, *s.LimitValidator.Maximum)
+			}
+		}
+	}
+
+	if s.Accessor != nil {
+		if *s.Accessor == false && s.LimitValidator != nil {
+			return fmt.Errorf("invalid %s.%s.accessor: cannot be false while using validators or modifiers", model.Name, s.Name)
+		}
+	} else {
+		if s.LimitValidator != nil {
+			s.Accessor = new(bool)
+			*s.Accessor = true
+		} else {
+			s.Accessor = new(bool)
+			*s.Accessor = false
+		}
+	}
+
+	return nil
+}
+
+type NumberArraySchema[T Number] struct {
+	Name           string                         `hcl:"name,label"`
+	InitialSize    uint32                         `hcl:"initial_size,attr"`
+	Accessor       *bool                          `hcl:"accessor,optional"`
+	LimitValidator *NumberLimitValidatorSchema[T] `hcl:"limit_validator,block"`
+}
+
+func (s *NumberArraySchema[T]) Validate(model *ModelSchema) error {
+	if !ValidLabel.MatchString(s.Name) {
+		return fmt.Errorf("invalid %s.%T_array name: %s", model.Name, *new(T), s.Name)
 	}
 
 	if s.LimitValidator != nil {
@@ -62,55 +119,16 @@ func (s *Int32Schema) Validate(model *ModelSchema) error {
 	return nil
 }
 
-type Int32ArraySchema struct {
-	Name           string                     `hcl:"name,label"`
-	InitialSize    uint32                     `hcl:"initial_size,attr"`
-	Accessor       *bool                      `hcl:"accessor,optional"`
-	LimitValidator *Int32LimitValidatorSchema `hcl:"limit_validator,block"`
+type NumberMapSchema[T Number] struct {
+	Name           string                         `hcl:"name,label"`
+	Value          string                         `hcl:"value,attr"`
+	Accessor       *bool                          `hcl:"accessor,optional"`
+	LimitValidator *NumberLimitValidatorSchema[T] `hcl:"limit_validator,block"`
 }
 
-func (s *Int32ArraySchema) Validate(model *ModelSchema) error {
+func (s *NumberMapSchema[T]) Validate(model *ModelSchema) error {
 	if !ValidLabel.MatchString(s.Name) {
-		return fmt.Errorf("invalid %s.int32_array name: %s", model.Name, s.Name)
-	}
-
-	if s.LimitValidator != nil {
-		if s.LimitValidator.Maximum != nil {
-			if s.LimitValidator.Minimum != nil {
-				if *s.LimitValidator.Minimum > *s.LimitValidator.Maximum {
-					return fmt.Errorf("invalid %s.%s.limit_validator: minimum cannot be greater than maximum", model.Name, s.Name)
-				}
-			}
-		}
-	}
-
-	if s.Accessor != nil {
-		if *s.Accessor == false && s.LimitValidator != nil {
-			return fmt.Errorf("invalid %s.%s.accessor: cannot be false while using validators or modifiers", model.Name, s.Name)
-		}
-	} else {
-		if s.LimitValidator != nil {
-			s.Accessor = new(bool)
-			*s.Accessor = true
-		} else {
-			s.Accessor = new(bool)
-			*s.Accessor = false
-		}
-	}
-
-	return nil
-}
-
-type Int32MapSchema struct {
-	Name           string                     `hcl:"name,label"`
-	Value          string                     `hcl:"value,attr"`
-	Accessor       *bool                      `hcl:"accessor,optional"`
-	LimitValidator *Int32LimitValidatorSchema `hcl:"limit_validator,block"`
-}
-
-func (s *Int32MapSchema) Validate(model *ModelSchema) error {
-	if !ValidLabel.MatchString(s.Name) {
-		return fmt.Errorf("invalid %s.int32_map name: %s", model.Name, s.Name)
+		return fmt.Errorf("invalid %s.%T_map name: %s", model.Name, *new(T), s.Name)
 	}
 
 	if s.LimitValidator != nil {

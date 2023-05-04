@@ -1,23 +1,35 @@
 {{ define "go_enums_definition" }}
-    {{ $current_model := . }}
-    {{- range .Enums }}
-        type Enum{{ $current_model.Name }}{{ .Name }} uint32
-        {{ $current_enum := . }}
-        const (
-        {{- range $index, $value := .Values }}
-            Enum{{ $current_model.Name }}{{ $current_enum.Name }}{{ $value }} Enum{{ $current_model.Name }}{{ $current_enum.Name }} = {{ $index }}
-        {{ end }}
-        )
+    type {{ .Name }} uint32
+    {{ $current_enum := . }}
+    const (
+    {{- range $index, $value := .Values }}
+       {{ $current_enum.Name }}{{ $value }} {{ $current_enum.Name }} = {{ $index }}
     {{ end }}
+    )
+
+    func decode{{ .Name }}(d *polyglot.Decoder) ({{ .Name }}, error) {
+        enumValue, err := d.Uint32()
+        if err != nil {
+            return 0, err
+        }
+        switch {{ .Name }}(enumValue) {
+        {{- range $index, $value := .Values }}
+            case {{ $current_enum.Name }}{{ $value }}:
+                return {{ $current_enum.Name }}{{ $value }}, nil
+        {{- end }}
+            default:
+                return 0, InvalidEnum
+        }
+    }
 {{ end }}
 
 {{ define "go_enums_struct_reference" }}
     {{ $current_model := . }}
     {{- range .Enums }}
         {{- if (Deref .Accessor) }}
-            {{ LowerFirst .Name }} Enum{{ $current_model.Name }}{{ .Name }}
+            {{ LowerFirst .Name }} {{ .Reference }}
         {{- else }}
-            {{ .Name }} Enum{{ $current_model.Name }}{{ .Name }}
+            {{ .Name }} {{ .Reference }}
         {{- end -}}
     {{ end }}
 {{ end }}
@@ -26,9 +38,9 @@
     {{ $current_model := . }}
     {{- range .Enums }}
         {{- if .Accessor }}
-            {{ LowerFirst .Name }}: Enum{{ $current_model.Name }}{{ .Default }},
+            {{ LowerFirst .Name }}: {{ .Reference }}{{ .Default }},
         {{- else }}
-            {{ .Name }}: Enum{{ $current_model.Name }}{{ .Default }},
+            {{ .Name }}: {{ .Reference }}{{ .Default }},
         {{- end -}}
     {{ end }}
 {{ end }}
@@ -44,36 +56,19 @@
 {{ end }}
 
 {{ define "go_enums_decode" }}
-    {{ $current_model := . }}
-    {{- range .Enums }}
+    {{- range .Model.Enums }}
         {{- if (Deref .Accessor) }}
-            enumValue{{ LowerFirst .Name }}, err := d.Uint32()
+            result, err := decode{{ .Reference }}(d)
             if err != nil {
                 return err
             }
-            {{ $current_enum := . }}
-            switch Enum{{ $current_model.Name }}{{ .Name }}(enumValue{{ LowerFirst .Name }}) {
-            {{- range $index, $value := .Values }}
-                case Enum{{ $current_model.Name }}{{ $current_enum.Name }}{{ $value }}:
-                    x.{{ LowerFirst $current_enum.Name }} = Enum{{ $current_model.Name }}{{ $current_enum.Name }}{{ $value }}
-            {{- end }}
-                default:
-                    return InvalidEnum
-            }
+            x.{{ LowerFirst .Name }} = result
         {{- else }}
-            enumValue{{ .Name }}, err := d.Uint32()
+            result, err := decode{{ .Reference }}(d)
             if err != nil {
                 return err
             }
-            {{ $current_enum := . }}
-            switch Enum{{ $current_model.Name }}{{ .Name }}(enumValue{{ .Name }}) {
-            {{- range $index, $value := .Values }}
-                case Enum{{ $current_model.Name }}{{ $current_enum.Name }}{{ $value }}:
-                    x.{{ $current_enum.Name }} = Enum{{ $current_model.Name }}{{ $current_enum.Name }}{{ $value }}
-            {{- end }}
-                default:
-                    return InvalidEnum
-            }
+            x.{{ .Name }} = result
         {{- end -}}
     {{ end }}
 {{ end }}
