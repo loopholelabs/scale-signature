@@ -378,20 +378,6 @@ model ModelWithMultipleFieldsAccessorAndDescription {
 	}
 }
 
-model ModelWithMultipleFieldsAccessorAndDescription {
-	description = "Test Description"
-
-	string StringField {
-		default = "DefaultValue"
-		accessor = true
-	}
-
-	int32 Int32Field {
-		default = 32
-		accessor = true
-	}
-}
-
 model ModelWithEmbeddedModels {
 	model EmbeddedEmptyModel {
 		reference = "EmptyModel"
