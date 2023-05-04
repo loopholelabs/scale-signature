@@ -129,6 +129,7 @@
             x.{{ .Name }} = make(map[*{{ .Reference }}]{{ Primitive .Value }}, mapSize{{ .Name }})
             }
             for i := uint32(0); i < mapSize{{ .Name }}; i++ {
+
                 k := New{{ .Reference }}()
                 err = k._decode(d)
                 if err != nil {

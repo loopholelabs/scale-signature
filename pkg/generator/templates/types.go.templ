@@ -114,7 +114,6 @@ var (
             {{ template "go_bytes_new_struct_reference" Params "Entries" .Bytes "Type" "bytes" }}
             {{ template "go_arrays_new_struct_reference" Params "Entries" .BytesArrays "Type" "bytes" }}
 
-
             {{ template "go_primitives_new_struct_reference" Params "Entries" .Bools }}
             {{ template "go_arrays_new_struct_reference" Params "Entries" .BoolArrays "Type" "bool" }}
         }
@@ -226,6 +225,7 @@ var (
 
         {{ template "go_bytes_decode" Params "Entries" .Bytes "Type" "bytes" }}
         {{ template "go_bytesarrays_decode" Params "Entries" .BytesArrays "Type" "bytes" }}
+
 
         {{ template "go_primitives_decode" Params "Entries" .Bools "Type" "bool" }}
         {{ template "go_arrays_decode" Params "Entries" .BoolArrays "Type" "bool" }}
