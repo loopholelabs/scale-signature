@@ -47,20 +47,6 @@ func (s *NumberSchema[T]) Validate(model *ModelSchema) error {
 				}
 			}
 		}
-
-		if s.LimitValidator.Minimum != nil && s.LimitValidator.Maximum != nil {
-			if s.Default < *s.LimitValidator.Minimum || s.Default > *s.LimitValidator.Maximum {
-				return fmt.Errorf("invalid %s.%s.default: value must be between %v and %v", model.Name, s.Name, *s.LimitValidator.Minimum, *s.LimitValidator.Maximum)
-			}
-		} else if s.LimitValidator != nil {
-			if s.Default < *s.LimitValidator.Minimum {
-				return fmt.Errorf("invalid %s.%s.default: value must be greater than %v", model.Name, s.Name, *s.LimitValidator.Minimum)
-			}
-		} else if s.LimitValidator.Maximum != nil {
-			if s.Default > *s.LimitValidator.Maximum {
-				return fmt.Errorf("invalid %s.%s.default: value must be less than %v", model.Name, s.Name, *s.LimitValidator.Maximum)
-			}
-		}
 	}
 
 	if s.Accessor != nil {

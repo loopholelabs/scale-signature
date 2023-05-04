@@ -19,7 +19,6 @@ package schema
 import (
 	"fmt"
 	"regexp"
-	"strings"
 )
 
 type StringRegexValidatorSchema struct {
@@ -61,20 +60,6 @@ func (s *StringSchema) Validate(model *ModelSchema) error {
 				}
 			}
 		}
-
-		if s.LengthValidator.Minimum != nil && s.LengthValidator.Maximum != nil {
-			if len(s.Default) < int(*s.LengthValidator.Minimum) || len(s.Default) > int(*s.LengthValidator.Maximum) {
-				return fmt.Errorf("invalid %s.%s.default: length must be between %d and %d", model.Name, s.Name, *s.LengthValidator.Minimum, *s.LengthValidator.Maximum)
-			}
-		} else if s.LengthValidator.Minimum != nil {
-			if len(s.Default) < int(*s.LengthValidator.Minimum) {
-				return fmt.Errorf("invalid %s.%s.default: length must be greater than %d", model.Name, s.Name, *s.LengthValidator.Minimum)
-			}
-		} else if s.LengthValidator.Maximum != nil {
-			if len(s.Default) > int(*s.LengthValidator.Maximum) {
-				return fmt.Errorf("invalid %s.%s.default: length must be less than %d", model.Name, s.Name, *s.LengthValidator.Maximum)
-			}
-		}
 	}
 
 	if s.RegexValidator != nil {
@@ -92,12 +77,6 @@ func (s *StringSchema) Validate(model *ModelSchema) error {
 		case "upper", "lower", "none":
 		default:
 			return fmt.Errorf("invalid %s.%s.caseModifier: kind must be upper, lower or none", model.Name, s.Name)
-		}
-
-		if s.CaseModifier.Kind == "upper" {
-			s.Default = strings.ToUpper(s.Default)
-		} else if s.CaseModifier.Kind == "lower" {
-			s.Default = strings.ToLower(s.Default)
 		}
 	}
 
