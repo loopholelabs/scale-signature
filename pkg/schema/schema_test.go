@@ -94,7 +94,7 @@ func TestSchema(t *testing.T) {
 
 	assert.Equal(t, "ModelWithMultipleFieldsAccessor", s.Models[12].Name)
 	assert.Equal(t, "StringField", s.Models[12].Strings[0].Name)
-	assert.Equal(t, "DEFAULTVALUE", s.Models[12].Strings[0].Default)
+	assert.Equal(t, "DefaultValue", s.Models[12].Strings[0].Default)
 	assert.Equal(t, true, *s.Models[12].Strings[0].Accessor)
 	assert.Equal(t, "Int32Field", s.Models[12].Int32s[0].Name)
 	assert.Equal(t, int32(32), s.Models[12].Int32s[0].Default)
