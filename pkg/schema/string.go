@@ -40,7 +40,7 @@ type StringSchema struct {
 	Accessor        *bool                        `hcl:"accessor,optional"`
 	RegexValidator  *StringRegexValidatorSchema  `hcl:"regex_validator,block"`
 	LengthValidator *StringLengthValidatorSchema `hcl:"length_validator,block"`
-	CaseModifier    *StringCaseModifierSchema    `hcl:"caseModifier,block"`
+	CaseModifier    *StringCaseModifierSchema    `hcl:"case_modifier,block"`
 }
 
 func (s *StringSchema) Validate(model *ModelSchema) error {
@@ -63,8 +63,12 @@ func (s *StringSchema) Validate(model *ModelSchema) error {
 	}
 
 	if s.RegexValidator != nil {
-		if _, err := regexp.Compile(s.RegexValidator.Expression); err != nil {
+		regex, err := regexp.Compile(s.RegexValidator.Expression)
+		if err != nil {
 			return fmt.Errorf("invalid %s.%s.regex_validator: %w", model.Name, s.Name, err)
+		}
+		if !regex.MatchString(s.Default) {
+			return fmt.Errorf("invalid %s.%s.default: does not match regex", model.Name, s.Name)
 		}
 	}
 
@@ -188,9 +192,9 @@ func (s *StringMapSchema) Validate(model *ModelSchema) error {
 
 	if s.CaseModifier != nil {
 		switch s.CaseModifier.Kind {
-		case "upper", "lower", "none":
+		case "upper", "lower":
 		default:
-			return fmt.Errorf("invalid %s.%s.caseModifier: kind must be upper, lower or none", model.Name, s.Name)
+			return fmt.Errorf("invalid %s.%s.caseModifier: kind must be upper or lowere", model.Name, s.Name)
 		}
 	}
 

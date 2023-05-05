@@ -29,7 +29,7 @@ func TestGenerator(t *testing.T) {
 
 	require.NoError(t, s.Validate())
 
-	formatted, err := g.Generate(s, "v0.1.0")
+	formatted, err := g.Generate(s, "types", "v0.1.0")
 	require.NoError(t, err)
 	t.Log(string(formatted))
 }

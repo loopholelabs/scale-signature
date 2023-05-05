@@ -55,7 +55,7 @@
             e.Map(uint32(len(x.{{ LowerFirst .Name }})), {{ PolyglotPrimitive $type }}, polyglot.AnyKind)
             for k, v := range x.{{ LowerFirst .Name }} {
                 e.{{ PolyglotPrimitiveEncode $type }}(k)
-                v.encode(b)
+                v.Encode(b)
             }
         {{- end }}
 
@@ -70,8 +70,8 @@
         {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
             e.Map(uint32(len(x.{{ .Name }})), {{ PolyglotPrimitive $type }}, polyglot.AnyKind)
             for k, v := range x.{{ .Name }} {
-                e.{{ PolyglotPrimitiveEncode $type }}4(k)
-                v.encode(b)
+                e.{{ PolyglotPrimitiveEncode $type }}(k)
+                v.Encode(b)
             }
         {{- end }}
     {{ end }}

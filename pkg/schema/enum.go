@@ -21,9 +21,8 @@ import (
 )
 
 type EnumSchema struct {
-	Name    string   `hcl:"name,label"`
-	Default string   `hcl:"default,attr"`
-	Values  []string `hcl:"values,attr"`
+	Name   string   `hcl:"name,label"`
+	Values []string `hcl:"values,attr"`
 }
 
 func (s *EnumSchema) Normalize() {
@@ -50,26 +49,17 @@ func (s *EnumSchema) Validate(knownEnums map[string]struct{}) error {
 		}
 	}
 
-	for index, value := range s.Values {
-		if value == s.Default {
-			if index != 0 {
-				s.Values[index] = s.Values[0]
-				s.Values[0] = value
-			}
-			return nil
-		}
-	}
-
-	return fmt.Errorf("invalid %s.default: %s is not a valid value", s.Name, s.Default)
+	return nil
 }
 
 type EnumReferenceSchema struct {
 	Name      string `hcl:"name,label"`
+	Default   string `hcl:"default,attr"`
 	Reference string `hcl:"reference,attr"`
 	Accessor  bool   `hcl:"accessor,optional"`
 }
 
-func (s *EnumReferenceSchema) Validate(model *ModelSchema) error {
+func (s *EnumReferenceSchema) Validate(model *ModelSchema, enums []*EnumSchema) error {
 	if !ValidLabel.MatchString(s.Name) {
 		return fmt.Errorf("invalid %s.enum name: %s", model.Name, s.Name)
 	}
@@ -78,13 +68,26 @@ func (s *EnumReferenceSchema) Validate(model *ModelSchema) error {
 		return fmt.Errorf("invalid %s.%s.reference: %s", model.Name, s.Name, s.Reference)
 	}
 
-	return nil
+	for _, enum := range enums {
+		if enum.Name != s.Reference {
+			continue
+		}
+
+		for _, value := range enum.Values {
+			if value == s.Default {
+				return nil
+			}
+		}
+	}
+
+	return fmt.Errorf("invalid %s.default: %s is not a valid value", s.Name, s.Default)
 }
 
 type EnumArraySchema struct {
 	Name        string `hcl:"name,label"`
 	Reference   string `hcl:"reference,attr"`
 	InitialSize uint32 `hcl:"initial_size,attr"`
+	Accessor    bool   `hcl:"accessor,optional"`
 }
 
 func (s *EnumArraySchema) Validate(model *ModelSchema) error {

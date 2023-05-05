@@ -1,11 +1,11 @@
 {{ define "go_enumarrays_definition" }}
     {{ $current_model := . }}
     {{- range .EnumArrays }}
-        type Enum{{ $current_model.Name }}{{ .Name }} uint32
+        type {{ .Name }} uint32
         {{ $current_enum := . }}
         const (
         {{- range $index, $value := .Values }}
-            Enum{{ $current_model.Name }}{{ $current_enum.Name }}{{ $value }} Enum{{ $current_model.Name }}{{ $current_enum.Name }} = {{ $index }}
+            {{ $current_enum.Name }}{{ $value }} {{ .Reference }} = {{ $index }}
         {{ end }}
         )
     {{ end }}
@@ -15,9 +15,9 @@
     {{ $current_model := . }}
     {{- range .EnumArrays }}
         {{- if (Deref .Accessor) }}
-            {{ LowerFirst .Name }} []Enum{{ $current_model.Name }}{{ .Name }}
+            {{ LowerFirst .Name }} []{{ .Reference }}
         {{- else }}
-            {{ .Name }} []Enum{{ $current_model.Name }}{{ .Name }}
+            {{ .Name }} []{{ .Reference }}
         {{- end -}}
     {{ end }}
 {{ end }}
@@ -26,9 +26,9 @@
     {{ $current_model := . }}
     {{- range .EnumArrays }}
         {{- if .Accessor }}
-            {{ LowerFirst .Name }}: make([]Enum{{ $current_model.Name }}{{ .Name }}, 0, {{ .InitialSize }}),
+            {{ LowerFirst .Name }}: make([]{{ .Reference }}, 0, {{ .InitialSize }}),
         {{- else }}
-            {{ .Name }}: make([]Enum{{ $current_model.Name }}{{ .Name }}, 0, {{ .InitialSize }}),
+            {{ .Name }}: make([]{{ .Reference }}, 0, {{ .InitialSize }}),
         {{- end -}}
     {{ end }}
 {{ end }}
@@ -59,24 +59,14 @@
             }
 
             if uint32(len(x.{{ LowerFirst .Name }})) != sliceSize{{ LowerFirst .Name }} {
-                x.{{ LowerFirst .Name }} = make([]Enum{{ $current_model.Name }}{{ .Name }}, sliceSize{{ LowerFirst .Name }})
+                x.{{ LowerFirst .Name }} = make([]{{ .Reference }}, sliceSize{{ LowerFirst .Name }})
             }
 
-            for i := uint32(0); i < sliceSize{{ LowerFirst .Name }}; i++ {
-                enumValue{{ LowerFirst .Name }}, err := d.Uint32()
-                if err != nil {
-                    return err
-                }
-                {{ $current_enum := . }}
-                switch Enum{{ $current_model.Name }}{{ .Name }}(enumValue{{ LowerFirst .Name }}) {
-                {{- range $index, $value := .Values }}
-                    case Enum{{ $current_model.Name }}{{ $current_enum.Name }}{{ $value }}:
-                        x.{{ LowerFirst $current_enum.Name }}[i] = Enum{{ $current_model.Name }}{{ $current_enum.Name }}{{ $value }}
-                {{- end }}
-                    default:
-                        return InvalidEnum
-                }
+            val, err := decode{{ .Reference }}(d)
+            if err != nil {
+                return err
             }
+            x.{{ LowerFirst .Name }}[i] = val
         {{- else }}
             sliceSize{{ .Name }}, err := d.Slice(polyglot.Uint32Kind)
             if err != nil {
@@ -84,23 +74,15 @@
             }
 
             if uint32(len(x.{{ .Name }})) != sliceSize{{ .Name }} {
-                x.{{ .Name }} = make([]Enum{{ $current_model.Name }}{{ .Name }}, sliceSize{{ .Name }})
+                x.{{ .Name }} = make([]{{ .Reference }}, sliceSize{{ .Name }})
             }
 
             for i := uint32(0); i < sliceSize{{ .Name }}; i++ {
-                enumValue{{ .Name }}, err := d.Uint32()
+                val, err := decode{{ .Reference }}(d)
                 if err != nil {
                     return err
                 }
-                {{ $current_enum := . }}
-                switch Enum{{ $current_model.Name }}{{ .Name }}(enumValue{{ .Name }}) {
-                {{- range $index, $value := .Values }}
-                    case Enum{{ $current_model.Name }}{{ $current_enum.Name }}{{ $value }}:
-                        x.{{ $current_enum.Name }}[i] = Enum{{ $current_model.Name }}{{ $current_enum.Name }}{{ $value }}
-                {{- end }}
-                    default:
-                        return InvalidEnum
-                }
+                x.{{ .Name }}[i] = val
             }
         {{- end -}}
     {{ end }}

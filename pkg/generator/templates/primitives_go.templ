@@ -12,7 +12,7 @@
 {{ define "go_primitives_new_struct_reference" }}
     {{ $type := .Type }}
     {{- range .Entries }}
-        {{- if .Accessor }}
+        {{- if (Deref .Accessor) }}
             {{ LowerFirst .Name }}: {{ .Default }},
         {{- else }}
             {{ .Name }}: {{ .Default }},
@@ -23,10 +23,21 @@
 {{ define "go_strings_new_struct_reference" }}
     {{ $type := .Type }}
     {{- range .Entries }}
-        {{- if .Accessor }}
+        {{- if (Deref .Accessor) }}
             {{ LowerFirst .Name }}: "{{ .Default }}",
         {{- else }}
             {{ .Name }}: "{{ .Default }}",
+        {{- end -}}
+    {{ end }}
+{{ end }}
+
+{{ define "go_bytes_new_struct_reference" }}
+    {{ $type := .Type }}
+    {{- range .Entries }}
+        {{- if (Deref .Accessor) }}
+            {{ LowerFirst .Name }}: make([]byte, 0),
+        {{- else }}
+            {{ .Name }}: make([]byte, 0),
         {{- end -}}
     {{ end }}
 {{ end }}
@@ -59,3 +70,57 @@
     {{ end }}
 {{ end}}
 
+{{ define "go_bytes_decode" }}
+    {{ $type := .Type }}
+    {{- range .Entries }}
+        {{- if (Deref .Accessor) }}
+            x.{{ LowerFirst .Name }}, err = d.{{ PolyglotPrimitiveDecode $type }}(nil)
+            if err != nil {
+                return err
+            }
+        {{- else }}
+            x.{{ .Name }}, err = d.{{ PolyglotPrimitiveDecode $type }}(nil)
+            if err != nil {
+                return err
+            }
+        {{- end -}}
+    {{ end }}
+{{ end}}
+
+{{ define "go_numbers_accessor" }}
+    {{ $type := .Type }}
+    {{ $model := .Model }}
+    {{- range .Entries }}
+        {{- if (Deref .Accessor) }}
+            func (x *{{ $model.Name }}) Get{{ .Name }}() ({{ $type }}, error) {
+                return x.{{ LowerFirst .Name }}, nil
+            }
+
+            func (x *{{ $model.Name }}) Set{{ .Name }}(v {{ $type }}) error {
+                {{- template "go_numbers_limit_validator" .LimitValidator }}
+                x.{{ LowerFirst .Name }} = v
+                return nil
+            }
+        {{- end -}}
+    {{ end }}
+{{ end }}
+
+{{ define "go_strings_accessor" }}
+    {{ $type := .Type }}
+    {{ $model := .Model }}
+    {{- range .Entries }}
+        {{- if (Deref .Accessor) }}
+            func (x *{{ $model.Name }}) Get{{ .Name }}() ({{ $type }}, error) {
+                return x.{{ LowerFirst .Name }}, nil
+            }
+
+            func (x *{{ $model.Name }}) Set{{ .Name }}(v {{ $type }}) error {
+                {{- template "go_regex_validator" .RegexValidator }}
+                {{- template "go_length_validator" .LengthValidator }}
+                {{- template "go_case_modifier" .CaseModifier }}
+                x.{{ LowerFirst .Name }} = v
+                return nil
+            }
+        {{- end -}}
+    {{ end }}
+{{ end }}

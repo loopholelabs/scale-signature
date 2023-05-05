@@ -43,7 +43,7 @@
         {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
             e.Map(uint32(len(x.{{ LowerFirst .Name }})), polyglot.AnyKind, {{ PolyglotPrimitive .Value }})
             for k, v := range x.{{ LowerFirst .Name }} {
-                k.encode(b)
+                k.Encode(b)
                 e.{{ PolyglotPrimitiveEncode .Value }}(v)
             }
         {{- end }}
@@ -51,15 +51,15 @@
         {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
             e.Map(uint32(len(x.{{ LowerFirst .Name }})), polyglot.AnyKind, polyglot.AnyKind)
             for k, v := range x.{{ LowerFirst .Name }} {
-                k.encode(b)
-                v.encode(b)
+                k.Encode(b)
+                v.Encode(b)
             }
         {{- end }}
 
         {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
             e.Map(uint32(len(x.{{ .Name }})), polyglot.AnyKind, {{ PolyglotPrimitive .Value }})
             for k, v := range x.{{ .Name }} {
-                k.encode(b)
+                k.Encode(b)
                 e.{{ PolyglotPrimitiveEncode .Value }}(v)
             }
         {{- end }}
@@ -67,8 +67,8 @@
         {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
             e.Map(uint32(len(x.{{ .Name }})), polyglot.AnyKind, polyglot.AnyKind)
             for k, v := range x.{{ .Name }} {
-                k.encode(b)
-                v.encode(b)
+                k.Encode(b)
+                v.Encode(b)
             }
         {{- end }}
     {{ end }}
@@ -77,14 +77,14 @@
 {{ define "go_modelmaps_decode" }}
     {{- range .ModelMaps }}
         {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
-            mapSize{{ LowerFirst .Name }}, err := d.Map(polyglot.AnyKind, {{ PolyglotPrimitive .Value }})
+            mapSize{{ .Name }}, err := d.Map(polyglot.AnyKind, {{ PolyglotPrimitive .Value }})
             if err != nil {
                 return err
             }
-            if uint32(len(x.{{ LowerFirst .Name }})) != mapSize{{ LowerFirst .Name }} {
-                x.{{ LowerFirst .Name }} = make(map[*{{ .Reference }}]{{ Primitive .Value }}, mapSize{{ LowerFirst .Name }})
+            if uint32(len(x.{{ LowerFirst .Name }})) != mapSize{{ .Name }} {
+                x.{{ LowerFirst .Name }} = make(map[*{{ .Reference }}]{{ Primitive .Value }}, mapSize{{ .Name }})
             }
-            for i := uint32(0); i < mapSize{{ LowerFirst .Name }}; i++ {
+            for i := uint32(0); i < mapSize{{ .Name }}; i++ {
                 k := New{{ .Reference }}()
                 err = k._decode(d)
                 if err != nil {
@@ -98,14 +98,14 @@
         {{- end }}
 
         {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
-            mapSize{{ LowerFirst .Name }}, err := d.Map(polyglot.AnyKind, polyglot.AnyKind)
+            mapSize{{ .Name }}, err := d.Map(polyglot.AnyKind, polyglot.AnyKind)
             if err != nil {
                 return err
             }
-            if uint32(len(x.{{ LowerFirst .Name }})) != mapSize{{ LowerFirst .Name }} {
-                x.{{ LowerFirst .Name }} = make(map[*{{ .Reference }}]*{{ .Value }}, mapSize{{ LowerFirst .Name }})
+            if uint32(len(x.{{ LowerFirst .Name }})) != mapSize{{ .Name }} {
+                x.{{ LowerFirst .Name }} = make(map[*{{ .Reference }}]*{{ .Value }}, mapSize{{ .Name }})
             }
-            for i := uint32(0); i < mapSize{{ LowerFirst .Name }}; i++ {
+            for i := uint32(0); i < mapSize{{ .Name }}; i++ {
                 k := New{{ .Reference }}()
                 err = k._decode(d)
                 if err != nil {
@@ -126,9 +126,10 @@
                 return err
             }
             if uint32(len(x.{{ .Name }})) != mapSize{{ .Name }} {
-            qx.{{ .Name }} = make(map[*{{ .Reference }}]{{ Primitive .Value }}, mapSize{{ .Name }})
+            x.{{ .Name }} = make(map[*{{ .Reference }}]{{ Primitive .Value }}, mapSize{{ .Name }})
             }
-            for i := uint32(0); i < mapSize{{ LowerFirst .Name }}; i++ {
+            for i := uint32(0); i < mapSize{{ .Name }}; i++ {
+
                 k := New{{ .Reference }}()
                 err = k._decode(d)
                 if err != nil {
