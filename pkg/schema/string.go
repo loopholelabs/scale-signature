@@ -192,9 +192,9 @@ func (s *StringMapSchema) Validate(model *ModelSchema) error {
 
 	if s.CaseModifier != nil {
 		switch s.CaseModifier.Kind {
-		case "upper", "lower", "none":
+		case "upper", "lower":
 		default:
-			return fmt.Errorf("invalid %s.%s.caseModifier: kind must be upper, lower or none", model.Name, s.Name)
+			return fmt.Errorf("invalid %s.%s.caseModifier: kind must be upper or lowere", model.Name, s.Name)
 		}
 	}
 
