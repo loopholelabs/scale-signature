@@ -394,7 +394,7 @@ model ModelWithEmbeddedModelsAndDescription {
 
 	model EmbeddedEmptyModel {
 		reference = "EmptyModel"
-	}
+	}		
 
 	model_array EmbeddedModelArrayWithMultipleFieldsAccessor {
 		reference = "ModelWithMultipleFieldsAccessor"
