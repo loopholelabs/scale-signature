@@ -15,10 +15,10 @@ package rust
 
 import (
 	"bytes"
-	"os/exec"
+	"os"
+	"strings"
 	"text/template"
 
-	rsUtils "github.com/loopholelabs/polyglot-rs/pkg/utils"
 	"github.com/loopholelabs/scale-signature/pkg/generator/templates"
 	"github.com/loopholelabs/scale-signature/pkg/generator/utils"
 	"github.com/loopholelabs/scale-signature/pkg/schema"
@@ -28,14 +28,14 @@ const (
 	defaultPackageName = "types"
 )
 
-// Generator is the rust generator
+// Generator is the typescript generator
 type Generator struct {
 	templ *template.Template
 }
 
-// New creates a new rust generator
+// New creates a new typescript generator
 func New() (*Generator, error) {
-	templ, err := template.New("").Funcs(templateFunctions()).ParseFS(templates.FS, "*rs.templ")
+	templ, err := template.New("").Funcs(templateFunctions()).ParseFS(templates.FS, "*ts.templ")
 	if err != nil {
 		return nil, err
 	}
@@ -45,14 +45,14 @@ func New() (*Generator, error) {
 	}, nil
 }
 
-// Generate generates the rust code for the given schema
+// Generate generates the typescript code
 func (g *Generator) Generate(schema *schema.Schema, packageName string, version string) ([]byte, error) {
 	if packageName == "" {
 		packageName = defaultPackageName
 	}
 
 	buf := new(bytes.Buffer)
-	err := g.templ.ExecuteTemplate(buf, "types.rs.templ", map[string]any{
+	err := g.templ.ExecuteTemplate(buf, "types.ts.templ", map[string]any{
 		"schema":  schema,
 		"version": version,
 		"package": packageName,
@@ -60,13 +60,9 @@ func (g *Generator) Generate(schema *schema.Schema, packageName string, version 
 	if err != nil {
 		return nil, err
 	}
-	cmd := exec.Command("rustfmt")
-	cmd.Stdin = bytes.NewReader(buf.Bytes())
-	output, err := cmd.CombinedOutput()
-	if err != nil {
-		return nil, err
-	}
-	return output, nil
+	os.WriteFile("/Users/alex/Developer/scale-signature-http/http_signature.ts", buf.Bytes(), 0644)
+
+	return []byte(formatTS(buf.String())), nil
 }
 
 func templateFunctions() template.FuncMap {
@@ -77,32 +73,57 @@ func templateFunctions() template.FuncMap {
 		"PolyglotPrimitiveEncode": polyglotPrimitiveEncode,
 		"PolyglotPrimitiveDecode": polyglotPrimitiveDecode,
 		"Deref":                   func(i *bool) bool { return *i },
-		"LowerFirst":              func(s string) string { return string(s[0]+32) + s[1:] },
-		"SnakeCase":               rsUtils.SnakeCase,
+		"CamelCase":               utils.CamelCase,
 		"Params":                  utils.Params,
+		"Constructor":             constructor,
 	}
 }
 
 func primitive(t string) string {
 	switch t {
 	case "string":
+		return "string"
+	case "int32":
+		return "number"
+	case "int64":
+		return "bigint"
+	case "uint32":
+		return "number"
+	case "uint64":
+		return "bigint"
+	case "float32":
+		return "number"
+	case "float64":
+		return "number"
+	case "bool":
+		return "boolean"
+	case "bytes":
+		return "Uint8Array"
+	default:
+		return t
+	}
+}
+
+func constructor(t string) string {
+	switch t {
+	case "string":
 		return "String"
 	case "int32":
-		return "i32"
+		return "Number"
 	case "int64":
-		return "i64"
+		return "BigInt"
 	case "uint32":
-		return "u32"
+		return "Number"
 	case "uint64":
-		return "u64"
+		return "BigInt"
 	case "float32":
-		return "f32"
+		return "Number"
 	case "float64":
-		return "f64"
+		return "Number"
 	case "bool":
-		return "bool"
+		return "Boolean"
 	case "bytes":
-		return "Vec<u8>"
+		return "Uint8Array"
 	default:
 		return t
 	}
@@ -111,48 +132,48 @@ func primitive(t string) string {
 func polyglotPrimitive(t string) string {
 	switch t {
 	case "string":
-		return "Kind::String"
+		return "Kind.String"
 	case "int32":
-		return "Kind::I32"
+		return "Kind.Int32"
 	case "int64":
-		return "Kind::I64"
+		return "Kind.Int64"
 	case "uint32":
-		return "Kind::U32"
+		return "Kind.Uint32"
 	case "uint64":
-		return "Kind::U64"
+		return "Kind.Uint64"
 	case "float32":
-		return "Kind::F32"
+		return "Kind.Float32"
 	case "float64":
-		return "Kind::F64"
+		return "Kind.Float64"
 	case "bool":
-		return "Kind::Bool"
+		return "Kind.Boolean"
 	case "bytes":
-		return "Kind::Bytes"
+		return "Kind.Uint8Array"
 	default:
-		return "Kind::Any"
+		return "Kind.Any"
 	}
 }
 
 func polyglotPrimitiveEncode(t string) string {
 	switch t {
 	case "string":
-		return "encode_string"
+		return "string"
 	case "int32":
-		return "encode_i32"
+		return "int32"
 	case "int64":
-		return "encode_i64"
+		return "int64"
 	case "uint32":
-		return "encode_u32"
+		return "uint32"
 	case "uint64":
-		return "encode_u64"
+		return "uint64"
 	case "float32":
-		return "encode_f32"
+		return "float32"
 	case "float64":
-		return "encode_f64"
+		return "float64"
 	case "bool":
-		return "encode_bool"
+		return "boolean"
 	case "bytes":
-		return "encode_bytes"
+		return "uint8Array"
 	default:
 		return t
 	}
@@ -161,24 +182,58 @@ func polyglotPrimitiveEncode(t string) string {
 func polyglotPrimitiveDecode(t string) string {
 	switch t {
 	case "string":
-		return "decode_string"
+		return "string"
 	case "int32":
-		return "decode_i32"
+		return "int32"
 	case "int64":
-		return "decode_i64"
+		return "int64"
 	case "uint32":
-		return "decode_u32"
+		return "uint32"
 	case "uint64":
-		return "decode_u64"
+		return "uint64"
 	case "float32":
-		return "decode_f32"
+		return "float32"
 	case "float64":
-		return "decode_f64"
+		return "float64"
 	case "bool":
-		return "decode_bool"
+		return "boolean"
 	case "bytes":
-		return "decode_bytes"
+		return "uint8Array"
 	default:
 		return ""
 	}
+}
+
+func formatTS(code string) string {
+	var output strings.Builder
+	indentLevel := 0
+	lastLineEmpty := false
+	lastLineOpenBrace := false
+	for _, line := range strings.Split(code, "\n") {
+		trimmedLine := strings.TrimSpace(line)
+		if trimmedLine == "" {
+			// Allow empty lines between classes and class members, but only 1 empty line not more.
+			if indentLevel > 1 || lastLineEmpty || lastLineOpenBrace {
+				continue
+			} else {
+				output.WriteRune('\n')
+			}
+			lastLineEmpty = true
+		} else {
+			if strings.HasPrefix(trimmedLine, "}") {
+				indentLevel--
+			}
+			output.WriteString(strings.Repeat("  ", indentLevel))
+			output.WriteString(trimmedLine)
+			if strings.HasSuffix(trimmedLine, "{") {
+				lastLineOpenBrace = true
+				indentLevel++
+			} else {
+				lastLineOpenBrace = false
+			}
+			output.WriteRune('\n')
+			lastLineEmpty = false
+		}
+	}
+	return output.String()
 }
