@@ -15,21 +15,24 @@ package golang
 
 import (
 	"bytes"
-	"errors"
-	"github.com/loopholelabs/scale-signature/pkg/generator/templates"
-	"github.com/loopholelabs/scale-signature/pkg/schema"
 	"go/format"
 	"text/template"
+
+	"github.com/loopholelabs/scale-signature/pkg/generator/templates"
+	"github.com/loopholelabs/scale-signature/pkg/generator/utils"
+	"github.com/loopholelabs/scale-signature/pkg/schema"
 )
 
 const (
 	defaultPackageName = "types"
 )
 
+// Generator is the go generator
 type Generator struct {
 	templ *template.Template
 }
 
+// New creates a new go generator
 func New() (*Generator, error) {
 	templ, err := template.New("").Funcs(templateFunctions()).ParseFS(templates.FS, "*go.templ")
 	if err != nil {
@@ -41,6 +44,7 @@ func New() (*Generator, error) {
 	}, nil
 }
 
+// Generate generates the go code
 func (g *Generator) Generate(schema *schema.Schema, packageName string, version string) ([]byte, error) {
 	if packageName == "" {
 		packageName = defaultPackageName
@@ -60,18 +64,18 @@ func (g *Generator) Generate(schema *schema.Schema, packageName string, version 
 
 func templateFunctions() template.FuncMap {
 	return template.FuncMap{
-		"Primitive":               Primitive,
+		"Primitive":               primitive,
 		"IsPrimitive":             schema.ValidPrimitiveType,
-		"PolyglotPrimitive":       PolyglotPrimitive,
-		"PolyglotPrimitiveEncode": PolyglotPrimitiveEncode,
-		"PolyglotPrimitiveDecode": PolyglotPrimitiveDecode,
+		"PolyglotPrimitive":       polyglotPrimitive,
+		"PolyglotPrimitiveEncode": polyglotPrimitiveEncode,
+		"PolyglotPrimitiveDecode": polyglotPrimitiveDecode,
 		"Deref":                   func(i *bool) bool { return *i },
 		"LowerFirst":              func(s string) string { return string(s[0]+32) + s[1:] },
-		"Params":                  Params,
+		"Params":                  utils.Params,
 	}
 }
 
-func Primitive(t string) string {
+func primitive(t string) string {
 	switch t {
 	case "string", "int32", "int64", "uint32", "uint64", "float32", "float64", "bool":
 		return t
@@ -82,7 +86,7 @@ func Primitive(t string) string {
 	}
 }
 
-func PolyglotPrimitive(t string) string {
+func polyglotPrimitive(t string) string {
 	switch t {
 	case "string":
 		return "polyglot.StringKind"
@@ -107,7 +111,7 @@ func PolyglotPrimitive(t string) string {
 	}
 }
 
-func PolyglotPrimitiveEncode(t string) string {
+func polyglotPrimitiveEncode(t string) string {
 	switch t {
 	case "string":
 		return "String"
@@ -132,7 +136,7 @@ func PolyglotPrimitiveEncode(t string) string {
 	}
 }
 
-func PolyglotPrimitiveDecode(t string) string {
+func polyglotPrimitiveDecode(t string) string {
 	switch t {
 	case "string":
 		return "String"
@@ -155,19 +159,4 @@ func PolyglotPrimitiveDecode(t string) string {
 	default:
 		return ""
 	}
-}
-
-func Params(values ...interface{}) (map[string]interface{}, error) {
-	if len(values)%2 != 0 {
-		return nil, errors.New("parameters must be a list of key/value pairs")
-	}
-	params := make(map[string]interface{}, len(values)/2)
-	for i := 0; i < len(values); i += 2 {
-		key, ok := values[i].(string)
-		if !ok {
-			return nil, errors.New("keys must be strings")
-		}
-		params[key] = values[i+1]
-	}
-	return params, nil
 }

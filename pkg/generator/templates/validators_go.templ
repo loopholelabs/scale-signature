@@ -6,11 +6,11 @@
         }
     {{- else if .Minimum }}
         if v < {{ .Minimum }} {
-            return fmt.Errorf("value must be greater than {{ .Minimum }}")
+            return fmt.Errorf("value must be greater than or equal to {{ .Minimum }}")
         }
     {{- else if .Maximum }}
         if v > {{ .Maximum }} {
-            return fmt.Errorf("value must be less than {{ .Maximum }}")
+            return fmt.Errorf("value must be less than or equal to {{ .Maximum }}")
         }
     {{- end }}
 {{- end }}
@@ -32,11 +32,11 @@
             }
         {{- else if .Minimum }}
             if len(v) < {{ .Minimum }} {
-                return fmt.Errorf("length must be greater than {{ .Minimum }}")
+                return fmt.Errorf("length must be greater than or equal to {{ .Minimum }}")
             }
         {{- else if .Maximum }}
             if len(v) > {{ .Maximum }} {
-                return fmt.Errorf("length must be less than {{ .Maximum }}")
+                return fmt.Errorf("length must be less than or equal to {{ .Maximum }}")
             }
         {{- end }}
     {{- end }}

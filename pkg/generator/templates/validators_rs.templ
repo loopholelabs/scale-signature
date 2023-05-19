@@ -6,11 +6,11 @@
         }
     {{- else if .Minimum }}
         if v < {{ .Minimum }} {
-            return Err(Box::<dyn std::error::Error>::from("value must be greater than {{ .Minimum }}"));
+            return Err(Box::<dyn std::error::Error>::from("value must be greater than or equal to {{ .Minimum }}"));
         }
     {{- else if .Maximum }}
         if v > {{ .Maximum }} {
-            return Err(Box::<dyn std::error::Error>::from("value must be less than {{ .Maximum }}"));
+            return Err(Box::<dyn std::error::Error>::from("value must be less than or equal to {{ .Maximum }}"));
         }
     {{- end }}
 {{- end }}
@@ -32,11 +32,11 @@
             }
         {{- else if .Minimum }}
             if v.len() < {{ .Minimum }} {
-                return Err(Box::<dyn std::error::Error>::from("value must be greater than {{ .Minimum }}"));
+                return Err(Box::<dyn std::error::Error>::from("value must be greater than or equal to {{ .Minimum }}"));
             }
         {{- else if .Maximum }}
             if v.len() > {{ .Maximum }} {
-                return Err(Box::<dyn std::error::Error>::from("value must be less than {{ .Maximum }}"));
+                return Err(Box::<dyn std::error::Error>::from("value must be less than or equal to {{ .Maximum }}"));
             }
         {{- end }}
     {{- end }}
