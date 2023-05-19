@@ -11,7 +11,7 @@
 	limitations under the License.
 */
 
-package rust
+package typescript
 
 import (
 	"fmt"
