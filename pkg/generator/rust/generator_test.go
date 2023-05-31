@@ -14,9 +14,11 @@
 package rust
 
 import (
+	"bytes"
 	"fmt"
 	"github.com/loopholelabs/scale-signature/pkg/schema"
 	"github.com/stretchr/testify/require"
+	"os"
 	"testing"
 )
 
@@ -35,6 +37,12 @@ func TestGenerator(t *testing.T) {
 		fmt.Printf("%s", err)
 		t.Fatal(err)
 	}
+
+	master, err := os.ReadFile("./generated.txt")
+	require.NoError(t, err)
+
+	require.True(t, bytes.Equal(formatted, master))
+
 	t.Log(string(formatted))
 
 }

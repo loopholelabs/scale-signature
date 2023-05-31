@@ -14,7 +14,9 @@
 package typescript
 
 import (
+	"bytes"
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/loopholelabs/scale-signature/pkg/schema"
@@ -36,6 +38,12 @@ func TestGenerator(t *testing.T) {
 		fmt.Printf("%s", err)
 		t.Fatal(err)
 	}
+
+	master, err := os.ReadFile("./generated.txt")
+	require.NoError(t, err)
+
+	require.True(t, bytes.Equal(formatted, master))
+
 	t.Log(string(formatted))
 
 }
