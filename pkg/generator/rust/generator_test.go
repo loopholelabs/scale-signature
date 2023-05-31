@@ -35,6 +35,6 @@ func TestGenerator(t *testing.T) {
 		fmt.Printf("%s", err)
 		t.Fatal(err)
 	}
-	t.Log(formatted)
+	t.Log(string(formatted))
 
 }
