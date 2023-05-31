@@ -16,9 +16,28 @@
 package integration
 
 import (
+	"github.com/loopholelabs/scale-signature/pkg/generator/golang"
+	"github.com/loopholelabs/scale-signature/pkg/schema"
+	"github.com/stretchr/testify/require"
+	"os"
 	"testing"
 )
 
-func TestName(t *testing.T) {
-	t.Fatal("not implemented")
+func TestGolangRust(t *testing.T) {
+	g, err := golang.New()
+	require.NoError(t, err)
+
+	s := new(schema.Schema)
+	err = s.Decode([]byte(schema.MasterTestingSchema))
+	require.NoError(t, err)
+
+	require.NoError(t, s.Validate())
+
+	const golangDir = "./golang_tests"
+
+	formatted, err := g.Generate(s, "tests", "v0.1.0")
+	require.NoError(t, err)
+
+	err = os.WriteFile(golangDir+"/types.go", formatted, 0644)
+	require.NoError(t, err)
 }
