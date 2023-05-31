@@ -72,3 +72,19 @@
         {{- end -}}
     {{ end }}
 {{ end }}
+
+{{ define "go_enums_accessor" }}
+    {{ $current_model := . }}
+    {{- range .Enums }}
+        {{- if .Accessor }}
+            func (x *{{ $current_model.Name }}) Get{{ .Name }}() ({{ .Reference }}, error) {
+                return x.{{ LowerFirst .Name }}, nil
+            }
+
+            func (x *{{ $current_model.Name }}) Set{{ .Name }}(v {{ .Reference }}) error {
+                x.{{ LowerFirst .Name }} = v
+                return nil
+            }
+        {{- end -}}
+    {{ end }}
+{{ end }}
