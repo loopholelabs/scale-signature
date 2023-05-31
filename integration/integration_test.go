@@ -1,4 +1,4 @@
-//go:build !integration
+//go:build integration
 
 /*
 	Copyright 2023 Loophole Labs
@@ -13,33 +13,12 @@
 	limitations under the License.
 */
 
-package golang
+package integration
 
 import (
-	"bytes"
-	"github.com/loopholelabs/scale-signature/pkg/schema"
-	"github.com/stretchr/testify/require"
-	"os"
 	"testing"
 )
 
-func TestGenerator(t *testing.T) {
-	g, err := New()
-	require.NoError(t, err)
-
-	s := new(schema.Schema)
-	err = s.Decode([]byte(schema.MasterTestingSchema))
-	require.NoError(t, err)
-
-	require.NoError(t, s.Validate())
-
-	formatted, err := g.Generate(s, "types", "v0.1.0")
-	require.NoError(t, err)
-
-	master, err := os.ReadFile("./generated.txt")
-	require.NoError(t, err)
-
-	require.True(t, bytes.Equal(formatted, master))
-
-	t.Log(string(formatted))
+func TestName(t *testing.T) {
+	t.Fatal("not implemented")
 }

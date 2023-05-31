@@ -1,4 +1,4 @@
-//go:build !tinygo && !js && !wasm
+//go:build !tinygo && !js && !wasm && !integration
 
 /*
 	Copyright 2023 Loophole Labs
