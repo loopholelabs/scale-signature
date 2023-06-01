@@ -47,3 +47,18 @@
         {{- end -}}
     {{ end }}
 {{ end }}
+
+{{ define "ts_enums_accessor" }}
+    {{ $current_model := . }}
+    {{- range .Enums }}
+        {{- if .Accessor }}
+            get {{ CamelCase .Name }}(): {{  .Reference }} {
+                return this.#{{ CamelCase .Name }};
+            }
+
+            set {{ CamelCase .Name }}(val: {{ .Reference }}) {
+                this.#{{ CamelCase .Name }} = val;
+            }
+        {{- end -}}
+    {{ end }}
+{{ end }}

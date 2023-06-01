@@ -236,6 +236,8 @@ var (
     {{ template "go_models_accessor" . }}
     {{ template "go_modelarrays_accessor" . }}
 
+    {{ template "go_enums_accessor" . }}
+    
     {{ template "go_strings_accessor" Params "Model" . "Entries" .Strings "Type" "string" }}
     {{ template "go_numbers_accessor" Params "Model" . "Entries" .Int32s "Type" "int32" }}
     {{ template "go_numbers_accessor" Params "Model" . "Entries" .Int64s "Type" "int64" }}

@@ -154,8 +154,10 @@ import { Encoder, Decoder, Kind } from "@loopholelabs/polyglot-ts"
         {{ template "ts_numbers_accessor" Params "Model" . "Entries" .Uint64s "Type" "uint64" }}
         {{ template "ts_numbers_accessor" Params "Model" . "Entries" .Float32s "Type" "float32" }}
         {{ template "ts_numbers_accessor" Params "Model" . "Entries" .Float64s "Type" "float32" }}
+
         {{ template "ts_models_accessor" . }}
         {{ template "ts_modelarrays_accessor" . }}
+        {{ template "ts_enums_accessor" . }}
 
         /** 
         * @throws {Error}
