@@ -16,8 +16,6 @@
 package rust
 
 import (
-	"bytes"
-	"fmt"
 	"github.com/loopholelabs/scale-signature/pkg/schema"
 	"github.com/stretchr/testify/require"
 	"os"
@@ -35,15 +33,13 @@ func TestGenerator(t *testing.T) {
 	require.NoError(t, s.Validate())
 
 	formatted, err := g.Generate(s, "types", "v0.1.0")
-	if err != nil {
-		fmt.Printf("%s", err)
-		t.Fatal(err)
-	}
+	require.NoError(t, err)
+
+	//os.WriteFile("./generated.txt", formatted, 0644)
 
 	master, err := os.ReadFile("./generated.txt")
 	require.NoError(t, err)
-
-	require.True(t, bytes.Equal(formatted, master))
+	require.Equal(t, string(master), string(formatted))
 
 	t.Log(string(formatted))
 

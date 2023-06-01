@@ -791,6 +791,16 @@ impl Decode for Option<ModelWithEnumAccessor> {
     }
 }
 
+impl ModelWithEnumAccessor {
+    pub fn get_enum_field(&self) -> GenericEnum {
+        &self.enum_field
+    }
+
+    pub fn set_enum_field(&mut self, v: GenericEnum) {
+        self.enum_field = v;
+    }
+}
+
 // ModelWithEnumAccessorAndDescription: Test Description
 pub(crate) struct ModelWithEnumAccessorAndDescription {
     enum_field: GenericEnum,
@@ -860,6 +870,16 @@ impl Decode for Option<ModelWithEnumAccessorAndDescription> {
             return Ok(Some(x));
         }
         return Err(result.err().unwrap());
+    }
+}
+
+impl ModelWithEnumAccessorAndDescription {
+    pub fn get_enum_field(&self) -> GenericEnum {
+        &self.enum_field
+    }
+
+    pub fn set_enum_field(&mut self, v: GenericEnum) {
+        self.enum_field = v;
     }
 }
 
@@ -1607,7 +1627,7 @@ impl ModelWithAllFieldTypes {
 
             enum_map_field_embedded: HashMap::new(),
 
-            bytes_field: Vec::new(),
+            bytes_field: Vec::with_capacity(512),
 
             bytes_array_field: Vec::with_capacity(0),
 

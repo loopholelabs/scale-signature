@@ -35,9 +35,9 @@ func TestGolangRust(t *testing.T) {
 
 	const golangDir = "./golang_tests"
 
-	formatted, err := g.Generate(s, "tests", "v0.1.0")
+	formatted, err := g.Generate(s, "golang_tests", "v0.1.0")
 	require.NoError(t, err)
 
-	err = os.WriteFile(golangDir+"/types.go", formatted, 0644)
+	err = os.WriteFile(golangDir+"/generated.go", formatted, 0644)
 	require.NoError(t, err)
 }

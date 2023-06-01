@@ -16,7 +16,6 @@
 package golang
 
 import (
-	"bytes"
 	"github.com/loopholelabs/scale-signature/pkg/schema"
 	"github.com/stretchr/testify/require"
 	"os"
@@ -36,10 +35,11 @@ func TestGenerator(t *testing.T) {
 	formatted, err := g.Generate(s, "types", "v0.1.0")
 	require.NoError(t, err)
 
+	//os.WriteFile("./generated.txt", formatted, 0644)
+
 	master, err := os.ReadFile("./generated.txt")
 	require.NoError(t, err)
-
-	require.True(t, bytes.Equal(formatted, master))
+	require.Equal(t, string(master), string(formatted))
 
 	t.Log(string(formatted))
 }

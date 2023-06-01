@@ -19,8 +19,9 @@ package schema
 import "fmt"
 
 type BytesSchema struct {
-	Name     string `hcl:"name,label"`
-	Accessor bool   `hcl:"accessor,optional"`
+	Name        string `hcl:"name,label"`
+	InitialSize uint32 `hcl:"initial_size,attr"`
+	Accessor    bool   `hcl:"accessor,optional"`
 }
 
 func (s *BytesSchema) Validate(model *ModelSchema) error {

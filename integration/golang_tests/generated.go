@@ -2,7 +2,7 @@
 // schema: MasterSchema:MasterSchemaTag
 // output: types.go
 
-package tests
+package golang_tests
 
 import (
 	"errors"
@@ -591,6 +591,15 @@ func (x *ModelWithEnumAccessor) _decode(d *polyglot.Decoder) error {
 	return nil
 }
 
+func (x *ModelWithEnumAccessor) GetEnumField() (GenericEnum, error) {
+	return x.enumField, nil
+}
+
+func (x *ModelWithEnumAccessor) SetEnumField(v GenericEnum) error {
+	x.enumField = v
+	return nil
+}
+
 // ModelWithEnumAccessorAndDescription: Test Description
 type ModelWithEnumAccessorAndDescription struct {
 	enumField GenericEnum
@@ -639,6 +648,15 @@ func (x *ModelWithEnumAccessorAndDescription) _decode(d *polyglot.Decoder) error
 	}
 	x.enumField = result
 
+	return nil
+}
+
+func (x *ModelWithEnumAccessorAndDescription) GetEnumField() (GenericEnum, error) {
+	return x.enumField, nil
+}
+
+func (x *ModelWithEnumAccessorAndDescription) SetEnumField(v GenericEnum) error {
+	x.enumField = v
 	return nil
 }
 
@@ -826,7 +844,7 @@ func NewModelWithEmbeddedModels() *ModelWithEmbeddedModels {
 
 		EmbeddedEmptyModel: NewEmptyModel(),
 
-		EmbeddedModelArrayWithMultipleFieldsAccessor: make([]*ModelWithMultipleFieldsAccessor, 0, 0),
+		EmbeddedModelArrayWithMultipleFieldsAccessor: make([]*ModelWithMultipleFieldsAccessor, 0, 64),
 	}
 }
 

@@ -116,7 +116,7 @@ func TestSchema(t *testing.T) {
 	assert.Equal(t, "EmptyModel", s.Models[14].Models[0].Reference)
 	assert.Equal(t, "EmbeddedModelArrayWithMultipleFieldsAccessor", s.Models[14].ModelArrays[0].Name)
 	assert.Equal(t, "ModelWithMultipleFieldsAccessor", s.Models[14].ModelArrays[0].Reference)
-	assert.Equal(t, uint32(0), s.Models[14].ModelArrays[0].InitialSize)
+	assert.Equal(t, uint32(64), s.Models[14].ModelArrays[0].InitialSize)
 
 	assert.Equal(t, "ModelWithEmbeddedModelsAndDescription", s.Models[15].Name)
 	assert.Equal(t, "Test Description", s.Models[15].Description)
@@ -191,6 +191,7 @@ func TestSchema(t *testing.T) {
 	assert.Equal(t, "BoolArrayField", s.Models[18].BoolArrays[0].Name)
 	assert.Equal(t, uint32(0), s.Models[18].BoolArrays[0].InitialSize)
 	assert.Equal(t, "BytesField", s.Models[18].Bytes[0].Name)
+	assert.Equal(t, uint32(512), s.Models[18].Bytes[0].InitialSize)
 	assert.Equal(t, "BytesArrayField", s.Models[18].BytesArrays[0].Name)
 	assert.Equal(t, uint32(0), s.Models[18].BytesArrays[0].InitialSize)
 	assert.Equal(t, "EnumField", s.Models[18].Enums[0].Name)
