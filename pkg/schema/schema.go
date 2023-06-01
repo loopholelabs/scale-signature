@@ -385,7 +385,7 @@ model ModelWithEmbeddedModels {
 
 	model_array EmbeddedModelArrayWithMultipleFieldsAccessor {
 		reference = "ModelWithMultipleFieldsAccessor"
-		initial_size = 0
+		initial_size = 64
 	}
 }
 
@@ -551,7 +551,9 @@ model ModelWithAllFieldTypes {
 		initial_size = 0
 	}
 
-	bytes BytesField {}
+	bytes BytesField {
+		initial_size = 512
+	}
 
 	bytes_array BytesArrayField {
 		initial_size = 0
