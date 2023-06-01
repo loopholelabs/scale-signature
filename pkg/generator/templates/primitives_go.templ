@@ -35,9 +35,9 @@
     {{ $type := .Type }}
     {{- range .Entries }}
         {{- if (Deref .Accessor) }}
-            {{ LowerFirst .Name }}: make([]byte, 0),
+            {{ LowerFirst .Name }}: make([]byte, 0, {{ .InitialSize }}),
         {{- else }}
-            {{ .Name }}: make([]byte, 0),
+            {{ .Name }}: make([]byte, 0, {{ .InitialSize }}),
         {{- end -}}
     {{ end }}
 {{ end }}

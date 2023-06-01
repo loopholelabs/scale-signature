@@ -26,7 +26,7 @@
 {{ define "rs_bytes_new_struct_reference" }}
     {{ $type := .Type }}
     {{- range .Entries }}
-        {{ SnakeCase .Name }}: Vec::new(),
+        {{ SnakeCase .Name }}: Vec::with_capacity({{ .InitialSize }}),
     {{ end }}
 {{ end }}
 
