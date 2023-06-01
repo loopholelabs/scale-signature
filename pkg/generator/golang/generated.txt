@@ -1180,10 +1180,6 @@ type ModelWithAllFieldTypes struct {
 
 	ModelArrayField []*EmptyModel
 
-	ModelMapField map[*EmptyModel]string
-
-	ModelMapFieldEmbedded map[*EmptyModel]*EmptyModel
-
 	StringField string
 
 	StringArrayField []string
@@ -1263,10 +1259,6 @@ func NewModelWithAllFieldTypes() *ModelWithAllFieldTypes {
 		ModelField: NewEmptyModel(),
 
 		ModelArrayField: make([]*EmptyModel, 0, 0),
-
-		ModelMapField: make(map[*EmptyModel]string),
-
-		ModelMapFieldEmbedded: make(map[*EmptyModel]*EmptyModel),
 
 		StringField: "DefaultValue",
 
@@ -1353,18 +1345,6 @@ func (x *ModelWithAllFieldTypes) Encode(b *polyglot.Buffer) {
 		e.Slice(uint32(len(x.ModelArrayField)), polyglot.AnyKind)
 		for _, a := range x.ModelArrayField {
 			a.Encode(b)
-		}
-
-		e.Map(uint32(len(x.ModelMapField)), polyglot.AnyKind, polyglot.StringKind)
-		for k, v := range x.ModelMapField {
-			k.Encode(b)
-			e.String(v)
-		}
-
-		e.Map(uint32(len(x.ModelMapFieldEmbedded)), polyglot.AnyKind, polyglot.AnyKind)
-		for k, v := range x.ModelMapFieldEmbedded {
-			k.Encode(b)
-			v.Encode(b)
 		}
 
 		e.String(x.StringField)
@@ -1576,47 +1556,6 @@ func (x *ModelWithAllFieldTypes) _decode(d *polyglot.Decoder) error {
 		if err != nil {
 			return err
 		}
-	}
-
-	mapSizeModelMapField, err := d.Map(polyglot.AnyKind, polyglot.StringKind)
-	if err != nil {
-		return err
-	}
-	if uint32(len(x.ModelMapField)) != mapSizeModelMapField {
-		x.ModelMapField = make(map[*EmptyModel]string, mapSizeModelMapField)
-	}
-	for i := uint32(0); i < mapSizeModelMapField; i++ {
-
-		k := NewEmptyModel()
-		err = k._decode(d)
-		if err != nil {
-			return err
-		}
-		x.ModelMapField[k], err = d.String()
-		if err != nil {
-			return err
-		}
-	}
-
-	mapSizeModelMapFieldEmbedded, err := d.Map(polyglot.AnyKind, polyglot.AnyKind)
-	if err != nil {
-		return err
-	}
-	if uint32(len(x.ModelMapFieldEmbedded)) != mapSizeModelMapFieldEmbedded {
-		x.ModelMapFieldEmbedded = make(map[*EmptyModel]*EmptyModel, mapSizeModelMapFieldEmbedded)
-	}
-	for i := uint32(0); i < mapSizeModelMapFieldEmbedded; i++ {
-		k := NewEmptyModel()
-		err = k._decode(d)
-		if err != nil {
-			return err
-		}
-		v := NewEmptyModel()
-		err = v._decode(d)
-		if err != nil {
-			return err
-		}
-		x.ModelMapFieldEmbedded[k] = v
 	}
 
 	x.StringField, err = d.String()

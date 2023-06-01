@@ -209,10 +209,4 @@ func TestSchema(t *testing.T) {
 	assert.Equal(t, "ModelArrayField", s.Models[18].ModelArrays[0].Name)
 	assert.Equal(t, "EmptyModel", s.Models[18].ModelArrays[0].Reference)
 	assert.Equal(t, uint32(0), s.Models[18].ModelArrays[0].InitialSize)
-	assert.Equal(t, "ModelMapField", s.Models[18].ModelMaps[0].Name)
-	assert.Equal(t, "EmptyModel", s.Models[18].ModelMaps[0].Reference)
-	assert.Equal(t, "string", s.Models[18].ModelMaps[0].Value)
-	assert.Equal(t, "ModelMapFieldEmbedded", s.Models[18].ModelMaps[1].Name)
-	assert.Equal(t, "EmptyModel", s.Models[18].ModelMaps[1].Reference)
-	assert.Equal(t, "EmptyModel", s.Models[18].ModelMaps[1].Value)
 }

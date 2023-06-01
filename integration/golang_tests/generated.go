@@ -1332,7 +1332,7 @@ func NewModelWithAllFieldTypes() *ModelWithAllFieldTypes {
 
 		EnumMapFieldEmbedded: make(map[GenericEnum]*EmptyModel),
 
-		BytesField: make([]byte, 0),
+		BytesField: make([]byte, 0, 512),
 
 		BytesArrayField: make([][]byte, 0, 0),
 

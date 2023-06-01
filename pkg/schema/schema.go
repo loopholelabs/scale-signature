@@ -131,18 +131,6 @@ func (s *Schema) Validate() error {
 				}
 			}
 
-			for _, modelReferenceMap := range model.ModelMaps {
-				if _, ok := knownModels[modelReferenceMap.Reference]; !ok {
-					return fmt.Errorf("unknown %s.%s.reference: %s", model.Name, modelReferenceMap.Name, modelReferenceMap.Reference)
-				}
-
-				if !ValidPrimitiveType(modelReferenceMap.Value) {
-					if _, ok := knownModels[modelReferenceMap.Value]; !ok {
-						return fmt.Errorf("unknown %s.%s.value: %s", model.Name, modelReferenceMap.Name, modelReferenceMap.Value)
-					}
-				}
-			}
-
 			for _, strMap := range model.StringMaps {
 				if !ValidPrimitiveType(strMap.Value) {
 					if _, ok := knownModels[strMap.Value]; !ok {
@@ -586,16 +574,6 @@ model ModelWithAllFieldTypes {
 	model_array ModelArrayField {
 		reference = "EmptyModel"
 		initial_size = 0
-	}
-
-	model_map ModelMapField {
-		reference = "EmptyModel"
-		value = "string"
-	}
-
-	model_map ModelMapFieldEmbedded {
-		reference = "EmptyModel"
-		value = "EmptyModel"
 	}
 }
 `

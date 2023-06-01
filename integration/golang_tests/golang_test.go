@@ -316,6 +316,13 @@ func TestOutput(t *testing.T) {
 	require.IsType(t, []bool{}, modelWithAllFieldTypes.BoolArrayField)
 	modelWithAllFieldTypes.BoolArrayField = append(modelWithAllFieldTypes.BoolArrayField, true, false)
 
+	require.Equal(t, 512, cap(modelWithAllFieldTypes.BytesField))
+	require.Equal(t, 0, len(modelWithAllFieldTypes.BytesField))
+	require.IsType(t, []byte{}, modelWithAllFieldTypes.BytesField)
+	modelWithAllFieldTypes.BytesField = append(modelWithAllFieldTypes.BytesField, []byte{42, 84}...)
+	require.Equal(t, 0, len(modelWithAllFieldTypes.BytesArrayField))
+	require.IsType(t, [][]byte{}, modelWithAllFieldTypes.BytesArrayField)
+	modelWithAllFieldTypes.BytesArrayField = append(modelWithAllFieldTypes.BytesArrayField, []byte{42, 84}, []byte{84, 42})
 }
 
 func TestInput(t *testing.T) {
