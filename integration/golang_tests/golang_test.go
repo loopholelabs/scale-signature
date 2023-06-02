@@ -323,6 +323,30 @@ func TestOutput(t *testing.T) {
 	require.Equal(t, 0, len(modelWithAllFieldTypes.BytesArrayField))
 	require.IsType(t, [][]byte{}, modelWithAllFieldTypes.BytesArrayField)
 	modelWithAllFieldTypes.BytesArrayField = append(modelWithAllFieldTypes.BytesArrayField, []byte{42, 84}, []byte{84, 42})
+
+	require.Equal(t, GenericEnumDefaultValue, modelWithAllFieldTypes.EnumField)
+	modelWithAllFieldTypes.EnumField = GenericEnumSecondValue
+	require.Equal(t, 0, cap(modelWithAllFieldTypes.EnumArrayField))
+	require.Equal(t, 0, len(modelWithAllFieldTypes.EnumArrayField))
+	require.IsType(t, []GenericEnum{}, modelWithAllFieldTypes.EnumArrayField)
+	modelWithAllFieldTypes.EnumArrayField = append(modelWithAllFieldTypes.EnumArrayField, GenericEnumFirstValue, GenericEnumSecondValue)
+	require.Equal(t, 0, len(modelWithAllFieldTypes.EnumMapField))
+	require.IsType(t, map[GenericEnum]string{}, modelWithAllFieldTypes.EnumMapField)
+	modelWithAllFieldTypes.EnumMapField[GenericEnumFirstValue] = "hello world"
+	require.Equal(t, 0, len(modelWithAllFieldTypes.EnumMapFieldEmbedded))
+	require.IsType(t, map[GenericEnum]*EmptyModel{}, modelWithAllFieldTypes.EnumMapFieldEmbedded)
+	modelWithAllFieldTypes.EnumMapFieldEmbedded[GenericEnumFirstValue] = emptyModel
+
+	require.NotNil(t, modelWithAllFieldTypes.ModelField)
+	require.Equal(t, 0, cap(modelWithAllFieldTypes.ModelArrayField))
+	require.Equal(t, 0, len(modelWithAllFieldTypes.ModelArrayField))
+	require.IsType(t, []*EmptyModel{}, modelWithAllFieldTypes.ModelArrayField)
+	modelWithAllFieldTypes.ModelArrayField = append(modelWithAllFieldTypes.ModelArrayField, emptyModel, emptyModel)
+
+	modelWithAllFieldTypes.Encode(buf)
+	err = os.WriteFile("./model_with_all_field_types.bin", buf.Bytes(), 0644)
+	require.NoError(t, err)
+	buf.Reset()
 }
 
 func TestInput(t *testing.T) {
