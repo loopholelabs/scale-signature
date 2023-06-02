@@ -25,7 +25,7 @@ import (
 	"testing"
 )
 
-func TestGolangGolang(t *testing.T) {
+func TestGolangToGolang(t *testing.T) {
 	g, err := golang.New()
 	require.NoError(t, err)
 
