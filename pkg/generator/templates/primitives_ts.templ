@@ -46,9 +46,9 @@
     {{ $type := .Type }}
     {{- range .Entries }}
         {{- if (Deref .Accessor) }}
-            this.#{{ CamelCase .Name }} = new Uint8Array();
+            this.#{{ CamelCase .Name }} = new Uint8Array({{ .InitialSize }});
         {{- else }}
-            this.{{ CamelCase .Name }} = new Uint8Array();
+            this.{{ CamelCase .Name }} = new Uint8Array({{ .InitialSize }});
         {{- end -}}
     {{ end }}
 {{ end }}

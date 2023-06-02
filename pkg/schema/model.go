@@ -27,7 +27,6 @@ type ModelSchema struct {
 
 	Models      []*ModelReferenceSchema      `hcl:"model,block"`
 	ModelArrays []*ModelReferenceArraySchema `hcl:"model_array,block"`
-	ModelMaps   []*ModelReferenceMapSchema   `hcl:"model_map,block"`
 
 	Strings      []*StringSchema      `hcl:"string,block"`
 	StringArrays []*StringArraySchema `hcl:"string_array,block"`
@@ -80,17 +79,6 @@ func (m *ModelSchema) Normalize() {
 		modelReferenceArray.Reference = TitleCaser.String(modelReferenceArray.Reference)
 	}
 
-	for _, modelReferenceMap := range m.ModelMaps {
-		modelReferenceMap.Name = TitleCaser.String(modelReferenceMap.Name)
-		modelReferenceMap.Reference = TitleCaser.String(modelReferenceMap.Reference)
-
-		if !ValidPrimitiveType(strings.ToLower(modelReferenceMap.Value)) {
-			modelReferenceMap.Value = TitleCaser.String(modelReferenceMap.Value)
-		} else {
-			modelReferenceMap.Value = strings.ToLower(modelReferenceMap.Value)
-		}
-	}
-
 	for _, enumReference := range m.Enums {
 		enumReference.Name = TitleCaser.String(enumReference.Name)
 		enumReference.Reference = TitleCaser.String(enumReference.Reference)
@@ -101,7 +89,7 @@ func (m *ModelSchema) Normalize() {
 		enumReferenceArray.Reference = TitleCaser.String(enumReferenceArray.Reference)
 	}
 
-	for _, enumReferenceMap := range m.ModelMaps {
+	for _, enumReferenceMap := range m.EnumMaps {
 		enumReferenceMap.Name = TitleCaser.String(enumReferenceMap.Name)
 		enumReferenceMap.Reference = TitleCaser.String(enumReferenceMap.Reference)
 
@@ -291,19 +279,6 @@ func (m *ModelSchema) Validate(knownModels map[string]struct{}, enums []*EnumSch
 			return fmt.Errorf("duplicate %s.model_array name: %s", m.Name, modelReferenceArray.Name)
 		} else {
 			knownFields[modelReferenceArray.Name] = struct{}{}
-		}
-	}
-
-	for _, modelReferenceMap := range m.ModelMaps {
-		err := modelReferenceMap.Validate(m)
-		if err != nil {
-			return err
-		}
-
-		if _, ok := knownFields[modelReferenceMap.Name]; ok {
-			return fmt.Errorf("duplicate %s.model_map name: %s", m.Name, modelReferenceMap.Name)
-		} else {
-			knownFields[modelReferenceMap.Name] = struct{}{}
 		}
 	}
 

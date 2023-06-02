@@ -30,7 +30,6 @@ var (
     type {{ .Name }} struct {
         {{ template "go_models_struct_reference" . }}
         {{ template "go_modelarrays_struct_reference" . }}
-        {{ template "go_modelmaps_struct_reference" . }}
 
         {{ template "go_primitives_struct_reference" Params "Entries" .Strings "Type" "string" }}
         {{ template "go_arrays_struct_reference" Params "Entries" .StringArrays "Type" "string" }}
@@ -76,7 +75,6 @@ var (
         return &{{ .Name }}{
             {{ template "go_models_new_struct_reference" . }}
             {{ template "go_modelarrays_new_struct_reference" . }}
-            {{ template "go_modelmaps_new_struct_reference" . }}
 
             {{ template "go_strings_new_struct_reference" Params "Entries" .Strings }}
             {{ template "go_arrays_new_struct_reference" Params "Entries" .StringArrays "Type" "string" }}
@@ -126,7 +124,6 @@ var (
         } else {
             {{ template "go_models_encode" . }}
             {{ template "go_modelarrays_encode" . }}
-            {{ template "go_modelmaps_encode" .}}
 
             {{ template "go_primitives_encode" Params "Entries" .Strings "Type" "string" }}
             {{ template "go_arrays_encode" Params "Entries" .StringArrays "Type" "string" }}
@@ -189,7 +186,6 @@ var (
 
         {{ template "go_models_decode" . }}
         {{ template "go_modelarrays_decode" . }}
-        {{ template "go_modelmaps_decode" .}}
 
         {{ template "go_primitives_decode" Params "Entries" .Strings "Type" "string" }}
         {{ template "go_arrays_decode" Params "Entries" .StringArrays "Type" "string" }}

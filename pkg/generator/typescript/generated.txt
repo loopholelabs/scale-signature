@@ -351,6 +351,14 @@ export class ModelWithEnumAccessor {
     }
   }
 
+  get enumField(): GenericEnum {
+    return this.#enumField;
+  }
+
+  set enumField(val: GenericEnum) {
+    this.#enumField = val;
+  }
+
   /**
   * @throws {Error}
   */
@@ -382,6 +390,14 @@ export class ModelWithEnumAccessorAndDescription {
     } else {
       this.#enumField = GenericEnum.DefaultValue;
     }
+  }
+
+  get enumField(): GenericEnum {
+    return this.#enumField;
+  }
+
+  set enumField(val: GenericEnum) {
+    this.#enumField = val;
   }
 
   /**
@@ -1064,7 +1080,7 @@ export class ModelWithAllFieldTypes {
       this.enumArrayField = [];
       this.enumMapField = new Map<GenericEnum, string>();
       this.enumMapFieldEmbedded = new Map<GenericEnum, EmptyModel | undefined>();
-      this.bytesField = new Uint8Array();
+      this.bytesField = new Uint8Array(512);
       this.bytesArrayField = [];
       this.boolField = true;
       this.boolArrayField = [];

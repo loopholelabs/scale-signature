@@ -2,7 +2,7 @@
 // schema: MasterSchema:MasterSchemaTag
 // output: types.go
 
-package types
+package golang_tests
 
 import (
 	"errors"

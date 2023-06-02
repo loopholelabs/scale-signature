@@ -1,4 +1,4 @@
-//go:build !integration
+//go:build integration
 
 /*
 	Copyright 2023 Loophole Labs
@@ -13,17 +13,20 @@
 	limitations under the License.
 */
 
-package golang
+package integration
 
 import (
+	"github.com/loopholelabs/scale-signature/pkg/generator/golang"
 	"github.com/loopholelabs/scale-signature/pkg/schema"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"os"
+	"os/exec"
 	"testing"
 )
 
-func TestGenerator(t *testing.T) {
-	g, err := New()
+func TestGolangToGolang(t *testing.T) {
+	g, err := golang.New()
 	require.NoError(t, err)
 
 	s := new(schema.Schema)
@@ -32,14 +35,21 @@ func TestGenerator(t *testing.T) {
 
 	require.NoError(t, s.Validate())
 
-	formatted, err := g.Generate(s, "types", "v0.1.0")
+	const golangDir = "./golang_tests"
+
+	formatted, err := g.Generate(s, "golang_tests", "v0.1.0")
 	require.NoError(t, err)
 
-	//os.WriteFile("./generated.txt", formatted, 0644)
-
-	master, err := os.ReadFile("./generated.txt")
+	err = os.WriteFile(golangDir+"/generated.go", formatted, 0644)
 	require.NoError(t, err)
-	require.Equal(t, string(master), string(formatted))
 
-	t.Log(string(formatted))
+	cmd := exec.Command("go", "test", golangDir, "-v", "--tags=integration,golang", "-run", "TestOutput")
+	out, err := cmd.CombinedOutput()
+	assert.NoError(t, err)
+	t.Log(string(out))
+
+	cmd = exec.Command("go", "test", golangDir, "-v", "--tags=integration,golang", "-run", "TestInput")
+	out, err = cmd.CombinedOutput()
+	assert.NoError(t, err)
+	t.Log(string(out))
 }
