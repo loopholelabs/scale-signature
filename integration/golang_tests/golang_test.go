@@ -589,5 +589,4 @@ func TestInput(t *testing.T) {
 
 	require.Equal(t, 2, len(modelWithAllFieldTypes.ModelArrayField))
 	require.Equal(t, emptyModel, modelWithAllFieldTypes.ModelArrayField[0])
-
 }

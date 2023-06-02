@@ -2,6 +2,11 @@
 // schema: {{ .schema.Name }}:{{ .schema.Tag }}
 // output: types.rs
 
+#![allow(dead_code)]
+#![allow(unused_imports)]
+#![allow(unused_variables)]
+#![allow(unused_mut)]
+
 use std::io::Cursor;
 use polyglot_rs::{DecodingError, Encoder, Decoder, Kind};
 use num_enum::TryFromPrimitive;
@@ -10,7 +15,11 @@ use std::collections::HashMap;
 use regex::Regex;
 
 pub trait Encode {
-    fn encode<'a> (&'a self, b: &'a mut Cursor<Vec<u8>>) -> Result<&mut Cursor<Vec<u8>>, Box<dyn std::error::Error>>;
+    fn encode<'a> (a: &Self, b: &'a mut Cursor<Vec<u8>>) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> where Self: Sized;
+}
+
+trait _Encode {
+    fn _encode<'a, 'b> (&'b self, b: &'a mut Cursor<Vec<u8>>) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>>;
 }
 
 pub trait Decode {
@@ -123,7 +132,13 @@ pub trait Decode {
     }
 
     impl Encode for {{ .Name }} {
-        fn encode<'a> (&'a self, e: &'a mut Cursor<Vec<u8>>) -> Result<&mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
+        fn encode<'a> (a: &{{ .Name }}, e: &'a mut Cursor<Vec<u8>>) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
+            a._encode(e)
+        }
+    }
+
+    impl _Encode for {{ .Name }} {
+        fn _encode<'a, 'b> (&'b self, e: &'a mut Cursor<Vec<u8>>) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
             {{ template "rs_models_encode" . }}
             {{ template "rs_modelarrays_encode" . }}
 
@@ -168,9 +183,20 @@ pub trait Decode {
     }
 
     impl Encode for Option<{{ .Name }}> {
-        fn encode<'a> (&'a self, e: &'a mut Cursor<Vec<u8>>) -> Result<&mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
+        fn encode<'a> (a: &Option<{{ .Name }}>, e: &'a mut Cursor<Vec<u8>>) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
+            if let Some(x) = a {
+                x._encode(e)?;
+            } else {
+                e.encode_none()?;
+            }
+            Ok(e)
+        }
+    }
+
+    impl _Encode for Option<{{ .Name }}> {
+        fn _encode<'a, 'b> (&'b self, e: &'a mut Cursor<Vec<u8>>) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
             if let Some(x) = self {
-                x.encode(e)?;
+                x._encode(e)?;
             } else {
                 e.encode_none()?;
             }

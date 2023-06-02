@@ -18,7 +18,7 @@
     {{- range .ModelArrays }}
         e.encode_array(self.{{ SnakeCase .Name }}.len(), Kind::Any)?;
         for a in &self.{{ SnakeCase .Name }} {
-            a.encode(e)?;
+            a._encode(e)?;
         }
     {{- end }}
 {{ end }}

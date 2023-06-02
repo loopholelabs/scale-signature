@@ -16,7 +16,7 @@
 
 {{ define "rs_models_encode" }}
     {{- range .Models }}
-        self.{{ SnakeCase .Name }}.encode(e)?;
+        self.{{ SnakeCase .Name }}._encode(e)?;
     {{- end }}
 {{ end }}
 
