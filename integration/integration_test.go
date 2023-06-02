@@ -18,12 +18,14 @@ package integration
 import (
 	"github.com/loopholelabs/scale-signature/pkg/generator/golang"
 	"github.com/loopholelabs/scale-signature/pkg/schema"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"os"
+	"os/exec"
 	"testing"
 )
 
-func TestGolangRust(t *testing.T) {
+func TestGolangGolang(t *testing.T) {
 	g, err := golang.New()
 	require.NoError(t, err)
 
@@ -40,4 +42,14 @@ func TestGolangRust(t *testing.T) {
 
 	err = os.WriteFile(golangDir+"/generated.go", formatted, 0644)
 	require.NoError(t, err)
+
+	cmd := exec.Command("go", "test", golangDir, "-v", "--tags=integration,golang", "-run", "TestOutput")
+	out, err := cmd.CombinedOutput()
+	assert.NoError(t, err)
+	t.Log(string(out))
+
+	cmd = exec.Command("go", "test", golangDir, "-v", "--tags=integration,golang", "-run", "TestInput")
+	out, err = cmd.CombinedOutput()
+	assert.NoError(t, err)
+	t.Log(string(out))
 }
