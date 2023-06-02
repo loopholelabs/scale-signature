@@ -15,13 +15,13 @@ func TestOutput(t *testing.T) {
 
 	emptyModel := NewEmptyModel()
 	emptyModel.Encode(buf)
-	err := os.WriteFile("./empty_model.bin", buf.Bytes(), 0644)
+	err := os.WriteFile("../binaries/empty_model.bin", buf.Bytes(), 0644)
 	require.NoError(t, err)
 	buf.Reset()
 
 	emptyModelWithDescription := NewEmptyModelWithDescription()
 	emptyModelWithDescription.Encode(buf)
-	err = os.WriteFile("./empty_model_with_description.bin", buf.Bytes(), 0644)
+	err = os.WriteFile("../binaries/empty_model_with_description.bin", buf.Bytes(), 0644)
 	require.NoError(t, err)
 	buf.Reset()
 
@@ -29,7 +29,7 @@ func TestOutput(t *testing.T) {
 	require.Equal(t, "DefaultValue", modelWithSingleStringField.StringField)
 	modelWithSingleStringField.StringField = "hello world"
 	modelWithSingleStringField.Encode(buf)
-	err = os.WriteFile("./model_with_single_string_field.bin", buf.Bytes(), 0644)
+	err = os.WriteFile("../binaries/model_with_single_string_field.bin", buf.Bytes(), 0644)
 	require.NoError(t, err)
 	buf.Reset()
 
@@ -37,7 +37,7 @@ func TestOutput(t *testing.T) {
 	require.Equal(t, "DefaultValue", modelWithSingleStringFieldAndDescription.StringField)
 	modelWithSingleStringFieldAndDescription.StringField = "hello world"
 	modelWithSingleStringFieldAndDescription.Encode(buf)
-	err = os.WriteFile("./model_with_single_string_field_and_description.bin", buf.Bytes(), 0644)
+	err = os.WriteFile("../binaries/model_with_single_string_field_and_description.bin", buf.Bytes(), 0644)
 	require.NoError(t, err)
 	buf.Reset()
 
@@ -45,7 +45,7 @@ func TestOutput(t *testing.T) {
 	require.Equal(t, int32(32), modelWithSingleInt32Field.Int32Field)
 	modelWithSingleInt32Field.Int32Field = 42
 	modelWithSingleInt32Field.Encode(buf)
-	err = os.WriteFile("./model_with_single_int32_field.bin", buf.Bytes(), 0644)
+	err = os.WriteFile("../binaries/model_with_single_int32_field.bin", buf.Bytes(), 0644)
 	require.NoError(t, err)
 	buf.Reset()
 
@@ -53,7 +53,7 @@ func TestOutput(t *testing.T) {
 	require.Equal(t, int32(32), modelWithSingleInt32FieldAndDescription.Int32Field)
 	modelWithSingleInt32FieldAndDescription.Int32Field = 42
 	modelWithSingleInt32FieldAndDescription.Encode(buf)
-	err = os.WriteFile("./model_with_single_int32_field_and_description.bin", buf.Bytes(), 0644)
+	err = os.WriteFile("../binaries/model_with_single_int32_field_and_description.bin", buf.Bytes(), 0644)
 	require.NoError(t, err)
 	buf.Reset()
 
@@ -63,7 +63,7 @@ func TestOutput(t *testing.T) {
 	modelWithMultipleFields.StringField = "hello world"
 	modelWithMultipleFields.Int32Field = 42
 	modelWithMultipleFields.Encode(buf)
-	err = os.WriteFile("./model_with_multiple_fields.bin", buf.Bytes(), 0644)
+	err = os.WriteFile("../binaries/model_with_multiple_fields.bin", buf.Bytes(), 0644)
 	require.NoError(t, err)
 	buf.Reset()
 
@@ -73,7 +73,7 @@ func TestOutput(t *testing.T) {
 	modelWithMultipleFieldsAndDescription.StringField = "hello world"
 	modelWithMultipleFieldsAndDescription.Int32Field = 42
 	modelWithMultipleFieldsAndDescription.Encode(buf)
-	err = os.WriteFile("./model_with_multiple_fields_and_description.bin", buf.Bytes(), 0644)
+	err = os.WriteFile("../binaries/model_with_multiple_fields_and_description.bin", buf.Bytes(), 0644)
 	require.NoError(t, err)
 	buf.Reset()
 
@@ -81,7 +81,7 @@ func TestOutput(t *testing.T) {
 	require.Equal(t, GenericEnumDefaultValue, modelWithEnum.EnumField)
 	modelWithEnum.EnumField = GenericEnumSecondValue
 	modelWithEnum.Encode(buf)
-	err = os.WriteFile("./model_with_enum.bin", buf.Bytes(), 0644)
+	err = os.WriteFile("../binaries/model_with_enum.bin", buf.Bytes(), 0644)
 	require.NoError(t, err)
 	buf.Reset()
 
@@ -89,7 +89,7 @@ func TestOutput(t *testing.T) {
 	require.Equal(t, GenericEnumDefaultValue, modelWithEnumAndDescription.EnumField)
 	modelWithEnumAndDescription.EnumField = GenericEnumSecondValue
 	modelWithEnumAndDescription.Encode(buf)
-	err = os.WriteFile("./model_with_enum_and_description.bin", buf.Bytes(), 0644)
+	err = os.WriteFile("../binaries/model_with_enum_and_description.bin", buf.Bytes(), 0644)
 	require.NoError(t, err)
 	buf.Reset()
 
@@ -100,7 +100,7 @@ func TestOutput(t *testing.T) {
 	err = modelWithEnumAccessor.SetEnumField(GenericEnumSecondValue)
 	require.NoError(t, err)
 	modelWithEnumAccessor.Encode(buf)
-	err = os.WriteFile("./model_with_enum_accessor.bin", buf.Bytes(), 0644)
+	err = os.WriteFile("../binaries/model_with_enum_accessor.bin", buf.Bytes(), 0644)
 	require.NoError(t, err)
 	buf.Reset()
 
@@ -111,7 +111,7 @@ func TestOutput(t *testing.T) {
 	err = modelWithEnumAccessorAndDescription.SetEnumField(GenericEnumSecondValue)
 	require.NoError(t, err)
 	modelWithEnumAccessorAndDescription.Encode(buf)
-	err = os.WriteFile("./model_with_enum_accessor_and_description.bin", buf.Bytes(), 0644)
+	err = os.WriteFile("../binaries/model_with_enum_accessor_and_description.bin", buf.Bytes(), 0644)
 	require.NoError(t, err)
 	buf.Reset()
 
@@ -138,7 +138,7 @@ func TestOutput(t *testing.T) {
 	err = modelWithMultipleFieldsAccessor.SetInt32Field(42)
 	require.NoError(t, err)
 	modelWithMultipleFieldsAccessor.Encode(buf)
-	err = os.WriteFile("./model_with_multiple_fields_accessor.bin", buf.Bytes(), 0644)
+	err = os.WriteFile("../binaries/model_with_multiple_fields_accessor.bin", buf.Bytes(), 0644)
 	require.NoError(t, err)
 	buf.Reset()
 
@@ -154,7 +154,7 @@ func TestOutput(t *testing.T) {
 	err = modelWithMultipleFieldsAccessorAndDescription.SetInt32Field(42)
 	require.NoError(t, err)
 	modelWithMultipleFieldsAccessorAndDescription.Encode(buf)
-	err = os.WriteFile("./model_with_multiple_fields_accessor_and_description.bin", buf.Bytes(), 0644)
+	err = os.WriteFile("../binaries/model_with_multiple_fields_accessor_and_description.bin", buf.Bytes(), 0644)
 	require.NoError(t, err)
 	buf.Reset()
 
@@ -166,7 +166,7 @@ func TestOutput(t *testing.T) {
 	require.IsType(t, []*ModelWithMultipleFieldsAccessor{}, modelWithEmbeddedModels.EmbeddedModelArrayWithMultipleFieldsAccessor)
 	modelWithEmbeddedModels.EmbeddedModelArrayWithMultipleFieldsAccessor = append(modelWithEmbeddedModels.EmbeddedModelArrayWithMultipleFieldsAccessor, modelWithMultipleFieldsAccessor)
 	modelWithEmbeddedModels.Encode(buf)
-	err = os.WriteFile("./model_with_embedded_models.bin", buf.Bytes(), 0644)
+	err = os.WriteFile("../binaries/model_with_embedded_models.bin", buf.Bytes(), 0644)
 	require.NoError(t, err)
 	buf.Reset()
 
@@ -178,7 +178,7 @@ func TestOutput(t *testing.T) {
 	require.IsType(t, []*ModelWithMultipleFieldsAccessor{}, modelWithEmbeddedModelsAndDescription.EmbeddedModelArrayWithMultipleFieldsAccessor)
 	modelWithEmbeddedModelsAndDescription.EmbeddedModelArrayWithMultipleFieldsAccessor = append(modelWithEmbeddedModelsAndDescription.EmbeddedModelArrayWithMultipleFieldsAccessor, modelWithMultipleFieldsAccessor)
 	modelWithEmbeddedModelsAndDescription.Encode(buf)
-	err = os.WriteFile("./model_with_embedded_models_and_description.bin", buf.Bytes(), 0644)
+	err = os.WriteFile("../binaries/model_with_embedded_models_and_description.bin", buf.Bytes(), 0644)
 	require.NoError(t, err)
 	buf.Reset()
 
@@ -195,7 +195,7 @@ func TestOutput(t *testing.T) {
 	err = modelWithEmbeddedModelsAccessor.SetEmbeddedModelArrayWithMultipleFieldsAccessor([]*ModelWithMultipleFieldsAccessor{modelWithMultipleFieldsAccessor})
 	require.NoError(t, err)
 	modelWithEmbeddedModelsAccessor.Encode(buf)
-	err = os.WriteFile("./model_with_embedded_models_accessor.bin", buf.Bytes(), 0644)
+	err = os.WriteFile("../binaries/model_with_embedded_models_accessor.bin", buf.Bytes(), 0644)
 	require.NoError(t, err)
 	buf.Reset()
 
@@ -212,7 +212,7 @@ func TestOutput(t *testing.T) {
 	err = modelWithEmbeddedModelsAccessorAndDescription.SetEmbeddedModelArrayWithMultipleFieldsAccessor([]*ModelWithMultipleFieldsAccessor{modelWithMultipleFieldsAccessor})
 	require.NoError(t, err)
 	modelWithEmbeddedModelsAccessorAndDescription.Encode(buf)
-	err = os.WriteFile("./model_with_embedded_models_accessor_and_description.bin", buf.Bytes(), 0644)
+	err = os.WriteFile("../binaries/model_with_embedded_models_accessor_and_description.bin", buf.Bytes(), 0644)
 	require.NoError(t, err)
 	buf.Reset()
 
@@ -344,53 +344,53 @@ func TestOutput(t *testing.T) {
 	modelWithAllFieldTypes.ModelArrayField = append(modelWithAllFieldTypes.ModelArrayField, emptyModel, emptyModel)
 
 	modelWithAllFieldTypes.Encode(buf)
-	err = os.WriteFile("./model_with_all_field_types.bin", buf.Bytes(), 0644)
+	err = os.WriteFile("../binaries/model_with_all_field_types.bin", buf.Bytes(), 0644)
 	require.NoError(t, err)
 	buf.Reset()
 }
 
 func TestInput(t *testing.T) {
 	emptyModel := NewEmptyModel()
-	emptyModelData, err := os.ReadFile("./empty_model.bin")
+	emptyModelData, err := os.ReadFile("../binaries/empty_model.bin")
 	require.NoError(t, err)
 	err = emptyModel.Decode(emptyModelData)
 	require.NoError(t, err)
 
 	emptyModelWithDescription := NewEmptyModelWithDescription()
-	emptyModelWithDescriptionData, err := os.ReadFile("./empty_model_with_description.bin")
+	emptyModelWithDescriptionData, err := os.ReadFile("../binaries/empty_model_with_description.bin")
 	require.NoError(t, err)
 	err = emptyModelWithDescription.Decode(emptyModelWithDescriptionData)
 	require.NoError(t, err)
 
 	modelWithSingleStringField := NewModelWithSingleStringField()
-	modelWithSingleStringFieldData, err := os.ReadFile("./model_with_single_string_field.bin")
+	modelWithSingleStringFieldData, err := os.ReadFile("../binaries/model_with_single_string_field.bin")
 	require.NoError(t, err)
 	err = modelWithSingleStringField.Decode(modelWithSingleStringFieldData)
 	require.NoError(t, err)
 	require.Equal(t, "hello world", modelWithSingleStringField.StringField)
 
 	modelWithSingleStringFieldAndDescription := NewModelWithSingleStringFieldAndDescription()
-	modelWithSingleStringFieldAndDescriptionData, err := os.ReadFile("./model_with_single_string_field_and_description.bin")
+	modelWithSingleStringFieldAndDescriptionData, err := os.ReadFile("../binaries/model_with_single_string_field_and_description.bin")
 	require.NoError(t, err)
 	err = modelWithSingleStringFieldAndDescription.Decode(modelWithSingleStringFieldAndDescriptionData)
 	require.NoError(t, err)
 
 	modelWithSingleInt32Field := NewModelWithSingleInt32Field()
-	modelWithSingleInt32FieldData, err := os.ReadFile("./model_with_single_int32_field.bin")
+	modelWithSingleInt32FieldData, err := os.ReadFile("../binaries/model_with_single_int32_field.bin")
 	require.NoError(t, err)
 	err = modelWithSingleInt32Field.Decode(modelWithSingleInt32FieldData)
 	require.NoError(t, err)
 	require.Equal(t, int32(42), modelWithSingleInt32Field.Int32Field)
 
 	modelWithSingleInt32FieldAndDescription := NewModelWithSingleInt32FieldAndDescription()
-	modelWithSingleInt32FieldAndDescriptionData, err := os.ReadFile("./model_with_single_int32_field_and_description.bin")
+	modelWithSingleInt32FieldAndDescriptionData, err := os.ReadFile("../binaries/model_with_single_int32_field_and_description.bin")
 	require.NoError(t, err)
 	err = modelWithSingleInt32FieldAndDescription.Decode(modelWithSingleInt32FieldAndDescriptionData)
 	require.NoError(t, err)
 	require.Equal(t, int32(42), modelWithSingleInt32FieldAndDescription.Int32Field)
 
 	modelWithMultipleFields := NewModelWithMultipleFields()
-	modelWithMultipleFieldsData, err := os.ReadFile("./model_with_multiple_fields.bin")
+	modelWithMultipleFieldsData, err := os.ReadFile("../binaries/model_with_multiple_fields.bin")
 	require.NoError(t, err)
 	err = modelWithMultipleFields.Decode(modelWithMultipleFieldsData)
 	require.NoError(t, err)
@@ -398,7 +398,7 @@ func TestInput(t *testing.T) {
 	require.Equal(t, int32(42), modelWithMultipleFields.Int32Field)
 
 	modelWithMultipleFieldsAndDescription := NewModelWithMultipleFieldsAndDescription()
-	modelWithMultipleFieldsAndDescriptionData, err := os.ReadFile("./model_with_multiple_fields_and_description.bin")
+	modelWithMultipleFieldsAndDescriptionData, err := os.ReadFile("../binaries/model_with_multiple_fields_and_description.bin")
 	require.NoError(t, err)
 	err = modelWithMultipleFieldsAndDescription.Decode(modelWithMultipleFieldsAndDescriptionData)
 	require.NoError(t, err)
@@ -406,25 +406,188 @@ func TestInput(t *testing.T) {
 	require.Equal(t, int32(42), modelWithMultipleFieldsAndDescription.Int32Field)
 
 	modelWithEnum := NewModelWithEnum()
-	modelWithEnumData, err := os.ReadFile("./model_with_enum.bin")
+	modelWithEnumData, err := os.ReadFile("../binaries/model_with_enum.bin")
 	require.NoError(t, err)
 	err = modelWithEnum.Decode(modelWithEnumData)
 	require.NoError(t, err)
 	require.Equal(t, GenericEnumSecondValue, modelWithEnum.EnumField)
 
 	modelWithEnumAndDescription := NewModelWithEnumAndDescription()
-	modelWithEnumAndDescriptionData, err := os.ReadFile("./model_with_enum_and_description.bin")
+	modelWithEnumAndDescriptionData, err := os.ReadFile("../binaries/model_with_enum_and_description.bin")
 	require.NoError(t, err)
 	err = modelWithEnumAndDescription.Decode(modelWithEnumAndDescriptionData)
 	require.NoError(t, err)
 	require.Equal(t, GenericEnumSecondValue, modelWithEnumAndDescription.EnumField)
 
 	modelWithEnumAccessor := NewModelWithEnumAccessor()
-	modelWithEnumAccessorData, err := os.ReadFile("./model_with_enum_accessor.bin")
+	modelWithEnumAccessorData, err := os.ReadFile("../binaries/model_with_enum_accessor.bin")
 	require.NoError(t, err)
 	err = modelWithEnumAccessor.Decode(modelWithEnumAccessorData)
 	require.NoError(t, err)
 	enumValue, err := modelWithEnumAccessor.GetEnumField()
 	require.NoError(t, err)
 	require.Equal(t, GenericEnumSecondValue, enumValue)
+
+	modelWithEnumAccessorAndDescription := NewModelWithEnumAccessorAndDescription()
+	modelWithEnumAccessorAndDescriptionData, err := os.ReadFile("../binaries/model_with_enum_accessor_and_description.bin")
+	require.NoError(t, err)
+	err = modelWithEnumAccessorAndDescription.Decode(modelWithEnumAccessorAndDescriptionData)
+	require.NoError(t, err)
+	enumValue, err = modelWithEnumAccessorAndDescription.GetEnumField()
+	require.NoError(t, err)
+	require.Equal(t, GenericEnumSecondValue, enumValue)
+
+	modelWithMultipleFieldsAccessor := NewModelWithMultipleFieldsAccessor()
+	modelWithMultipleFieldsAccessorData, err := os.ReadFile("../binaries/model_with_multiple_fields_accessor.bin")
+	require.NoError(t, err)
+	err = modelWithMultipleFieldsAccessor.Decode(modelWithMultipleFieldsAccessorData)
+	require.NoError(t, err)
+	stringFieldValue, err := modelWithMultipleFieldsAccessor.GetStringField()
+	require.NoError(t, err)
+	require.Equal(t, "HELLO", stringFieldValue)
+	int32FieldValue, err := modelWithMultipleFieldsAccessor.GetInt32Field()
+	require.NoError(t, err)
+	require.Equal(t, int32(42), int32FieldValue)
+
+	modelWithMultipleFieldsAccessorAndDescription := NewModelWithMultipleFieldsAccessorAndDescription()
+	modelWithMultipleFieldsAccessorAndDescriptionData, err := os.ReadFile("../binaries/model_with_multiple_fields_accessor_and_description.bin")
+	require.NoError(t, err)
+	err = modelWithMultipleFieldsAccessorAndDescription.Decode(modelWithMultipleFieldsAccessorAndDescriptionData)
+	require.NoError(t, err)
+	stringFieldValue, err = modelWithMultipleFieldsAccessorAndDescription.GetStringField()
+	require.NoError(t, err)
+	require.Equal(t, "hello world", stringFieldValue)
+	int32FieldValue, err = modelWithMultipleFieldsAccessorAndDescription.GetInt32Field()
+	require.NoError(t, err)
+	require.Equal(t, int32(42), int32FieldValue)
+
+	modelWithEmbeddedModels := NewModelWithEmbeddedModels()
+	modelWithEmbeddedModelsData, err := os.ReadFile("../binaries/model_with_embedded_models.bin")
+	require.NoError(t, err)
+	err = modelWithEmbeddedModels.Decode(modelWithEmbeddedModelsData)
+	require.NoError(t, err)
+	require.NotNil(t, modelWithEmbeddedModels.EmbeddedEmptyModel)
+	require.NotNil(t, modelWithEmbeddedModels.EmbeddedModelArrayWithMultipleFieldsAccessor)
+	require.Equal(t, 1, cap(modelWithEmbeddedModels.EmbeddedModelArrayWithMultipleFieldsAccessor))
+	require.Equal(t, 1, len(modelWithEmbeddedModels.EmbeddedModelArrayWithMultipleFieldsAccessor))
+	require.IsType(t, []*ModelWithMultipleFieldsAccessor{}, modelWithEmbeddedModels.EmbeddedModelArrayWithMultipleFieldsAccessor)
+	require.Equal(t, modelWithMultipleFieldsAccessor, modelWithEmbeddedModels.EmbeddedModelArrayWithMultipleFieldsAccessor[0])
+
+	modelWithEmbeddedModelsAndDescription := NewModelWithEmbeddedModelsAndDescription()
+	modelWithEmbeddedModelsAndDescriptionData, err := os.ReadFile("../binaries/model_with_embedded_models_and_description.bin")
+	require.NoError(t, err)
+	err = modelWithEmbeddedModelsAndDescription.Decode(modelWithEmbeddedModelsAndDescriptionData)
+	require.NoError(t, err)
+	require.NotNil(t, modelWithEmbeddedModelsAndDescription.EmbeddedEmptyModel)
+	require.NotNil(t, modelWithEmbeddedModelsAndDescription.EmbeddedModelArrayWithMultipleFieldsAccessor)
+	require.Equal(t, 1, cap(modelWithEmbeddedModelsAndDescription.EmbeddedModelArrayWithMultipleFieldsAccessor))
+	require.Equal(t, 1, len(modelWithEmbeddedModelsAndDescription.EmbeddedModelArrayWithMultipleFieldsAccessor))
+	require.IsType(t, []*ModelWithMultipleFieldsAccessor{}, modelWithEmbeddedModelsAndDescription.EmbeddedModelArrayWithMultipleFieldsAccessor)
+	require.Equal(t, modelWithMultipleFieldsAccessor, modelWithEmbeddedModelsAndDescription.EmbeddedModelArrayWithMultipleFieldsAccessor[0])
+
+	modelWithEmbeddedModelsAccessor := NewModelWithEmbeddedModelsAccessor()
+	modelWithEmbeddedModelsAccessorData, err := os.ReadFile("../binaries/model_with_embedded_models_accessor.bin")
+	require.NoError(t, err)
+	err = modelWithEmbeddedModelsAccessor.Decode(modelWithEmbeddedModelsAccessorData)
+	require.NoError(t, err)
+	embeddedEmptyModel, err := modelWithEmbeddedModelsAccessor.GetEmbeddedEmptyModel()
+	require.NoError(t, err)
+	require.NotNil(t, embeddedEmptyModel)
+	embeddedModelArrayWithMultipleFieldsAccessor, err := modelWithEmbeddedModelsAccessor.GetEmbeddedModelArrayWithMultipleFieldsAccessor()
+	require.NoError(t, err)
+	require.Equal(t, 1, cap(embeddedModelArrayWithMultipleFieldsAccessor))
+	require.Equal(t, 1, len(embeddedModelArrayWithMultipleFieldsAccessor))
+	require.IsType(t, []*ModelWithMultipleFieldsAccessor{}, embeddedModelArrayWithMultipleFieldsAccessor)
+	require.Equal(t, modelWithMultipleFieldsAccessor, embeddedModelArrayWithMultipleFieldsAccessor[0])
+
+	modelWithEmbeddedModelsAccessorAndDescription := NewModelWithEmbeddedModelsAccessorAndDescription()
+	modelWithEmbeddedModelsAccessorAndDescriptionData, err := os.ReadFile("../binaries/model_with_embedded_models_accessor_and_description.bin")
+	require.NoError(t, err)
+	err = modelWithEmbeddedModelsAccessorAndDescription.Decode(modelWithEmbeddedModelsAccessorAndDescriptionData)
+	require.NoError(t, err)
+	embeddedEmptyModel, err = modelWithEmbeddedModelsAccessorAndDescription.GetEmbeddedEmptyModel()
+	require.NoError(t, err)
+	require.NotNil(t, embeddedEmptyModel)
+	embeddedModelArrayWithMultipleFieldsAccessor, err = modelWithEmbeddedModelsAccessorAndDescription.GetEmbeddedModelArrayWithMultipleFieldsAccessor()
+	require.NoError(t, err)
+	require.Equal(t, 1, cap(embeddedModelArrayWithMultipleFieldsAccessor))
+	require.Equal(t, 1, len(embeddedModelArrayWithMultipleFieldsAccessor))
+	require.IsType(t, []*ModelWithMultipleFieldsAccessor{}, embeddedModelArrayWithMultipleFieldsAccessor)
+	require.Equal(t, modelWithMultipleFieldsAccessor, embeddedModelArrayWithMultipleFieldsAccessor[0])
+
+	modelWithAllFieldTypes := NewModelWithAllFieldTypes()
+	modelWithAllFieldTypesData, err := os.ReadFile("../binaries/model_with_all_field_types.bin")
+	require.NoError(t, err)
+	err = modelWithAllFieldTypes.Decode(modelWithAllFieldTypesData)
+	require.NoError(t, err)
+
+	require.Equal(t, "hello world", modelWithAllFieldTypes.StringField)
+	require.Equal(t, 2, len(modelWithAllFieldTypes.StringArrayField))
+	require.Equal(t, "hello", modelWithAllFieldTypes.StringArrayField[0])
+	require.Equal(t, "world", modelWithAllFieldTypes.StringArrayField[1])
+	require.Equal(t, "world", modelWithAllFieldTypes.StringMapField["hello"])
+	require.Equal(t, emptyModel, modelWithAllFieldTypes.StringMapFieldEmbedded["hello"])
+
+	require.Equal(t, int32(42), modelWithAllFieldTypes.Int32Field)
+	require.Equal(t, 2, len(modelWithAllFieldTypes.Int32ArrayField))
+	require.Equal(t, int32(42), modelWithAllFieldTypes.Int32ArrayField[0])
+	require.Equal(t, int32(84), modelWithAllFieldTypes.Int32ArrayField[1])
+	require.Equal(t, int32(84), modelWithAllFieldTypes.Int32MapField[42])
+	require.Equal(t, emptyModel, modelWithAllFieldTypes.Int32MapFieldEmbedded[42])
+
+	require.Equal(t, int64(100), modelWithAllFieldTypes.Int64Field)
+	require.Equal(t, 2, len(modelWithAllFieldTypes.Int64ArrayField))
+	require.Equal(t, int64(100), modelWithAllFieldTypes.Int64ArrayField[0])
+	require.Equal(t, int64(200), modelWithAllFieldTypes.Int64ArrayField[1])
+	require.Equal(t, int64(200), modelWithAllFieldTypes.Int64MapField[100])
+	require.Equal(t, emptyModel, modelWithAllFieldTypes.Int64MapFieldEmbedded[100])
+
+	require.Equal(t, uint32(42), modelWithAllFieldTypes.Uint32Field)
+	require.Equal(t, 2, len(modelWithAllFieldTypes.Uint32ArrayField))
+	require.Equal(t, uint32(42), modelWithAllFieldTypes.Uint32ArrayField[0])
+	require.Equal(t, uint32(84), modelWithAllFieldTypes.Uint32ArrayField[1])
+	require.Equal(t, uint32(84), modelWithAllFieldTypes.Uint32MapField[42])
+	require.Equal(t, emptyModel, modelWithAllFieldTypes.Uint32MapFieldEmbedded[42])
+
+	require.Equal(t, uint64(100), modelWithAllFieldTypes.Uint64Field)
+	require.Equal(t, 2, len(modelWithAllFieldTypes.Uint64ArrayField))
+	require.Equal(t, uint64(100), modelWithAllFieldTypes.Uint64ArrayField[0])
+	require.Equal(t, uint64(200), modelWithAllFieldTypes.Uint64ArrayField[1])
+	require.Equal(t, uint64(200), modelWithAllFieldTypes.Uint64MapField[100])
+	require.Equal(t, emptyModel, modelWithAllFieldTypes.Uint64MapFieldEmbedded[100])
+
+	require.Equal(t, float32(42.0), modelWithAllFieldTypes.Float32Field)
+	require.Equal(t, 2, len(modelWithAllFieldTypes.Float32ArrayField))
+	require.Equal(t, float32(42.0), modelWithAllFieldTypes.Float32ArrayField[0])
+	require.Equal(t, float32(84.0), modelWithAllFieldTypes.Float32ArrayField[1])
+	require.Equal(t, float32(84.0), modelWithAllFieldTypes.Float32MapField[42.0])
+	require.Equal(t, emptyModel, modelWithAllFieldTypes.Float32MapFieldEmbedded[42.0])
+
+	require.Equal(t, float64(100.0), modelWithAllFieldTypes.Float64Field)
+	require.Equal(t, 2, len(modelWithAllFieldTypes.Float64ArrayField))
+	require.Equal(t, float64(100.0), modelWithAllFieldTypes.Float64ArrayField[0])
+	require.Equal(t, float64(200.0), modelWithAllFieldTypes.Float64ArrayField[1])
+	require.Equal(t, float64(200.0), modelWithAllFieldTypes.Float64MapField[100.0])
+	require.Equal(t, emptyModel, modelWithAllFieldTypes.Float64MapFieldEmbedded[100.0])
+
+	require.Equal(t, false, modelWithAllFieldTypes.BoolField)
+	require.Equal(t, 2, len(modelWithAllFieldTypes.BoolArrayField))
+	require.Equal(t, true, modelWithAllFieldTypes.BoolArrayField[0])
+	require.Equal(t, false, modelWithAllFieldTypes.BoolArrayField[1])
+
+	require.Equal(t, []byte{42, 84}, modelWithAllFieldTypes.BytesField)
+	require.Equal(t, 2, len(modelWithAllFieldTypes.BytesArrayField))
+	require.Equal(t, []byte{42, 84}, modelWithAllFieldTypes.BytesArrayField[0])
+	require.Equal(t, []byte{84, 42}, modelWithAllFieldTypes.BytesArrayField[1])
+
+	require.Equal(t, GenericEnumSecondValue, modelWithAllFieldTypes.EnumField)
+	require.Equal(t, 2, len(modelWithAllFieldTypes.EnumArrayField))
+	require.Equal(t, GenericEnumFirstValue, modelWithAllFieldTypes.EnumArrayField[0])
+	require.Equal(t, GenericEnumSecondValue, modelWithAllFieldTypes.EnumArrayField[1])
+	require.Equal(t, "hello world", modelWithAllFieldTypes.EnumMapField[GenericEnumFirstValue])
+	require.Equal(t, emptyModel, modelWithAllFieldTypes.EnumMapFieldEmbedded[GenericEnumFirstValue])
+
+	require.Equal(t, 2, len(modelWithAllFieldTypes.ModelArrayField))
+	require.Equal(t, emptyModel, modelWithAllFieldTypes.ModelArrayField[0])
+
 }
