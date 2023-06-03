@@ -289,12 +289,6 @@ func TestOutput(t *testing.T) {
 	require.Equal(t, 0, len(modelWithAllFieldTypes.Float32ArrayField))
 	require.IsType(t, []float32{}, modelWithAllFieldTypes.Float32ArrayField)
 	modelWithAllFieldTypes.Float32ArrayField = append(modelWithAllFieldTypes.Float32ArrayField, 42.0, 84.0)
-	require.Equal(t, 0, len(modelWithAllFieldTypes.Float32MapField))
-	require.IsType(t, map[float32]float32{}, modelWithAllFieldTypes.Float32MapField)
-	modelWithAllFieldTypes.Float32MapField[42.0] = 84.0
-	require.Equal(t, 0, len(modelWithAllFieldTypes.Float32MapFieldEmbedded))
-	require.IsType(t, map[float32]*EmptyModel{}, modelWithAllFieldTypes.Float32MapFieldEmbedded)
-	modelWithAllFieldTypes.Float32MapFieldEmbedded[42.0] = emptyModel
 
 	require.Equal(t, float64(64.64), modelWithAllFieldTypes.Float64Field)
 	modelWithAllFieldTypes.Float64Field = 100.0
@@ -302,12 +296,6 @@ func TestOutput(t *testing.T) {
 	require.Equal(t, 0, len(modelWithAllFieldTypes.Float64ArrayField))
 	require.IsType(t, []float64{}, modelWithAllFieldTypes.Float64ArrayField)
 	modelWithAllFieldTypes.Float64ArrayField = append(modelWithAllFieldTypes.Float64ArrayField, 100.0, 200.0)
-	require.Equal(t, 0, len(modelWithAllFieldTypes.Float64MapField))
-	require.IsType(t, map[float64]float64{}, modelWithAllFieldTypes.Float64MapField)
-	modelWithAllFieldTypes.Float64MapField[100.0] = 200.0
-	require.Equal(t, 0, len(modelWithAllFieldTypes.Float64MapFieldEmbedded))
-	require.IsType(t, map[float64]*EmptyModel{}, modelWithAllFieldTypes.Float64MapFieldEmbedded)
-	modelWithAllFieldTypes.Float64MapFieldEmbedded[100.0] = emptyModel
 
 	require.Equal(t, true, modelWithAllFieldTypes.BoolField)
 	modelWithAllFieldTypes.BoolField = false
@@ -560,15 +548,11 @@ func TestInput(t *testing.T) {
 	require.Equal(t, 2, len(modelWithAllFieldTypes.Float32ArrayField))
 	require.Equal(t, float32(42.0), modelWithAllFieldTypes.Float32ArrayField[0])
 	require.Equal(t, float32(84.0), modelWithAllFieldTypes.Float32ArrayField[1])
-	require.Equal(t, float32(84.0), modelWithAllFieldTypes.Float32MapField[42.0])
-	require.Equal(t, emptyModel, modelWithAllFieldTypes.Float32MapFieldEmbedded[42.0])
 
 	require.Equal(t, float64(100.0), modelWithAllFieldTypes.Float64Field)
 	require.Equal(t, 2, len(modelWithAllFieldTypes.Float64ArrayField))
 	require.Equal(t, float64(100.0), modelWithAllFieldTypes.Float64ArrayField[0])
 	require.Equal(t, float64(200.0), modelWithAllFieldTypes.Float64ArrayField[1])
-	require.Equal(t, float64(200.0), modelWithAllFieldTypes.Float64MapField[100.0])
-	require.Equal(t, emptyModel, modelWithAllFieldTypes.Float64MapFieldEmbedded[100.0])
 
 	require.Equal(t, false, modelWithAllFieldTypes.BoolField)
 	require.Equal(t, 2, len(modelWithAllFieldTypes.BoolArrayField))
@@ -589,5 +573,5 @@ func TestInput(t *testing.T) {
 
 	require.Equal(t, 2, len(modelWithAllFieldTypes.ModelArrayField))
 	require.Equal(t, emptyModel, modelWithAllFieldTypes.ModelArrayField[0])
-
+	require.Equal(t, emptyModel, modelWithAllFieldTypes.ModelArrayField[1])
 }

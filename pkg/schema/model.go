@@ -60,11 +60,9 @@ type ModelSchema struct {
 
 	Float32s      []*NumberSchema[float32]      `hcl:"float32,block"`
 	Float32Arrays []*NumberArraySchema[float32] `hcl:"float32_array,block"`
-	Float32Maps   []*NumberMapSchema[float32]   `hcl:"float32_map,block"`
 
 	Float64s      []*NumberSchema[float64]      `hcl:"float64,block"`
 	Float64Arrays []*NumberArraySchema[float64] `hcl:"float64_array,block"`
-	Float64Maps   []*NumberMapSchema[float64]   `hcl:"float64_map,block"`
 }
 
 func (m *ModelSchema) Normalize() {
@@ -198,32 +196,12 @@ func (m *ModelSchema) Normalize() {
 		f32Array.Name = TitleCaser.String(f32Array.Name)
 	}
 
-	for _, f32Map := range m.Float32Maps {
-		f32Map.Name = TitleCaser.String(f32Map.Name)
-
-		if !ValidPrimitiveType(strings.ToLower(f32Map.Value)) {
-			f32Map.Value = TitleCaser.String(f32Map.Value)
-		} else {
-			f32Map.Value = strings.ToLower(f32Map.Value)
-		}
-	}
-
 	for _, f64 := range m.Float64s {
 		f64.Name = TitleCaser.String(f64.Name)
 	}
 
 	for _, f64Array := range m.Float64Arrays {
 		f64Array.Name = TitleCaser.String(f64Array.Name)
-	}
-
-	for _, f64Map := range m.Float64Maps {
-		f64Map.Name = TitleCaser.String(f64Map.Name)
-
-		if !ValidPrimitiveType(strings.ToLower(f64Map.Value)) {
-			f64Map.Value = TitleCaser.String(f64Map.Value)
-		} else {
-			f64Map.Value = strings.ToLower(f64Map.Value)
-		}
 	}
 
 	for _, b := range m.Bools {
@@ -504,19 +482,6 @@ func (m *ModelSchema) Validate(knownModels map[string]struct{}, enums []*EnumSch
 		}
 	}
 
-	for _, f32Map := range m.Float32Maps {
-		err := f32Map.Validate(m)
-		if err != nil {
-			return err
-		}
-
-		if _, ok := knownFields[f32Map.Name]; ok {
-			return fmt.Errorf("duplicate %s.f32_map name: %s", m.Name, f32Map.Name)
-		} else {
-			knownFields[f32Map.Name] = struct{}{}
-		}
-	}
-
 	for _, f64 := range m.Float64s {
 		err := f64.Validate(m)
 		if err != nil {
@@ -540,19 +505,6 @@ func (m *ModelSchema) Validate(knownModels map[string]struct{}, enums []*EnumSch
 			return fmt.Errorf("duplicate %s.f64_array name: %s", m.Name, f64Array.Name)
 		} else {
 			knownFields[f64Array.Name] = struct{}{}
-		}
-	}
-
-	for _, f64Map := range m.Float64Maps {
-		err := f64Map.Validate(m)
-		if err != nil {
-			return err
-		}
-
-		if _, ok := knownFields[f64Map.Name]; ok {
-			return fmt.Errorf("duplicate %s.f64_map name: %s", m.Name, f64Map.Name)
-		} else {
-			knownFields[f64Map.Name] = struct{}{}
 		}
 	}
 

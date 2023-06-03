@@ -834,17 +834,9 @@ export class ModelWithAllFieldTypes {
 
   float32ArrayField: number[];
 
-  float32MapField: Map<number, number>;
-
-  float32MapFieldEmbedded: Map<number, EmptyModel | undefined>;
-
   float64Field: number;
 
   float64ArrayField: number[];
-
-  float64MapField: Map<number, number>;
-
-  float64MapFieldEmbedded: Map<number, EmptyModel | undefined>;
 
   enumField: GenericEnum;
 
@@ -979,39 +971,11 @@ export class ModelWithAllFieldTypes {
       for (let i = 0; i < float32ArrayFieldSize; i += 1) {
         this.float32ArrayField[i] = decoder.float32();
       }
-      this.float32MapField = new Map<number, number>();
-      let float32MapFieldSize = decoder.map(Kind.Float32, Kind.Float32);
-      for (let i = 0; i < float32MapFieldSize; i++) {
-        let key = decoder.float32();
-        let val = decoder.float32();
-        this.float32MapField.set(key, val);
-      }
-      this.float32MapFieldEmbedded = new Map<number, EmptyModel>();
-      let float32MapFieldEmbeddedSize = decoder.map(Kind.Float32, Kind.Any);
-      for (let i = 0; i < float32MapFieldEmbeddedSize; i++) {
-        let key = decoder.float32();
-        let val = EmptyModel.decode(decoder);
-        this.float32MapFieldEmbedded.set(key, val);
-      }
       this.float64Field = decoder.float64();
       const float64ArrayFieldSize = decoder.array(Kind.Float64);
       this.float64ArrayField = new Array(float64ArrayFieldSize);
       for (let i = 0; i < float64ArrayFieldSize; i += 1) {
         this.float64ArrayField[i] = decoder.float64();
-      }
-      this.float64MapField = new Map<number, number>();
-      let float64MapFieldSize = decoder.map(Kind.Float64, Kind.Float64);
-      for (let i = 0; i < float64MapFieldSize; i++) {
-        let key = decoder.float64();
-        let val = decoder.float64();
-        this.float64MapField.set(key, val);
-      }
-      this.float64MapFieldEmbedded = new Map<number, EmptyModel>();
-      let float64MapFieldEmbeddedSize = decoder.map(Kind.Float64, Kind.Any);
-      for (let i = 0; i < float64MapFieldEmbeddedSize; i++) {
-        let key = decoder.float64();
-        let val = EmptyModel.decode(decoder);
-        this.float64MapFieldEmbedded.set(key, val);
       }
       this.enumField = decoder.uint32();
       const enumArrayFieldSize = decoder.array(Kind.Uint32);
@@ -1070,12 +1034,8 @@ export class ModelWithAllFieldTypes {
       this.uint64MapFieldEmbedded = new Map<bigint, EmptyModel | undefined>();
       this.float32Field = 32.32;
       this.float32ArrayField = [];
-      this.float32MapField = new Map<number, number>();
-      this.float32MapFieldEmbedded = new Map<number, EmptyModel | undefined>();
       this.float64Field = 64.64;
       this.float64ArrayField = [];
-      this.float64MapField = new Map<number, number>();
-      this.float64MapFieldEmbedded = new Map<number, EmptyModel | undefined>();
       this.enumField = GenericEnum.DefaultValue;
       this.enumArrayField = [];
       this.enumMapField = new Map<GenericEnum, string>();
@@ -1212,40 +1172,12 @@ export class ModelWithAllFieldTypes {
     for (let i = 0; i < float32ArrayFieldLength; i += 1) {
       encoder.float32(this.float32ArrayField[i]);
     }
-    encoder.map(this.float32MapField.size, Kind.Float32, Kind.Float32);
-    this.float32MapField.forEach((val, key) => {
-      encoder.float32(key);
-      encoder.float32(val);
-    });
-    encoder.map(this.float32MapFieldEmbedded.size, Kind.Float32, Kind.Any);
-    this.float32MapFieldEmbedded.forEach((val, key) => {
-      encoder.float32(key);
-      if (val === undefined) {
-        encoder.null();
-        return;
-      }
-      val.encode(encoder);
-    });
     encoder.float64(this.float64Field);
     const float64ArrayFieldLength = this.float64ArrayField.length;
     encoder.array(float64ArrayFieldLength, Kind.Float64);
     for (let i = 0; i < float64ArrayFieldLength; i += 1) {
       encoder.float64(this.float64ArrayField[i]);
     }
-    encoder.map(this.float64MapField.size, Kind.Float64, Kind.Float64);
-    this.float64MapField.forEach((val, key) => {
-      encoder.float64(key);
-      encoder.float64(val);
-    });
-    encoder.map(this.float64MapFieldEmbedded.size, Kind.Float64, Kind.Any);
-    this.float64MapFieldEmbedded.forEach((val, key) => {
-      encoder.float64(key);
-      if (val === undefined) {
-        encoder.null();
-        return;
-      }
-      val.encode(encoder);
-    });
     encoder.uint32(this.enumField);
     const enumArrayFieldLength = this.enumArrayField.length;
     encoder.array(enumArrayFieldLength, Kind.Uint32);

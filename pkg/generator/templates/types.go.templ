@@ -54,11 +54,9 @@ var (
 
         {{ template "go_primitives_struct_reference" Params "Entries" .Float32s "Type" "float32" }}
         {{ template "go_arrays_struct_reference" Params "Entries" .Float32Arrays "Type" "float32" }}
-        {{ template "go_maps_struct_reference" Params "Entries" .Float32Maps "Type" "float32" }}
 
         {{ template "go_primitives_struct_reference" Params "Entries" .Float64s "Type" "float64" }}
         {{ template "go_arrays_struct_reference" Params "Entries" .Float64Arrays "Type" "float64" }}
-        {{ template "go_maps_struct_reference" Params "Entries" .Float64Maps "Type" "float64" }}
 
         {{ template "go_enums_struct_reference" . }}
         {{ template "go_enumarrays_struct_reference" . }}
@@ -88,7 +86,6 @@ var (
             {{ template "go_arrays_new_struct_reference" Params "Entries" .Int64Arrays "Type" "int64" }}
             {{ template "go_maps_new_struct_reference" Params "Entries" .Int64Maps "Type" "int64" }}
 
-
             {{ template "go_primitives_new_struct_reference" Params "Entries" .Uint32s }}
             {{ template "go_arrays_new_struct_reference" Params "Entries" .Uint32Arrays "Type" "uint32" }}
             {{ template "go_maps_new_struct_reference" Params "Entries" .Uint32Maps "Type" "uint32" }}
@@ -99,11 +96,9 @@ var (
 
             {{ template "go_primitives_new_struct_reference" Params "Entries" .Float32s }}
             {{ template "go_arrays_new_struct_reference" Params "Entries" .Float32Arrays "Type" "float32" }}
-            {{ template "go_maps_new_struct_reference" Params "Entries" .Float32Maps "Type" "float32" }}
 
             {{ template "go_primitives_new_struct_reference" Params "Entries" .Float64s }}
             {{ template "go_arrays_new_struct_reference" Params "Entries" .Float64Arrays "Type" "float64" }}
-            {{ template "go_maps_new_struct_reference" Params "Entries" .Float64Maps "Type" "float64" }}
 
             {{ template "go_enums_new_struct_reference" . }}
             {{ template "go_enumarrays_new_struct_reference" . }}
@@ -147,11 +142,9 @@ var (
 
             {{ template "go_primitives_encode" Params "Entries" .Float32s "Type" "float32" }}
             {{ template "go_arrays_encode" Params "Entries" .Float32Arrays "Type" "float32" }}
-            {{ template "go_maps_encode" Params "Entries" .Float32Maps "Type" "float32" }}
 
             {{ template "go_primitives_encode" Params "Entries" .Float64s "Type" "float64" }}
             {{ template "go_arrays_encode" Params "Entries" .Float64Arrays "Type" "float64" }}
-            {{ template "go_maps_encode" Params "Entries" .Float64Maps "Type" "float64" }}
 
             {{ template "go_enums_encode" . }}
             {{ template "go_enumarrays_encode" . }}
@@ -209,11 +202,9 @@ var (
 
         {{ template "go_primitives_decode" Params "Entries" .Float32s "Type" "float32" }}
         {{ template "go_arrays_decode" Params "Entries" .Float32Arrays "Type" "float32" }}
-        {{ template "go_maps_decode" Params "Entries" .Float32Maps "Type" "float32" }}
 
         {{ template "go_primitives_decode" Params "Entries" .Float64s "Type" "float64" }}
         {{ template "go_arrays_decode" Params "Entries" .Float64Arrays "Type" "float64" }}
-        {{ template "go_maps_decode" Params "Entries" .Float64Maps "Type" "float64" }}
 
         {{ template "go_enums_decode" Params "Model" . "Enums" $allEnums }}
         {{ template "go_enumarrays_decode" . }}

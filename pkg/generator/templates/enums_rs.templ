@@ -45,7 +45,7 @@
     {{- range .Enums }}
         {{- if .Accessor }}
             impl {{ $current_model.Name }} {
-                pub fn get_{{ SnakeCase .Name }}(&self) -> {{ .Reference }} {
+                pub fn get_{{ SnakeCase .Name }}(&self) -> &{{ .Reference }} {
                     &self.{{ SnakeCase .Name }}
                 }
 

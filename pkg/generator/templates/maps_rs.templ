@@ -29,7 +29,7 @@
             e.encode_map(self.{{ SnakeCase .Name }}.len(), {{ PolyglotPrimitive $type }}, Kind::Any)?;
             for (k, v) in &self.{{ SnakeCase .Name }} {
                 e.{{ PolyglotPrimitiveEncode $type }}(*k)?;
-                v.encode(e)?;
+                v.encode_self(e)?;
             }
         {{- end }}
 

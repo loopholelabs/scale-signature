@@ -2,6 +2,11 @@
 // schema: {{ .schema.Name }}:{{ .schema.Tag }}
 // output: types.rs
 
+#![allow(dead_code)]
+#![allow(unused_imports)]
+#![allow(unused_variables)]
+#![allow(unused_mut)]
+
 use std::io::Cursor;
 use polyglot_rs::{DecodingError, Encoder, Decoder, Kind};
 use num_enum::TryFromPrimitive;
@@ -10,7 +15,11 @@ use std::collections::HashMap;
 use regex::Regex;
 
 pub trait Encode {
-    fn encode<'a> (&'a self, b: &'a mut Cursor<Vec<u8>>) -> Result<&mut Cursor<Vec<u8>>, Box<dyn std::error::Error>>;
+    fn encode<'a> (a: &Self, b: &'a mut Cursor<Vec<u8>>) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> where Self: Sized;
+}
+
+trait EncodeSelf {
+    fn encode_self<'a, 'b> (&'b self, b: &'a mut Cursor<Vec<u8>>) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>>;
 }
 
 pub trait Decode {
@@ -26,7 +35,8 @@ pub trait Decode {
         // {{ .Name }}: {{ .Description }}
     {{ end -}}
 
-    pub(crate) struct {{ .Name }} {
+    #[derive(Clone, Debug, PartialEq)]
+    pub struct {{ .Name }} {
         {{ template "rs_models_struct_reference" . }}
         {{ template "rs_modelarrays_struct_reference" . }}
 
@@ -69,7 +79,7 @@ pub trait Decode {
     }
 
     impl {{ .Name }} {
-        pub(crate) fn new () -> Self {
+        pub fn new () -> Self {
             Self {
                 {{ template "rs_models_new_struct_reference" . }}
                 {{ template "rs_modelarrays_new_struct_reference" . }}
@@ -123,7 +133,13 @@ pub trait Decode {
     }
 
     impl Encode for {{ .Name }} {
-        fn encode<'a> (&'a self, e: &'a mut Cursor<Vec<u8>>) -> Result<&mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
+        fn encode<'a> (a: &{{ .Name }}, e: &'a mut Cursor<Vec<u8>>) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
+            a.encode_self(e)
+        }
+    }
+
+    impl EncodeSelf for {{ .Name }} {
+        fn encode_self<'a, 'b> (&'b self, e: &'a mut Cursor<Vec<u8>>) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
             {{ template "rs_models_encode" . }}
             {{ template "rs_modelarrays_encode" . }}
 
@@ -168,9 +184,20 @@ pub trait Decode {
     }
 
     impl Encode for Option<{{ .Name }}> {
-        fn encode<'a> (&'a self, e: &'a mut Cursor<Vec<u8>>) -> Result<&mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
+        fn encode<'a> (a: &Option<{{ .Name }}>, e: &'a mut Cursor<Vec<u8>>) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
+            if let Some(x) = a {
+                x.encode_self(e)?;
+            } else {
+                e.encode_none()?;
+            }
+            Ok(e)
+        }
+    }
+
+    impl EncodeSelf for Option<{{ .Name }}> {
+        fn encode_self<'a, 'b> (&'b self, e: &'a mut Cursor<Vec<u8>>) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
             if let Some(x) = self {
-                x.encode(e)?;
+                x.encode_self(e)?;
             } else {
                 e.encode_none()?;
             }
