@@ -23,8 +23,8 @@ pub trait Encode {
         Self: Sized;
 }
 
-trait _Encode {
-    fn _encode<'a, 'b>(
+trait EncodeSelf {
+    fn encode_self<'a, 'b>(
         &'b self,
         b: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>>;
@@ -57,12 +57,12 @@ impl Encode for EmptyModel {
         a: &EmptyModel,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
-        a._encode(e)
+        a.encode_self(e)
     }
 }
 
-impl _Encode for EmptyModel {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for EmptyModel {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
@@ -76,7 +76,7 @@ impl Encode for Option<EmptyModel> {
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = a {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }
@@ -84,13 +84,13 @@ impl Encode for Option<EmptyModel> {
     }
 }
 
-impl _Encode for Option<EmptyModel> {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for Option<EmptyModel> {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = self {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }
@@ -141,12 +141,12 @@ impl Encode for EmptyModelWithDescription {
         a: &EmptyModelWithDescription,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
-        a._encode(e)
+        a.encode_self(e)
     }
 }
 
-impl _Encode for EmptyModelWithDescription {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for EmptyModelWithDescription {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
@@ -160,7 +160,7 @@ impl Encode for Option<EmptyModelWithDescription> {
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = a {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }
@@ -168,13 +168,13 @@ impl Encode for Option<EmptyModelWithDescription> {
     }
 }
 
-impl _Encode for Option<EmptyModelWithDescription> {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for Option<EmptyModelWithDescription> {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = self {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }
@@ -230,12 +230,12 @@ impl Encode for ModelWithSingleStringField {
         a: &ModelWithSingleStringField,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
-        a._encode(e)
+        a.encode_self(e)
     }
 }
 
-impl _Encode for ModelWithSingleStringField {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for ModelWithSingleStringField {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
@@ -251,7 +251,7 @@ impl Encode for Option<ModelWithSingleStringField> {
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = a {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }
@@ -259,13 +259,13 @@ impl Encode for Option<ModelWithSingleStringField> {
     }
 }
 
-impl _Encode for Option<ModelWithSingleStringField> {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for Option<ModelWithSingleStringField> {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = self {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }
@@ -324,12 +324,12 @@ impl Encode for ModelWithSingleStringFieldAndDescription {
         a: &ModelWithSingleStringFieldAndDescription,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
-        a._encode(e)
+        a.encode_self(e)
     }
 }
 
-impl _Encode for ModelWithSingleStringFieldAndDescription {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for ModelWithSingleStringFieldAndDescription {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
@@ -345,7 +345,7 @@ impl Encode for Option<ModelWithSingleStringFieldAndDescription> {
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = a {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }
@@ -353,13 +353,13 @@ impl Encode for Option<ModelWithSingleStringFieldAndDescription> {
     }
 }
 
-impl _Encode for Option<ModelWithSingleStringFieldAndDescription> {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for Option<ModelWithSingleStringFieldAndDescription> {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = self {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }
@@ -415,12 +415,12 @@ impl Encode for ModelWithSingleInt32Field {
         a: &ModelWithSingleInt32Field,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
-        a._encode(e)
+        a.encode_self(e)
     }
 }
 
-impl _Encode for ModelWithSingleInt32Field {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for ModelWithSingleInt32Field {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
@@ -436,7 +436,7 @@ impl Encode for Option<ModelWithSingleInt32Field> {
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = a {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }
@@ -444,13 +444,13 @@ impl Encode for Option<ModelWithSingleInt32Field> {
     }
 }
 
-impl _Encode for Option<ModelWithSingleInt32Field> {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for Option<ModelWithSingleInt32Field> {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = self {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }
@@ -507,12 +507,12 @@ impl Encode for ModelWithSingleInt32FieldAndDescription {
         a: &ModelWithSingleInt32FieldAndDescription,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
-        a._encode(e)
+        a.encode_self(e)
     }
 }
 
-impl _Encode for ModelWithSingleInt32FieldAndDescription {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for ModelWithSingleInt32FieldAndDescription {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
@@ -528,7 +528,7 @@ impl Encode for Option<ModelWithSingleInt32FieldAndDescription> {
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = a {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }
@@ -536,13 +536,13 @@ impl Encode for Option<ModelWithSingleInt32FieldAndDescription> {
     }
 }
 
-impl _Encode for Option<ModelWithSingleInt32FieldAndDescription> {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for Option<ModelWithSingleInt32FieldAndDescription> {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = self {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }
@@ -604,12 +604,12 @@ impl Encode for ModelWithMultipleFields {
         a: &ModelWithMultipleFields,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
-        a._encode(e)
+        a.encode_self(e)
     }
 }
 
-impl _Encode for ModelWithMultipleFields {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for ModelWithMultipleFields {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
@@ -627,7 +627,7 @@ impl Encode for Option<ModelWithMultipleFields> {
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = a {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }
@@ -635,13 +635,13 @@ impl Encode for Option<ModelWithMultipleFields> {
     }
 }
 
-impl _Encode for Option<ModelWithMultipleFields> {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for Option<ModelWithMultipleFields> {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = self {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }
@@ -706,12 +706,12 @@ impl Encode for ModelWithMultipleFieldsAndDescription {
         a: &ModelWithMultipleFieldsAndDescription,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
-        a._encode(e)
+        a.encode_self(e)
     }
 }
 
-impl _Encode for ModelWithMultipleFieldsAndDescription {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for ModelWithMultipleFieldsAndDescription {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
@@ -729,7 +729,7 @@ impl Encode for Option<ModelWithMultipleFieldsAndDescription> {
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = a {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }
@@ -737,13 +737,13 @@ impl Encode for Option<ModelWithMultipleFieldsAndDescription> {
     }
 }
 
-impl _Encode for Option<ModelWithMultipleFieldsAndDescription> {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for Option<ModelWithMultipleFieldsAndDescription> {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = self {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }
@@ -803,12 +803,12 @@ impl Encode for ModelWithEnum {
         a: &ModelWithEnum,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
-        a._encode(e)
+        a.encode_self(e)
     }
 }
 
-impl _Encode for ModelWithEnum {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for ModelWithEnum {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
@@ -824,7 +824,7 @@ impl Encode for Option<ModelWithEnum> {
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = a {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }
@@ -832,13 +832,13 @@ impl Encode for Option<ModelWithEnum> {
     }
 }
 
-impl _Encode for Option<ModelWithEnum> {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for Option<ModelWithEnum> {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = self {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }
@@ -897,12 +897,12 @@ impl Encode for ModelWithEnumAndDescription {
         a: &ModelWithEnumAndDescription,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
-        a._encode(e)
+        a.encode_self(e)
     }
 }
 
-impl _Encode for ModelWithEnumAndDescription {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for ModelWithEnumAndDescription {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
@@ -918,7 +918,7 @@ impl Encode for Option<ModelWithEnumAndDescription> {
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = a {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }
@@ -926,13 +926,13 @@ impl Encode for Option<ModelWithEnumAndDescription> {
     }
 }
 
-impl _Encode for Option<ModelWithEnumAndDescription> {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for Option<ModelWithEnumAndDescription> {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = self {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }
@@ -992,12 +992,12 @@ impl Encode for ModelWithEnumAccessor {
         a: &ModelWithEnumAccessor,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
-        a._encode(e)
+        a.encode_self(e)
     }
 }
 
-impl _Encode for ModelWithEnumAccessor {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for ModelWithEnumAccessor {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
@@ -1013,7 +1013,7 @@ impl Encode for Option<ModelWithEnumAccessor> {
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = a {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }
@@ -1021,13 +1021,13 @@ impl Encode for Option<ModelWithEnumAccessor> {
     }
 }
 
-impl _Encode for Option<ModelWithEnumAccessor> {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for Option<ModelWithEnumAccessor> {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = self {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }
@@ -1098,12 +1098,12 @@ impl Encode for ModelWithEnumAccessorAndDescription {
         a: &ModelWithEnumAccessorAndDescription,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
-        a._encode(e)
+        a.encode_self(e)
     }
 }
 
-impl _Encode for ModelWithEnumAccessorAndDescription {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for ModelWithEnumAccessorAndDescription {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
@@ -1119,7 +1119,7 @@ impl Encode for Option<ModelWithEnumAccessorAndDescription> {
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = a {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }
@@ -1127,13 +1127,13 @@ impl Encode for Option<ModelWithEnumAccessorAndDescription> {
     }
 }
 
-impl _Encode for Option<ModelWithEnumAccessorAndDescription> {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for Option<ModelWithEnumAccessorAndDescription> {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = self {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }
@@ -1245,12 +1245,12 @@ impl Encode for ModelWithMultipleFieldsAccessor {
         a: &ModelWithMultipleFieldsAccessor,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
-        a._encode(e)
+        a.encode_self(e)
     }
 }
 
-impl _Encode for ModelWithMultipleFieldsAccessor {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for ModelWithMultipleFieldsAccessor {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
@@ -1268,7 +1268,7 @@ impl Encode for Option<ModelWithMultipleFieldsAccessor> {
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = a {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }
@@ -1276,13 +1276,13 @@ impl Encode for Option<ModelWithMultipleFieldsAccessor> {
     }
 }
 
-impl _Encode for Option<ModelWithMultipleFieldsAccessor> {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for Option<ModelWithMultipleFieldsAccessor> {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = self {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }
@@ -1365,12 +1365,12 @@ impl Encode for ModelWithMultipleFieldsAccessorAndDescription {
         a: &ModelWithMultipleFieldsAccessorAndDescription,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
-        a._encode(e)
+        a.encode_self(e)
     }
 }
 
-impl _Encode for ModelWithMultipleFieldsAccessorAndDescription {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for ModelWithMultipleFieldsAccessorAndDescription {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
@@ -1388,7 +1388,7 @@ impl Encode for Option<ModelWithMultipleFieldsAccessorAndDescription> {
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = a {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }
@@ -1396,13 +1396,13 @@ impl Encode for Option<ModelWithMultipleFieldsAccessorAndDescription> {
     }
 }
 
-impl _Encode for Option<ModelWithMultipleFieldsAccessorAndDescription> {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for Option<ModelWithMultipleFieldsAccessorAndDescription> {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = self {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }
@@ -1467,16 +1467,16 @@ impl Encode for ModelWithEmbeddedModels {
         a: &ModelWithEmbeddedModels,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
-        a._encode(e)
+        a.encode_self(e)
     }
 }
 
-impl _Encode for ModelWithEmbeddedModels {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for ModelWithEmbeddedModels {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
-        self.embedded_empty_model._encode(e)?;
+        self.embedded_empty_model.encode_self(e)?;
 
         e.encode_array(
             self.embedded_model_array_with_multiple_fields_accessor
@@ -1484,7 +1484,7 @@ impl _Encode for ModelWithEmbeddedModels {
             Kind::Any,
         )?;
         for a in &self.embedded_model_array_with_multiple_fields_accessor {
-            a._encode(e)?;
+            a.encode_self(e)?;
         }
 
         Ok(e)
@@ -1497,7 +1497,7 @@ impl Encode for Option<ModelWithEmbeddedModels> {
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = a {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }
@@ -1505,13 +1505,13 @@ impl Encode for Option<ModelWithEmbeddedModels> {
     }
 }
 
-impl _Encode for Option<ModelWithEmbeddedModels> {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for Option<ModelWithEmbeddedModels> {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = self {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }
@@ -1580,16 +1580,16 @@ impl Encode for ModelWithEmbeddedModelsAndDescription {
         a: &ModelWithEmbeddedModelsAndDescription,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
-        a._encode(e)
+        a.encode_self(e)
     }
 }
 
-impl _Encode for ModelWithEmbeddedModelsAndDescription {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for ModelWithEmbeddedModelsAndDescription {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
-        self.embedded_empty_model._encode(e)?;
+        self.embedded_empty_model.encode_self(e)?;
 
         e.encode_array(
             self.embedded_model_array_with_multiple_fields_accessor
@@ -1597,7 +1597,7 @@ impl _Encode for ModelWithEmbeddedModelsAndDescription {
             Kind::Any,
         )?;
         for a in &self.embedded_model_array_with_multiple_fields_accessor {
-            a._encode(e)?;
+            a.encode_self(e)?;
         }
 
         Ok(e)
@@ -1610,7 +1610,7 @@ impl Encode for Option<ModelWithEmbeddedModelsAndDescription> {
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = a {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }
@@ -1618,13 +1618,13 @@ impl Encode for Option<ModelWithEmbeddedModelsAndDescription> {
     }
 }
 
-impl _Encode for Option<ModelWithEmbeddedModelsAndDescription> {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for Option<ModelWithEmbeddedModelsAndDescription> {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = self {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }
@@ -1692,16 +1692,16 @@ impl Encode for ModelWithEmbeddedModelsAccessor {
         a: &ModelWithEmbeddedModelsAccessor,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
-        a._encode(e)
+        a.encode_self(e)
     }
 }
 
-impl _Encode for ModelWithEmbeddedModelsAccessor {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for ModelWithEmbeddedModelsAccessor {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
-        self.embedded_empty_model._encode(e)?;
+        self.embedded_empty_model.encode_self(e)?;
 
         e.encode_array(
             self.embedded_model_array_with_multiple_fields_accessor
@@ -1709,7 +1709,7 @@ impl _Encode for ModelWithEmbeddedModelsAccessor {
             Kind::Any,
         )?;
         for a in &self.embedded_model_array_with_multiple_fields_accessor {
-            a._encode(e)?;
+            a.encode_self(e)?;
         }
 
         Ok(e)
@@ -1722,7 +1722,7 @@ impl Encode for Option<ModelWithEmbeddedModelsAccessor> {
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = a {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }
@@ -1730,13 +1730,13 @@ impl Encode for Option<ModelWithEmbeddedModelsAccessor> {
     }
 }
 
-impl _Encode for Option<ModelWithEmbeddedModelsAccessor> {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for Option<ModelWithEmbeddedModelsAccessor> {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = self {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }
@@ -1830,16 +1830,16 @@ impl Encode for ModelWithEmbeddedModelsAccessorAndDescription {
         a: &ModelWithEmbeddedModelsAccessorAndDescription,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
-        a._encode(e)
+        a.encode_self(e)
     }
 }
 
-impl _Encode for ModelWithEmbeddedModelsAccessorAndDescription {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for ModelWithEmbeddedModelsAccessorAndDescription {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
-        self.embedded_empty_model._encode(e)?;
+        self.embedded_empty_model.encode_self(e)?;
 
         e.encode_array(
             self.embedded_model_array_with_multiple_fields_accessor
@@ -1847,7 +1847,7 @@ impl _Encode for ModelWithEmbeddedModelsAccessorAndDescription {
             Kind::Any,
         )?;
         for a in &self.embedded_model_array_with_multiple_fields_accessor {
-            a._encode(e)?;
+            a.encode_self(e)?;
         }
 
         Ok(e)
@@ -1860,7 +1860,7 @@ impl Encode for Option<ModelWithEmbeddedModelsAccessorAndDescription> {
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = a {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }
@@ -1868,13 +1868,13 @@ impl Encode for Option<ModelWithEmbeddedModelsAccessorAndDescription> {
     }
 }
 
-impl _Encode for Option<ModelWithEmbeddedModelsAccessorAndDescription> {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for Option<ModelWithEmbeddedModelsAccessorAndDescription> {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = self {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }
@@ -2090,20 +2090,20 @@ impl Encode for ModelWithAllFieldTypes {
         a: &ModelWithAllFieldTypes,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
-        a._encode(e)
+        a.encode_self(e)
     }
 }
 
-impl _Encode for ModelWithAllFieldTypes {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for ModelWithAllFieldTypes {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
-        self.model_field._encode(e)?;
+        self.model_field.encode_self(e)?;
 
         e.encode_array(self.model_array_field.len(), Kind::Any)?;
         for a in &self.model_array_field {
-            a._encode(e)?;
+            a.encode_self(e)?;
         }
 
         e.encode_string(&self.string_field)?;
@@ -2125,7 +2125,7 @@ impl _Encode for ModelWithAllFieldTypes {
         )?;
         for (k, v) in &self.string_map_field_embedded {
             e.encode_string(&k)?;
-            v._encode(e)?;
+            v.encode_self(e)?;
         }
 
         e.encode_i32(self.int32_field)?;
@@ -2143,7 +2143,7 @@ impl _Encode for ModelWithAllFieldTypes {
         e.encode_map(self.int32_map_field_embedded.len(), Kind::I32, Kind::Any)?;
         for (k, v) in &self.int32_map_field_embedded {
             e.encode_i32(*k)?;
-            v._encode(e)?;
+            v.encode_self(e)?;
         }
 
         e.encode_i64(self.int64_field)?;
@@ -2161,7 +2161,7 @@ impl _Encode for ModelWithAllFieldTypes {
         e.encode_map(self.int64_map_field_embedded.len(), Kind::I64, Kind::Any)?;
         for (k, v) in &self.int64_map_field_embedded {
             e.encode_i64(*k)?;
-            v._encode(e)?;
+            v.encode_self(e)?;
         }
 
         e.encode_u32(self.uint32_field)?;
@@ -2179,7 +2179,7 @@ impl _Encode for ModelWithAllFieldTypes {
         e.encode_map(self.uint32_map_field_embedded.len(), Kind::U32, Kind::Any)?;
         for (k, v) in &self.uint32_map_field_embedded {
             e.encode_u32(*k)?;
-            v._encode(e)?;
+            v.encode_self(e)?;
         }
 
         e.encode_u64(self.uint64_field)?;
@@ -2197,7 +2197,7 @@ impl _Encode for ModelWithAllFieldTypes {
         e.encode_map(self.uint64_map_field_embedded.len(), Kind::U64, Kind::Any)?;
         for (k, v) in &self.uint64_map_field_embedded {
             e.encode_u64(*k)?;
-            v._encode(e)?;
+            v.encode_self(e)?;
         }
 
         e.encode_f32(self.float32_field)?;
@@ -2229,7 +2229,7 @@ impl _Encode for ModelWithAllFieldTypes {
         e.encode_map(self.enum_map_field_embedded.len(), Kind::U32, Kind::Any)?;
         for (k, v) in &self.enum_map_field_embedded {
             e.encode_u32(*k as u32)?;
-            v._encode(e)?;
+            v.encode_self(e)?;
         }
 
         e.encode_bytes(&self.bytes_field)?;
@@ -2256,7 +2256,7 @@ impl Encode for Option<ModelWithAllFieldTypes> {
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = a {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }
@@ -2264,13 +2264,13 @@ impl Encode for Option<ModelWithAllFieldTypes> {
     }
 }
 
-impl _Encode for Option<ModelWithAllFieldTypes> {
-    fn _encode<'a, 'b>(
+impl EncodeSelf for Option<ModelWithAllFieldTypes> {
+    fn encode_self<'a, 'b>(
         &'b self,
         e: &'a mut Cursor<Vec<u8>>,
     ) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
         if let Some(x) = self {
-            x._encode(e)?;
+            x.encode_self(e)?;
         } else {
             e.encode_none()?;
         }

@@ -18,8 +18,8 @@ pub trait Encode {
     fn encode<'a> (a: &Self, b: &'a mut Cursor<Vec<u8>>) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> where Self: Sized;
 }
 
-trait _Encode {
-    fn _encode<'a, 'b> (&'b self, b: &'a mut Cursor<Vec<u8>>) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>>;
+trait EncodeSelf {
+    fn encode_self<'a, 'b> (&'b self, b: &'a mut Cursor<Vec<u8>>) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>>;
 }
 
 pub trait Decode {
@@ -134,12 +134,12 @@ pub trait Decode {
 
     impl Encode for {{ .Name }} {
         fn encode<'a> (a: &{{ .Name }}, e: &'a mut Cursor<Vec<u8>>) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
-            a._encode(e)
+            a.encode_self(e)
         }
     }
 
-    impl _Encode for {{ .Name }} {
-        fn _encode<'a, 'b> (&'b self, e: &'a mut Cursor<Vec<u8>>) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
+    impl EncodeSelf for {{ .Name }} {
+        fn encode_self<'a, 'b> (&'b self, e: &'a mut Cursor<Vec<u8>>) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
             {{ template "rs_models_encode" . }}
             {{ template "rs_modelarrays_encode" . }}
 
@@ -186,7 +186,7 @@ pub trait Decode {
     impl Encode for Option<{{ .Name }}> {
         fn encode<'a> (a: &Option<{{ .Name }}>, e: &'a mut Cursor<Vec<u8>>) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
             if let Some(x) = a {
-                x._encode(e)?;
+                x.encode_self(e)?;
             } else {
                 e.encode_none()?;
             }
@@ -194,10 +194,10 @@ pub trait Decode {
         }
     }
 
-    impl _Encode for Option<{{ .Name }}> {
-        fn _encode<'a, 'b> (&'b self, e: &'a mut Cursor<Vec<u8>>) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
+    impl EncodeSelf for Option<{{ .Name }}> {
+        fn encode_self<'a, 'b> (&'b self, e: &'a mut Cursor<Vec<u8>>) -> Result<&'a mut Cursor<Vec<u8>>, Box<dyn std::error::Error>> {
             if let Some(x) = self {
-                x._encode(e)?;
+                x.encode_self(e)?;
             } else {
                 e.encode_none()?;
             }

@@ -42,7 +42,7 @@
             e.encode_map(self.{{ SnakeCase .Name }}.len(), Kind::U32, Kind::Any)?;
             for (k, v) in &self.{{ SnakeCase .Name }} {
                 e.encode_u32(*k as u32)?;
-                v._encode(e)?;
+                v.encode_self(e)?;
             }
         {{- end }}
     {{- end }}
