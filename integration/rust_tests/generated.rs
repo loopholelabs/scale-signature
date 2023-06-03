@@ -43,6 +43,7 @@ pub enum GenericEnum {
     SecondValue = 1,
     DefaultValue = 2,
 }
+#[derive(Clone, Debug, PartialEq)]
 pub struct EmptyModel {}
 
 impl EmptyModel {
@@ -126,6 +127,7 @@ impl Decode for Option<EmptyModel> {
 }
 
 // EmptyModelWithDescription: Test Description
+#[derive(Clone, Debug, PartialEq)]
 pub struct EmptyModelWithDescription {}
 
 impl EmptyModelWithDescription {
@@ -210,6 +212,7 @@ impl Decode for Option<EmptyModelWithDescription> {
     }
 }
 
+#[derive(Clone, Debug, PartialEq)]
 pub struct ModelWithSingleStringField {
     pub string_field: String,
 }
@@ -303,6 +306,7 @@ impl Decode for Option<ModelWithSingleStringField> {
 }
 
 // ModelWithSingleStringFieldAndDescription: Test Description
+#[derive(Clone, Debug, PartialEq)]
 pub struct ModelWithSingleStringFieldAndDescription {
     pub string_field: String,
 }
@@ -395,6 +399,7 @@ impl Decode for Option<ModelWithSingleStringFieldAndDescription> {
     }
 }
 
+#[derive(Clone, Debug, PartialEq)]
 pub struct ModelWithSingleInt32Field {
     pub int32_field: i32,
 }
@@ -486,6 +491,7 @@ impl Decode for Option<ModelWithSingleInt32Field> {
 }
 
 // ModelWithSingleInt32FieldAndDescription: Test Description
+#[derive(Clone, Debug, PartialEq)]
 pub struct ModelWithSingleInt32FieldAndDescription {
     pub int32_field: i32,
 }
@@ -576,6 +582,7 @@ impl Decode for Option<ModelWithSingleInt32FieldAndDescription> {
     }
 }
 
+#[derive(Clone, Debug, PartialEq)]
 pub struct ModelWithMultipleFields {
     pub string_field: String,
 
@@ -677,6 +684,7 @@ impl Decode for Option<ModelWithMultipleFields> {
 }
 
 // ModelWithMultipleFieldsAndDescription: Test Description
+#[derive(Clone, Debug, PartialEq)]
 pub struct ModelWithMultipleFieldsAndDescription {
     pub string_field: String,
 
@@ -777,6 +785,7 @@ impl Decode for Option<ModelWithMultipleFieldsAndDescription> {
     }
 }
 
+#[derive(Clone, Debug, PartialEq)]
 pub struct ModelWithEnum {
     pub enum_field: GenericEnum,
 }
@@ -870,6 +879,7 @@ impl Decode for Option<ModelWithEnum> {
 }
 
 // ModelWithEnumAndDescription: Test Description
+#[derive(Clone, Debug, PartialEq)]
 pub struct ModelWithEnumAndDescription {
     pub enum_field: GenericEnum,
 }
@@ -964,6 +974,7 @@ impl Decode for Option<ModelWithEnumAndDescription> {
     }
 }
 
+#[derive(Clone, Debug, PartialEq)]
 pub struct ModelWithEnumAccessor {
     enum_field: GenericEnum,
 }
@@ -1069,6 +1080,7 @@ impl ModelWithEnumAccessor {
 }
 
 // ModelWithEnumAccessorAndDescription: Test Description
+#[derive(Clone, Debug, PartialEq)]
 pub struct ModelWithEnumAccessorAndDescription {
     enum_field: GenericEnum,
 }
@@ -1173,6 +1185,7 @@ impl ModelWithEnumAccessorAndDescription {
     }
 }
 
+#[derive(Clone, Debug, PartialEq)]
 pub struct ModelWithMultipleFieldsAccessor {
     string_field: String,
 
@@ -1312,6 +1325,7 @@ impl Decode for Option<ModelWithMultipleFieldsAccessor> {
 }
 
 // ModelWithMultipleFieldsAccessorAndDescription: Test Description
+#[derive(Clone, Debug, PartialEq)]
 pub struct ModelWithMultipleFieldsAccessorAndDescription {
     string_field: String,
 
@@ -1431,6 +1445,7 @@ impl Decode for Option<ModelWithMultipleFieldsAccessorAndDescription> {
     }
 }
 
+#[derive(Clone, Debug, PartialEq)]
 pub struct ModelWithEmbeddedModels {
     pub embedded_empty_model: Option<EmptyModel>,
 
@@ -1440,9 +1455,9 @@ pub struct ModelWithEmbeddedModels {
 impl ModelWithEmbeddedModels {
     pub fn new() -> Self {
         Self {
-            embedded_empty_model: None,
+            embedded_empty_model: Some(EmptyModel::new()),
 
-            embedded_model_array_with_multiple_fields_accessor: Vec::new(),
+            embedded_model_array_with_multiple_fields_accessor: Vec::with_capacity(64),
         }
     }
 }
@@ -1543,6 +1558,7 @@ impl Decode for Option<ModelWithEmbeddedModels> {
 }
 
 // ModelWithEmbeddedModelsAndDescription: Test Description
+#[derive(Clone, Debug, PartialEq)]
 pub struct ModelWithEmbeddedModelsAndDescription {
     pub embedded_empty_model: Option<EmptyModel>,
 
@@ -1552,9 +1568,9 @@ pub struct ModelWithEmbeddedModelsAndDescription {
 impl ModelWithEmbeddedModelsAndDescription {
     pub fn new() -> Self {
         Self {
-            embedded_empty_model: None,
+            embedded_empty_model: Some(EmptyModel::new()),
 
-            embedded_model_array_with_multiple_fields_accessor: Vec::new(),
+            embedded_model_array_with_multiple_fields_accessor: Vec::with_capacity(0),
         }
     }
 }
@@ -1654,6 +1670,7 @@ impl Decode for Option<ModelWithEmbeddedModelsAndDescription> {
     }
 }
 
+#[derive(Clone, Debug, PartialEq)]
 pub struct ModelWithEmbeddedModelsAccessor {
     embedded_empty_model: Option<EmptyModel>,
 
@@ -1663,9 +1680,9 @@ pub struct ModelWithEmbeddedModelsAccessor {
 impl ModelWithEmbeddedModelsAccessor {
     pub fn new() -> Self {
         Self {
-            embedded_empty_model: None,
+            embedded_empty_model: Some(EmptyModel::new()),
 
-            embedded_model_array_with_multiple_fields_accessor: Vec::new(),
+            embedded_model_array_with_multiple_fields_accessor: Vec::with_capacity(0),
         }
     }
 }
@@ -1791,6 +1808,7 @@ impl ModelWithEmbeddedModelsAccessor {
 }
 
 // ModelWithEmbeddedModelsAccessorAndDescription: Test Description
+#[derive(Clone, Debug, PartialEq)]
 pub struct ModelWithEmbeddedModelsAccessorAndDescription {
     embedded_empty_model: Option<EmptyModel>,
 
@@ -1800,9 +1818,9 @@ pub struct ModelWithEmbeddedModelsAccessorAndDescription {
 impl ModelWithEmbeddedModelsAccessorAndDescription {
     pub fn new() -> Self {
         Self {
-            embedded_empty_model: None,
+            embedded_empty_model: Some(EmptyModel::new()),
 
-            embedded_model_array_with_multiple_fields_accessor: Vec::new(),
+            embedded_model_array_with_multiple_fields_accessor: Vec::with_capacity(0),
         }
     }
 }
@@ -1928,6 +1946,7 @@ impl ModelWithEmbeddedModelsAccessorAndDescription {
     }
 }
 
+#[derive(Clone, Debug, PartialEq)]
 pub struct ModelWithAllFieldTypes {
     pub model_field: Option<EmptyModel>,
 
@@ -2000,9 +2019,9 @@ pub struct ModelWithAllFieldTypes {
 impl ModelWithAllFieldTypes {
     pub fn new() -> Self {
         Self {
-            model_field: None,
+            model_field: Some(EmptyModel::new()),
 
-            model_array_field: Vec::new(),
+            model_array_field: Vec::with_capacity(0),
 
             string_field: "DefaultValue".to_string(),
 

@@ -35,6 +35,7 @@ pub trait Decode {
         // {{ .Name }}: {{ .Description }}
     {{ end -}}
 
+    #[derive(Clone, Debug, PartialEq)]
     pub struct {{ .Name }} {
         {{ template "rs_models_struct_reference" . }}
         {{ template "rs_modelarrays_struct_reference" . }}

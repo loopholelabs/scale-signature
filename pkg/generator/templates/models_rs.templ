@@ -10,7 +10,7 @@
 
 {{ define "rs_models_new_struct_reference" }}
     {{- range .Models }}
-        {{ SnakeCase .Name }}: None,
+        {{ SnakeCase .Name }}: Some({{ .Reference }}::new()),
     {{- end }}
 {{ end }}
 

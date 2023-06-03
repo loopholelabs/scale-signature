@@ -4,13 +4,293 @@ pub mod generated;
 mod tests {
     use std::fs;
     use std::error::Error;
-    use std::io::Cursor;
-    use crate::generated::Decode;
+    use std::io::{Cursor, Seek, SeekFrom};
+    use crate::generated::{Decode, Encode};
 
     use super::*;
 
     #[test]
     fn test_output() -> Result<(), Box<dyn Error>> {
+        let mut buf = Cursor::new(Vec::new());
+
+        let empty_model = generated::EmptyModel::new();
+        generated::EmptyModel::encode(&empty_model, &mut buf)?;
+        fs::write("../binaries/empty_model.bin", buf.get_ref())?;
+        buf.seek(SeekFrom::Start(0))?;
+        buf.get_mut().clear();
+
+        let empty_model_with_description = generated::EmptyModelWithDescription::new();
+        generated::EmptyModelWithDescription::encode(&empty_model_with_description, &mut buf)?;
+        fs::write("../binaries/empty_model_with_description.bin", buf.get_ref())?;
+        buf.seek(SeekFrom::Start(0))?;
+        buf.get_mut().clear();
+
+        let mut model_with_single_string_field = generated::ModelWithSingleStringField::new();
+        assert_eq!(model_with_single_string_field.string_field, String::from("DefaultValue"));
+        model_with_single_string_field.string_field = String::from("hello world");
+        generated::ModelWithSingleStringField::encode(&model_with_single_string_field, &mut buf)?;
+        fs::write("../binaries/model_with_single_string_field.bin", buf.get_ref())?;
+        buf.seek(SeekFrom::Start(0))?;
+        buf.get_mut().clear();
+
+        let mut model_with_single_string_field_and_description = generated::ModelWithSingleStringFieldAndDescription::new();
+        assert_eq!(model_with_single_string_field_and_description.string_field, String::from("DefaultValue"));
+        model_with_single_string_field_and_description.string_field = String::from("hello world");
+        generated::ModelWithSingleStringFieldAndDescription::encode(&model_with_single_string_field_and_description, &mut buf)?;
+        fs::write("../binaries/model_with_single_string_field_and_description.bin", buf.get_ref())?;
+        buf.seek(SeekFrom::Start(0))?;
+        buf.get_mut().clear();
+
+        let mut model_with_single_int32_field = generated::ModelWithSingleInt32Field::new();
+        assert_eq!(model_with_single_int32_field.int32_field, 32);
+        model_with_single_int32_field.int32_field = 42;
+        generated::ModelWithSingleInt32Field::encode(&model_with_single_int32_field, &mut buf)?;
+        fs::write("../binaries/model_with_single_int32_field.bin", buf.get_ref())?;
+        buf.seek(SeekFrom::Start(0))?;
+        buf.get_mut().clear();
+
+        let mut model_with_single_int32_field_and_description = generated::ModelWithSingleInt32FieldAndDescription::new();
+        assert_eq!(model_with_single_int32_field_and_description.int32_field, 32);
+        model_with_single_int32_field_and_description.int32_field = 42;
+        generated::ModelWithSingleInt32FieldAndDescription::encode(&model_with_single_int32_field_and_description, &mut buf)?;
+        fs::write("../binaries/model_with_single_int32_field_and_description.bin", buf.get_ref())?;
+        buf.seek(SeekFrom::Start(0))?;
+        buf.get_mut().clear();
+
+        let mut model_with_multiple_fields = generated::ModelWithMultipleFields::new();
+        assert_eq!(model_with_multiple_fields.string_field, String::from("DefaultValue"));
+        assert_eq!(model_with_multiple_fields.int32_field, 32);
+        model_with_multiple_fields.string_field = String::from("hello world");
+        model_with_multiple_fields.int32_field = 42;
+        generated::ModelWithMultipleFields::encode(&model_with_multiple_fields, &mut buf)?;
+        fs::write("../binaries/model_with_multiple_fields.bin", buf.get_ref())?;
+        buf.seek(SeekFrom::Start(0))?;
+        buf.get_mut().clear();
+
+        let mut model_with_multiple_fields_and_description = generated::ModelWithMultipleFieldsAndDescription::new();
+        assert_eq!(model_with_multiple_fields_and_description.string_field, String::from("DefaultValue"));
+        assert_eq!(model_with_multiple_fields_and_description.int32_field, 32);
+        model_with_multiple_fields_and_description.string_field = String::from("hello world");
+        model_with_multiple_fields_and_description.int32_field = 42;
+        generated::ModelWithMultipleFieldsAndDescription::encode(&model_with_multiple_fields_and_description, &mut buf)?;
+        fs::write("../binaries/model_with_multiple_fields_and_description.bin", buf.get_ref())?;
+        buf.seek(SeekFrom::Start(0))?;
+        buf.get_mut().clear();
+
+        let mut model_with_enum = generated::ModelWithEnum::new();
+        assert_eq!(model_with_enum.enum_field, generated::GenericEnum::DefaultValue);
+        model_with_enum.enum_field = generated::GenericEnum::SecondValue;
+        generated::ModelWithEnum::encode(&model_with_enum, &mut buf)?;
+        fs::write("../binaries/model_with_enum.bin", buf.get_ref())?;
+        buf.seek(SeekFrom::Start(0))?;
+        buf.get_mut().clear();
+
+        let mut model_with_enum_and_description = generated::ModelWithEnumAndDescription::new();
+        assert_eq!(model_with_enum_and_description.enum_field, generated::GenericEnum::DefaultValue);
+        model_with_enum_and_description.enum_field = generated::GenericEnum::SecondValue;
+        generated::ModelWithEnumAndDescription::encode(&model_with_enum_and_description, &mut buf)?;
+        fs::write("../binaries/model_with_enum_and_description.bin", buf.get_ref())?;
+        buf.seek(SeekFrom::Start(0))?;
+        buf.get_mut().clear();
+
+        let mut model_with_enum_accessor = generated::ModelWithEnumAccessor::new();
+        let default_enum_value = model_with_enum_accessor.get_enum_field();
+        assert_eq!(*default_enum_value, generated::GenericEnum::DefaultValue);
+        model_with_enum_accessor.set_enum_field(generated::GenericEnum::SecondValue);
+        generated::ModelWithEnumAccessor::encode(&model_with_enum_accessor, &mut buf)?;
+        fs::write("../binaries/model_with_enum_accessor.bin", buf.get_ref())?;
+        buf.seek(SeekFrom::Start(0))?;
+        buf.get_mut().clear();
+
+        let mut model_with_enum_accessor_and_description = generated::ModelWithEnumAccessorAndDescription::new();
+        let default_enum_value = model_with_enum_accessor_and_description.get_enum_field();
+        assert_eq!(*default_enum_value, generated::GenericEnum::DefaultValue);
+        model_with_enum_accessor_and_description.set_enum_field(generated::GenericEnum::SecondValue);
+        generated::ModelWithEnumAccessorAndDescription::encode(&model_with_enum_accessor_and_description, &mut buf)?;
+        fs::write("../binaries/model_with_enum_accessor_and_description.bin", buf.get_ref())?;
+        buf.seek(SeekFrom::Start(0))?;
+        buf.get_mut().clear();
+
+        let mut model_with_multiple_fields_accessor = generated::ModelWithMultipleFieldsAccessor::new();
+        let mut string_value = model_with_multiple_fields_accessor.get_string_field();
+        let int32_value = model_with_multiple_fields_accessor.get_int32_field();
+        assert_eq!(string_value, String::from("DefaultValue"));
+        assert_eq!(int32_value, 32);
+        assert!(model_with_multiple_fields_accessor.set_string_field(String::from("hello world")).is_err());
+        model_with_multiple_fields_accessor.set_string_field(String::from("hello"))?;
+        string_value = model_with_multiple_fields_accessor.get_string_field();
+        assert_eq!(string_value, String::from("HELLO"));
+        assert!(model_with_multiple_fields_accessor.set_int32_field(-1).is_err());
+        assert!(model_with_multiple_fields_accessor.set_int32_field(101).is_err());
+        model_with_multiple_fields_accessor.set_int32_field(42)?;
+        generated::ModelWithMultipleFieldsAccessor::encode(&model_with_multiple_fields_accessor, &mut buf)?;
+        fs::write("../binaries/model_with_multiple_fields_accessor.bin", buf.get_ref())?;
+        buf.seek(SeekFrom::Start(0))?;
+        buf.get_mut().clear();
+
+        let mut model_with_multiple_fields_accessor_and_description = generated::ModelWithMultipleFieldsAccessorAndDescription::new();
+        let string_value = model_with_multiple_fields_accessor_and_description.get_string_field();
+        let int32_value = model_with_multiple_fields_accessor_and_description.get_int32_field();
+        assert_eq!(string_value, String::from("DefaultValue"));
+        assert_eq!(int32_value, 32);
+        model_with_multiple_fields_accessor_and_description.set_string_field(String::from("hello world"))?;
+        model_with_multiple_fields_accessor_and_description.set_int32_field(42)?;
+        generated::ModelWithMultipleFieldsAccessorAndDescription::encode(&model_with_multiple_fields_accessor_and_description, &mut buf)?;
+        fs::write("../binaries/model_with_multiple_fields_accessor_and_description.bin", buf.get_ref())?;
+        buf.seek(SeekFrom::Start(0))?;
+        buf.get_mut().clear();
+
+        let mut model_with_embedded_models = generated::ModelWithEmbeddedModels::new();
+        assert!(model_with_embedded_models.embedded_empty_model.is_some());
+        assert_eq!(model_with_embedded_models.embedded_model_array_with_multiple_fields_accessor.capacity(), 64);
+        assert_eq!(model_with_embedded_models.embedded_model_array_with_multiple_fields_accessor.len(), 0);
+        model_with_embedded_models.embedded_model_array_with_multiple_fields_accessor.push(model_with_multiple_fields_accessor.clone());
+        generated::ModelWithEmbeddedModels::encode(&model_with_embedded_models, &mut buf)?;
+        fs::write("../binaries/model_with_embedded_models.bin", buf.get_ref())?;
+        buf.seek(SeekFrom::Start(0))?;
+        buf.get_mut().clear();
+
+        let mut model_with_embedded_models_and_description = generated::ModelWithEmbeddedModelsAndDescription::new();
+        assert!(model_with_embedded_models_and_description.embedded_empty_model.is_some());
+        assert_eq!(model_with_embedded_models_and_description.embedded_model_array_with_multiple_fields_accessor.capacity(), 0);
+        assert_eq!(model_with_embedded_models_and_description.embedded_model_array_with_multiple_fields_accessor.len(), 0);
+        model_with_embedded_models_and_description.embedded_model_array_with_multiple_fields_accessor.push(model_with_multiple_fields_accessor.clone());
+        generated::ModelWithEmbeddedModelsAndDescription::encode(&model_with_embedded_models_and_description, &mut buf)?;
+        fs::write("../binaries/model_with_embedded_models_and_description.bin", buf.get_ref())?;
+        buf.seek(SeekFrom::Start(0))?;
+        buf.get_mut().clear();
+
+        let mut model_with_embedded_models_accessor = generated::ModelWithEmbeddedModelsAccessor::new();
+        let embedded_model = model_with_embedded_models_accessor.get_embedded_empty_model();
+        assert!(embedded_model.is_some());
+        let embedded_model_array = model_with_embedded_models_accessor.get_embedded_model_array_with_multiple_fields_accessor().unwrap();
+        assert_eq!(embedded_model_array.capacity(), 0);
+        assert_eq!(embedded_model_array.len(), 0);
+        model_with_embedded_models_accessor.set_embedded_model_array_with_multiple_fields_accessor(vec![model_with_multiple_fields_accessor.clone()]);
+        generated::ModelWithEmbeddedModelsAccessor::encode(&model_with_embedded_models_accessor, &mut buf)?;
+        fs::write("../binaries/model_with_embedded_models_accessor.bin", buf.get_ref())?;
+        buf.seek(SeekFrom::Start(0))?;
+        buf.get_mut().clear();
+
+        let mut model_with_embedded_models_accessor_and_description = generated::ModelWithEmbeddedModelsAccessorAndDescription::new();
+        let embedded_model = model_with_embedded_models_accessor_and_description.get_embedded_empty_model();
+        assert!(embedded_model.is_some());
+        let embedded_model_array = model_with_embedded_models_accessor_and_description.get_embedded_model_array_with_multiple_fields_accessor().unwrap();
+        assert_eq!(embedded_model_array.capacity(), 0);
+        assert_eq!(embedded_model_array.len(), 0);
+        model_with_embedded_models_accessor_and_description.set_embedded_model_array_with_multiple_fields_accessor(vec![model_with_multiple_fields_accessor.clone()]);
+        generated::ModelWithEmbeddedModelsAccessorAndDescription::encode(&model_with_embedded_models_accessor_and_description, &mut buf)?;
+        fs::write("../binaries/model_with_embedded_models_accessor_and_description.bin", buf.get_ref())?;
+        buf.seek(SeekFrom::Start(0))?;
+        buf.get_mut().clear();
+
+        let mut model_with_all_field_types = generated::ModelWithAllFieldTypes::new();
+
+        assert_eq!(model_with_all_field_types.string_field, String::from("DefaultValue"));
+        model_with_all_field_types.string_field = "hello world".to_string();
+        assert_eq!(model_with_all_field_types.string_array_field.capacity(), 0);
+        assert_eq!(model_with_all_field_types.string_array_field.len(), 0);
+        model_with_all_field_types.string_array_field.push("hello".to_string());
+        model_with_all_field_types.string_array_field.push("world".to_string());
+        assert_eq!(model_with_all_field_types.string_map_field.capacity(), 0);
+        assert_eq!(model_with_all_field_types.string_map_field.len(), 0);
+        model_with_all_field_types.string_map_field.insert("hello".to_string(), "world".to_string());
+        model_with_all_field_types.string_map_field_embedded.insert("hello".to_string(), empty_model.clone());
+
+        assert_eq!(model_with_all_field_types.int32_field, 32);
+        model_with_all_field_types.int32_field = 42;
+        assert_eq!(model_with_all_field_types.int32_array_field.capacity(), 0);
+        assert_eq!(model_with_all_field_types.int32_array_field.len(), 0);
+        model_with_all_field_types.int32_array_field.push(42);
+        model_with_all_field_types.int32_array_field.push(84);
+        assert_eq!(model_with_all_field_types.int32_map_field.capacity(), 0);
+        assert_eq!(model_with_all_field_types.int32_map_field.len(), 0);
+        model_with_all_field_types.int32_map_field.insert(42, 84);
+        model_with_all_field_types.int32_map_field_embedded.insert(42, empty_model.clone());
+
+        assert_eq!(model_with_all_field_types.int64_field, 64);
+        model_with_all_field_types.int64_field = 100;
+        assert_eq!(model_with_all_field_types.int64_array_field.capacity(), 0);
+        assert_eq!(model_with_all_field_types.int64_array_field.len(), 0);
+        model_with_all_field_types.int64_array_field.push(100);
+        model_with_all_field_types.int64_array_field.push(200);
+        assert_eq!(model_with_all_field_types.int64_map_field.capacity(), 0);
+        assert_eq!(model_with_all_field_types.int64_map_field.len(), 0);
+        model_with_all_field_types.int64_map_field.insert(100, 200);
+        model_with_all_field_types.int64_map_field_embedded.insert(100, empty_model.clone());
+
+        assert_eq!(model_with_all_field_types.uint32_field, 32);
+        model_with_all_field_types.uint32_field = 42;
+        assert_eq!(model_with_all_field_types.uint32_array_field.capacity(), 0);
+        assert_eq!(model_with_all_field_types.uint32_array_field.len(), 0);
+        model_with_all_field_types.uint32_array_field.push(42);
+        model_with_all_field_types.uint32_array_field.push(84);
+        assert_eq!(model_with_all_field_types.uint32_map_field.capacity(), 0);
+        assert_eq!(model_with_all_field_types.uint32_map_field.len(), 0);
+        model_with_all_field_types.uint32_map_field.insert(42, 84);
+        model_with_all_field_types.uint32_map_field_embedded.insert(42, empty_model.clone());
+
+        assert_eq!(model_with_all_field_types.uint64_field, 64);
+        model_with_all_field_types.uint64_field = 100;
+        assert_eq!(model_with_all_field_types.uint64_array_field.capacity(), 0);
+        assert_eq!(model_with_all_field_types.uint64_array_field.len(), 0);
+        model_with_all_field_types.uint64_array_field.push(100);
+        model_with_all_field_types.uint64_array_field.push(200);
+        assert_eq!(model_with_all_field_types.uint64_map_field.capacity(), 0);
+        assert_eq!(model_with_all_field_types.uint64_map_field.len(), 0);
+        model_with_all_field_types.uint64_map_field.insert(100, 200);
+        model_with_all_field_types.uint64_map_field_embedded.insert(100, empty_model.clone());
+
+        assert_eq!(model_with_all_field_types.float32_field, 32.32);
+        model_with_all_field_types.float32_field = 42.0;
+        assert_eq!(model_with_all_field_types.float32_array_field.capacity(), 0);
+        assert_eq!(model_with_all_field_types.float32_array_field.len(), 0);
+        model_with_all_field_types.float32_array_field.push(42.0);
+        model_with_all_field_types.float32_array_field.push(84.0);
+
+        assert_eq!(model_with_all_field_types.float64_field, 64.64);
+        model_with_all_field_types.float64_field = 100.0;
+        assert_eq!(model_with_all_field_types.float64_array_field.capacity(), 0);
+        assert_eq!(model_with_all_field_types.float64_array_field.len(), 0);
+        model_with_all_field_types.float64_array_field.push(100.0);
+        model_with_all_field_types.float64_array_field.push(200.0);
+
+        assert!(model_with_all_field_types.bool_field);
+        model_with_all_field_types.bool_field = false;
+        assert_eq!(model_with_all_field_types.bool_array_field.capacity(), 0);
+        assert_eq!(model_with_all_field_types.bool_array_field.len(), 0);
+        model_with_all_field_types.bool_array_field.push(true);
+        model_with_all_field_types.bool_array_field.push(false);
+
+        assert_eq!(model_with_all_field_types.bytes_field.capacity(), 512);
+        assert_eq!(model_with_all_field_types.bytes_field.len(), 0);
+        model_with_all_field_types.bytes_field.extend_from_slice(&[42, 84]);
+        assert_eq!(model_with_all_field_types.bytes_array_field.capacity(), 0);
+        assert_eq!(model_with_all_field_types.bytes_array_field.len(), 0);
+        model_with_all_field_types.bytes_array_field.push(vec![42, 84]);
+        model_with_all_field_types.bytes_array_field.push(vec![84, 42]);
+
+        assert_eq!(model_with_all_field_types.enum_field, generated::GenericEnum::DefaultValue);
+        model_with_all_field_types.enum_field = generated::GenericEnum::SecondValue;
+        assert_eq!(model_with_all_field_types.enum_array_field.capacity(), 0);
+        assert_eq!(model_with_all_field_types.enum_array_field.len(), 0);
+        model_with_all_field_types.enum_array_field.push(generated::GenericEnum::FirstValue);
+        model_with_all_field_types.enum_array_field.push(generated::GenericEnum::SecondValue);
+        assert_eq!(model_with_all_field_types.enum_map_field.capacity(), 0);
+        assert_eq!(model_with_all_field_types.enum_map_field.len(), 0);
+        model_with_all_field_types.enum_map_field.insert(generated::GenericEnum::FirstValue, "hello world".to_string());
+        model_with_all_field_types.enum_map_field_embedded.insert(generated::GenericEnum::FirstValue, empty_model.clone());
+
+        assert!(model_with_all_field_types.model_field.is_some());
+        assert_eq!(model_with_all_field_types.model_array_field.len(), 0);
+        model_with_all_field_types.model_array_field.push(empty_model.clone());
+        model_with_all_field_types.model_array_field.push(empty_model.clone());
+
+        generated::ModelWithAllFieldTypes::encode(&model_with_all_field_types, &mut buf)?;
+        fs::write("../binaries/model_with_all_field_types.bin", buf.get_ref())?;
+        buf.seek(SeekFrom::Start(0))?;
+        buf.get_mut().clear();
+
         Ok(())
     }
 

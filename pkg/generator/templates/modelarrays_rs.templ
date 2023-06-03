@@ -10,7 +10,7 @@
 
 {{ define "rs_modelarrays_new_struct_reference" }}
     {{- range .ModelArrays }}
-        {{ SnakeCase .Name }}: Vec::new(),
+        {{ SnakeCase .Name }}: Vec::with_capacity({{ .InitialSize }}),
     {{- end }}
 {{ end }}
 
