@@ -10,6 +10,11 @@ mod tests {
     use super::*;
 
     #[test]
+    fn test_output() -> Result<(), Box<dyn Error>> {
+        Ok(())
+    }
+
+    #[test]
     fn test_input() -> Result<(), Box<dyn Error>> {
         let mut empty_model_data = fs::read("../binaries/empty_model.bin")?;
         let _empty_model = generated::EmptyModel::decode(&mut Cursor::new(&mut empty_model_data))?;
