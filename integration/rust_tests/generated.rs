@@ -43,10 +43,10 @@ pub enum GenericEnum {
     SecondValue = 1,
     DefaultValue = 2,
 }
-pub(crate) struct EmptyModel {}
+pub struct EmptyModel {}
 
 impl EmptyModel {
-    pub(crate) fn new() -> Self {
+    pub fn new() -> Self {
         Self {}
     }
 }
@@ -126,10 +126,10 @@ impl Decode for Option<EmptyModel> {
 }
 
 // EmptyModelWithDescription: Test Description
-pub(crate) struct EmptyModelWithDescription {}
+pub struct EmptyModelWithDescription {}
 
 impl EmptyModelWithDescription {
-    pub(crate) fn new() -> Self {
+    pub fn new() -> Self {
         Self {}
     }
 }
@@ -210,12 +210,12 @@ impl Decode for Option<EmptyModelWithDescription> {
     }
 }
 
-pub(crate) struct ModelWithSingleStringField {
+pub struct ModelWithSingleStringField {
     pub string_field: String,
 }
 
 impl ModelWithSingleStringField {
-    pub(crate) fn new() -> Self {
+    pub fn new() -> Self {
         Self {
             string_field: "DefaultValue".to_string(),
         }
@@ -303,12 +303,12 @@ impl Decode for Option<ModelWithSingleStringField> {
 }
 
 // ModelWithSingleStringFieldAndDescription: Test Description
-pub(crate) struct ModelWithSingleStringFieldAndDescription {
+pub struct ModelWithSingleStringFieldAndDescription {
     pub string_field: String,
 }
 
 impl ModelWithSingleStringFieldAndDescription {
-    pub(crate) fn new() -> Self {
+    pub fn new() -> Self {
         Self {
             string_field: "DefaultValue".to_string(),
         }
@@ -395,12 +395,12 @@ impl Decode for Option<ModelWithSingleStringFieldAndDescription> {
     }
 }
 
-pub(crate) struct ModelWithSingleInt32Field {
+pub struct ModelWithSingleInt32Field {
     pub int32_field: i32,
 }
 
 impl ModelWithSingleInt32Field {
-    pub(crate) fn new() -> Self {
+    pub fn new() -> Self {
         Self { int32_field: 32 }
     }
 }
@@ -486,12 +486,12 @@ impl Decode for Option<ModelWithSingleInt32Field> {
 }
 
 // ModelWithSingleInt32FieldAndDescription: Test Description
-pub(crate) struct ModelWithSingleInt32FieldAndDescription {
+pub struct ModelWithSingleInt32FieldAndDescription {
     pub int32_field: i32,
 }
 
 impl ModelWithSingleInt32FieldAndDescription {
-    pub(crate) fn new() -> Self {
+    pub fn new() -> Self {
         Self { int32_field: 32 }
     }
 }
@@ -576,14 +576,14 @@ impl Decode for Option<ModelWithSingleInt32FieldAndDescription> {
     }
 }
 
-pub(crate) struct ModelWithMultipleFields {
+pub struct ModelWithMultipleFields {
     pub string_field: String,
 
     pub int32_field: i32,
 }
 
 impl ModelWithMultipleFields {
-    pub(crate) fn new() -> Self {
+    pub fn new() -> Self {
         Self {
             string_field: "DefaultValue".to_string(),
 
@@ -677,14 +677,14 @@ impl Decode for Option<ModelWithMultipleFields> {
 }
 
 // ModelWithMultipleFieldsAndDescription: Test Description
-pub(crate) struct ModelWithMultipleFieldsAndDescription {
+pub struct ModelWithMultipleFieldsAndDescription {
     pub string_field: String,
 
     pub int32_field: i32,
 }
 
 impl ModelWithMultipleFieldsAndDescription {
-    pub(crate) fn new() -> Self {
+    pub fn new() -> Self {
         Self {
             string_field: "DefaultValue".to_string(),
 
@@ -777,12 +777,12 @@ impl Decode for Option<ModelWithMultipleFieldsAndDescription> {
     }
 }
 
-pub(crate) struct ModelWithEnum {
+pub struct ModelWithEnum {
     pub enum_field: GenericEnum,
 }
 
 impl ModelWithEnum {
-    pub(crate) fn new() -> Self {
+    pub fn new() -> Self {
         Self {
             enum_field: GenericEnum::DefaultValue,
         }
@@ -870,12 +870,12 @@ impl Decode for Option<ModelWithEnum> {
 }
 
 // ModelWithEnumAndDescription: Test Description
-pub(crate) struct ModelWithEnumAndDescription {
+pub struct ModelWithEnumAndDescription {
     pub enum_field: GenericEnum,
 }
 
 impl ModelWithEnumAndDescription {
-    pub(crate) fn new() -> Self {
+    pub fn new() -> Self {
         Self {
             enum_field: GenericEnum::DefaultValue,
         }
@@ -964,12 +964,12 @@ impl Decode for Option<ModelWithEnumAndDescription> {
     }
 }
 
-pub(crate) struct ModelWithEnumAccessor {
+pub struct ModelWithEnumAccessor {
     enum_field: GenericEnum,
 }
 
 impl ModelWithEnumAccessor {
-    pub(crate) fn new() -> Self {
+    pub fn new() -> Self {
         Self {
             enum_field: GenericEnum::DefaultValue,
         }
@@ -1069,12 +1069,12 @@ impl ModelWithEnumAccessor {
 }
 
 // ModelWithEnumAccessorAndDescription: Test Description
-pub(crate) struct ModelWithEnumAccessorAndDescription {
+pub struct ModelWithEnumAccessorAndDescription {
     enum_field: GenericEnum,
 }
 
 impl ModelWithEnumAccessorAndDescription {
-    pub(crate) fn new() -> Self {
+    pub fn new() -> Self {
         Self {
             enum_field: GenericEnum::DefaultValue,
         }
@@ -1173,14 +1173,14 @@ impl ModelWithEnumAccessorAndDescription {
     }
 }
 
-pub(crate) struct ModelWithMultipleFieldsAccessor {
+pub struct ModelWithMultipleFieldsAccessor {
     string_field: String,
 
     int32_field: i32,
 }
 
 impl ModelWithMultipleFieldsAccessor {
-    pub(crate) fn new() -> Self {
+    pub fn new() -> Self {
         Self {
             string_field: "DefaultValue".to_string(),
 
@@ -1188,11 +1188,11 @@ impl ModelWithMultipleFieldsAccessor {
         }
     }
 
-    fn get_string_field(&self) -> String {
+    pub fn get_string_field(&self) -> String {
         self.string_field.clone()
     }
 
-    fn set_string_field(&mut self, mut v: String) -> Result<(), Box<dyn std::error::Error>> {
+    pub fn set_string_field(&mut self, mut v: String) -> Result<(), Box<dyn std::error::Error>> {
         if !Regex::new("^[a-zA-Z0-9]*$")?.is_match(v.as_str()) {
             return Err(Box::<dyn std::error::Error>::from(
                 "value must match ^[a-zA-Z0-9]*$",
@@ -1211,11 +1211,11 @@ impl ModelWithMultipleFieldsAccessor {
         Ok(())
     }
 
-    fn get_int32_field(&self) -> i32 {
+    pub fn get_int32_field(&self) -> i32 {
         self.int32_field
     }
 
-    fn set_int32_field(&mut self, v: i32) -> Result<(), Box<dyn std::error::Error>> {
+    pub fn set_int32_field(&mut self, v: i32) -> Result<(), Box<dyn std::error::Error>> {
         if v > 100 || v < 0 {
             return Err(Box::<dyn std::error::Error>::from(
                 "value must be between { .Minimum }} and 100",
@@ -1312,14 +1312,14 @@ impl Decode for Option<ModelWithMultipleFieldsAccessor> {
 }
 
 // ModelWithMultipleFieldsAccessorAndDescription: Test Description
-pub(crate) struct ModelWithMultipleFieldsAccessorAndDescription {
+pub struct ModelWithMultipleFieldsAccessorAndDescription {
     string_field: String,
 
     int32_field: i32,
 }
 
 impl ModelWithMultipleFieldsAccessorAndDescription {
-    pub(crate) fn new() -> Self {
+    pub fn new() -> Self {
         Self {
             string_field: "DefaultValue".to_string(),
 
@@ -1327,20 +1327,20 @@ impl ModelWithMultipleFieldsAccessorAndDescription {
         }
     }
 
-    fn get_string_field(&self) -> String {
+    pub fn get_string_field(&self) -> String {
         self.string_field.clone()
     }
 
-    fn set_string_field(&mut self, mut v: String) -> Result<(), Box<dyn std::error::Error>> {
+    pub fn set_string_field(&mut self, mut v: String) -> Result<(), Box<dyn std::error::Error>> {
         self.string_field = v;
         Ok(())
     }
 
-    fn get_int32_field(&self) -> i32 {
+    pub fn get_int32_field(&self) -> i32 {
         self.int32_field
     }
 
-    fn set_int32_field(&mut self, v: i32) -> Result<(), Box<dyn std::error::Error>> {
+    pub fn set_int32_field(&mut self, v: i32) -> Result<(), Box<dyn std::error::Error>> {
         self.int32_field = v;
         Ok(())
     }
@@ -1431,14 +1431,14 @@ impl Decode for Option<ModelWithMultipleFieldsAccessorAndDescription> {
     }
 }
 
-pub(crate) struct ModelWithEmbeddedModels {
+pub struct ModelWithEmbeddedModels {
     pub embedded_empty_model: Option<EmptyModel>,
 
     pub embedded_model_array_with_multiple_fields_accessor: Vec<ModelWithMultipleFieldsAccessor>,
 }
 
 impl ModelWithEmbeddedModels {
-    pub(crate) fn new() -> Self {
+    pub fn new() -> Self {
         Self {
             embedded_empty_model: None,
 
@@ -1543,14 +1543,14 @@ impl Decode for Option<ModelWithEmbeddedModels> {
 }
 
 // ModelWithEmbeddedModelsAndDescription: Test Description
-pub(crate) struct ModelWithEmbeddedModelsAndDescription {
+pub struct ModelWithEmbeddedModelsAndDescription {
     pub embedded_empty_model: Option<EmptyModel>,
 
     pub embedded_model_array_with_multiple_fields_accessor: Vec<ModelWithMultipleFieldsAccessor>,
 }
 
 impl ModelWithEmbeddedModelsAndDescription {
-    pub(crate) fn new() -> Self {
+    pub fn new() -> Self {
         Self {
             embedded_empty_model: None,
 
@@ -1654,14 +1654,14 @@ impl Decode for Option<ModelWithEmbeddedModelsAndDescription> {
     }
 }
 
-pub(crate) struct ModelWithEmbeddedModelsAccessor {
+pub struct ModelWithEmbeddedModelsAccessor {
     embedded_empty_model: Option<EmptyModel>,
 
     embedded_model_array_with_multiple_fields_accessor: Vec<ModelWithMultipleFieldsAccessor>,
 }
 
 impl ModelWithEmbeddedModelsAccessor {
-    pub(crate) fn new() -> Self {
+    pub fn new() -> Self {
         Self {
             embedded_empty_model: None,
 
@@ -1776,13 +1776,13 @@ impl ModelWithEmbeddedModelsAccessor {
 }
 
 impl ModelWithEmbeddedModelsAccessor {
-    fn get_embedded_model_array_with_multiple_fields_accessor(
+    pub fn get_embedded_model_array_with_multiple_fields_accessor(
         &self,
-    ) -> Result<&Vec<ModelWithMultipleFieldsAccessor>, Box<dyn std::error::Error>> {
-        Ok(&self.embedded_model_array_with_multiple_fields_accessor)
+    ) -> Option<&Vec<ModelWithMultipleFieldsAccessor>> {
+        Some(&self.embedded_model_array_with_multiple_fields_accessor)
     }
 
-    fn set_embedded_model_array_with_multiple_fields_accessor(
+    pub fn set_embedded_model_array_with_multiple_fields_accessor(
         &mut self,
         v: Vec<ModelWithMultipleFieldsAccessor>,
     ) {
@@ -1791,14 +1791,14 @@ impl ModelWithEmbeddedModelsAccessor {
 }
 
 // ModelWithEmbeddedModelsAccessorAndDescription: Test Description
-pub(crate) struct ModelWithEmbeddedModelsAccessorAndDescription {
+pub struct ModelWithEmbeddedModelsAccessorAndDescription {
     embedded_empty_model: Option<EmptyModel>,
 
     embedded_model_array_with_multiple_fields_accessor: Vec<ModelWithMultipleFieldsAccessor>,
 }
 
 impl ModelWithEmbeddedModelsAccessorAndDescription {
-    pub(crate) fn new() -> Self {
+    pub fn new() -> Self {
         Self {
             embedded_empty_model: None,
 
@@ -1914,13 +1914,13 @@ impl ModelWithEmbeddedModelsAccessorAndDescription {
 }
 
 impl ModelWithEmbeddedModelsAccessorAndDescription {
-    fn get_embedded_model_array_with_multiple_fields_accessor(
+    pub fn get_embedded_model_array_with_multiple_fields_accessor(
         &self,
-    ) -> Result<&Vec<ModelWithMultipleFieldsAccessor>, Box<dyn std::error::Error>> {
-        Ok(&self.embedded_model_array_with_multiple_fields_accessor)
+    ) -> Option<&Vec<ModelWithMultipleFieldsAccessor>> {
+        Some(&self.embedded_model_array_with_multiple_fields_accessor)
     }
 
-    fn set_embedded_model_array_with_multiple_fields_accessor(
+    pub fn set_embedded_model_array_with_multiple_fields_accessor(
         &mut self,
         v: Vec<ModelWithMultipleFieldsAccessor>,
     ) {
@@ -1928,7 +1928,7 @@ impl ModelWithEmbeddedModelsAccessorAndDescription {
     }
 }
 
-pub(crate) struct ModelWithAllFieldTypes {
+pub struct ModelWithAllFieldTypes {
     pub model_field: Option<EmptyModel>,
 
     pub model_array_field: Vec<EmptyModel>,
@@ -1998,7 +1998,7 @@ pub(crate) struct ModelWithAllFieldTypes {
 }
 
 impl ModelWithAllFieldTypes {
-    pub(crate) fn new() -> Self {
+    pub fn new() -> Self {
         Self {
             model_field: None,
 

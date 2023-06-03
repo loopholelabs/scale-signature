@@ -44,12 +44,14 @@ func TestGolangToGolang(t *testing.T) {
 	err = os.WriteFile(golangDir+"/generated.go", formatted, 0644)
 	require.NoError(t, err)
 
-	cmd := exec.Command("go", "test", golangDir, "-v", "--tags=integration,golang", "-run", "TestOutput")
+	cmd := exec.Command("go", "test", "./...", "-v", "--tags=integration,golang", "-run", "TestOutput")
+	cmd.Dir = golangDir
 	out, err := cmd.CombinedOutput()
 	assert.NoError(t, err)
 	t.Log(string(out))
 
-	cmd = exec.Command("go", "test", golangDir, "-v", "--tags=integration,golang", "-run", "TestInput")
+	cmd = exec.Command("go", "test", "./...", "-v", "--tags=integration,golang", "-run", "TestInput")
+	cmd.Dir = golangDir
 	out, err = cmd.CombinedOutput()
 	assert.NoError(t, err)
 	t.Log(string(out))
@@ -83,4 +85,16 @@ func TestGolangToRust(t *testing.T) {
 
 	err = os.WriteFile(rustDir+"/generated.rs", formatted, 0644)
 	require.NoError(t, err)
+
+	cmd := exec.Command("go", "test", "./...", "-v", "--tags=integration,golang", "-run", "TestOutput")
+	cmd.Dir = golangDir
+	out, err := cmd.CombinedOutput()
+	assert.NoError(t, err)
+	t.Log(string(out))
+
+	cmd = exec.Command("cargo", "test", "test_input")
+	cmd.Dir = rustDir
+	out, err = cmd.CombinedOutput()
+	assert.NoError(t, err)
+	t.Log(string(out))
 }

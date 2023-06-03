@@ -1224,17 +1224,9 @@ type ModelWithAllFieldTypes struct {
 
 	Float32ArrayField []float32
 
-	Float32MapField map[float32]float32
-
-	Float32MapFieldEmbedded map[float32]*EmptyModel
-
 	Float64Field float64
 
 	Float64ArrayField []float64
-
-	Float64MapField map[float64]float64
-
-	Float64MapFieldEmbedded map[float64]*EmptyModel
 
 	EnumField GenericEnum
 
@@ -1304,17 +1296,9 @@ func NewModelWithAllFieldTypes() *ModelWithAllFieldTypes {
 
 		Float32ArrayField: make([]float32, 0, 0),
 
-		Float32MapField: make(map[float32]float32),
-
-		Float32MapFieldEmbedded: make(map[float32]*EmptyModel),
-
 		Float64Field: 64.64,
 
 		Float64ArrayField: make([]float64, 0, 0),
-
-		Float64MapField: make(map[float64]float64),
-
-		Float64MapFieldEmbedded: make(map[float64]*EmptyModel),
 
 		EnumField: GenericEnumDefaultValue,
 
@@ -1449,35 +1433,11 @@ func (x *ModelWithAllFieldTypes) Encode(b *polyglot.Buffer) {
 			e.Float32(a)
 		}
 
-		e.Map(uint32(len(x.Float32MapField)), polyglot.Float32Kind, polyglot.Float32Kind)
-		for k, v := range x.Float32MapField {
-			e.Float32(k)
-			e.Float32(v)
-		}
-
-		e.Map(uint32(len(x.Float32MapFieldEmbedded)), polyglot.Float32Kind, polyglot.AnyKind)
-		for k, v := range x.Float32MapFieldEmbedded {
-			e.Float32(k)
-			v.Encode(b)
-		}
-
 		e.Float64(x.Float64Field)
 
 		e.Slice(uint32(len(x.Float64ArrayField)), polyglot.Float64Kind)
 		for _, a := range x.Float64ArrayField {
 			e.Float64(a)
-		}
-
-		e.Map(uint32(len(x.Float64MapField)), polyglot.Float64Kind, polyglot.Float64Kind)
-		for k, v := range x.Float64MapField {
-			e.Float64(k)
-			e.Float64(v)
-		}
-
-		e.Map(uint32(len(x.Float64MapFieldEmbedded)), polyglot.Float64Kind, polyglot.AnyKind)
-		for k, v := range x.Float64MapFieldEmbedded {
-			e.Float64(k)
-			v.Encode(b)
 		}
 
 		e.Uint32(uint32(x.EnumField))
@@ -1894,48 +1854,6 @@ func (x *ModelWithAllFieldTypes) _decode(d *polyglot.Decoder) error {
 		}
 	}
 
-	mapSizeFloat32MapField, err := d.Map(polyglot.Float32Kind, polyglot.Float32Kind)
-	if err != nil {
-		return err
-	}
-
-	if uint32(len(x.Float32MapField)) != mapSizeFloat32MapField {
-		x.Float32MapField = make(map[float32]float32, mapSizeFloat32MapField)
-	}
-
-	for i := uint32(0); i < mapSizeFloat32MapField; i++ {
-		k, err := d.Float32()
-		if err != nil {
-			return err
-		}
-		x.Float32MapField[k], err = d.Float32()
-		if err != nil {
-			return err
-		}
-	}
-
-	mapSizeFloat32MapFieldEmbedded, err := d.Map(polyglot.Float32Kind, polyglot.AnyKind)
-	if err != nil {
-		return err
-	}
-
-	if uint32(len(x.Float32MapFieldEmbedded)) != mapSizeFloat32MapFieldEmbedded {
-		x.Float32MapFieldEmbedded = make(map[float32]*EmptyModel, mapSizeFloat32MapFieldEmbedded)
-	}
-
-	for i := uint32(0); i < mapSizeFloat32MapFieldEmbedded; i++ {
-		k, err := d.Float32()
-		if err != nil {
-			return err
-		}
-		v := NewEmptyModel()
-		err = v._decode(d)
-		if err != nil {
-			return err
-		}
-		x.Float32MapFieldEmbedded[k] = v
-	}
-
 	x.Float64Field, err = d.Float64()
 	if err != nil {
 		return err
@@ -1955,48 +1873,6 @@ func (x *ModelWithAllFieldTypes) _decode(d *polyglot.Decoder) error {
 		if err != nil {
 			return err
 		}
-	}
-
-	mapSizeFloat64MapField, err := d.Map(polyglot.Float64Kind, polyglot.Float64Kind)
-	if err != nil {
-		return err
-	}
-
-	if uint32(len(x.Float64MapField)) != mapSizeFloat64MapField {
-		x.Float64MapField = make(map[float64]float64, mapSizeFloat64MapField)
-	}
-
-	for i := uint32(0); i < mapSizeFloat64MapField; i++ {
-		k, err := d.Float64()
-		if err != nil {
-			return err
-		}
-		x.Float64MapField[k], err = d.Float64()
-		if err != nil {
-			return err
-		}
-	}
-
-	mapSizeFloat64MapFieldEmbedded, err := d.Map(polyglot.Float64Kind, polyglot.AnyKind)
-	if err != nil {
-		return err
-	}
-
-	if uint32(len(x.Float64MapFieldEmbedded)) != mapSizeFloat64MapFieldEmbedded {
-		x.Float64MapFieldEmbedded = make(map[float64]*EmptyModel, mapSizeFloat64MapFieldEmbedded)
-	}
-
-	for i := uint32(0); i < mapSizeFloat64MapFieldEmbedded; i++ {
-		k, err := d.Float64()
-		if err != nil {
-			return err
-		}
-		v := NewEmptyModel()
-		err = v._decode(d)
-		if err != nil {
-			return err
-		}
-		x.Float64MapFieldEmbedded[k] = v
 	}
 
 	result, err := decodeGenericEnum(d)

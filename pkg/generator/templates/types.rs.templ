@@ -35,7 +35,7 @@ pub trait Decode {
         // {{ .Name }}: {{ .Description }}
     {{ end -}}
 
-    pub(crate) struct {{ .Name }} {
+    pub struct {{ .Name }} {
         {{ template "rs_models_struct_reference" . }}
         {{ template "rs_modelarrays_struct_reference" . }}
 
@@ -78,7 +78,7 @@ pub trait Decode {
     }
 
     impl {{ .Name }} {
-        pub(crate) fn new () -> Self {
+        pub fn new () -> Self {
             Self {
                 {{ template "rs_models_new_struct_reference" . }}
                 {{ template "rs_modelarrays_new_struct_reference" . }}

@@ -40,11 +40,9 @@ import { Encoder, Decoder, Kind } from "@loopholelabs/polyglot-ts"
 
         {{ template "ts_primitives_struct_reference" Params "Entries" .Float32s "Type" "float32" }}
         {{ template "ts_arrays_struct_reference" Params "Entries" .Float32Arrays "Type" "float32" }}
-        {{ template "ts_maps_struct_reference" Params "Entries" .Float32Maps "Type" "float32" }}
 
         {{ template "ts_primitives_struct_reference" Params "Entries" .Float64s "Type" "float64" }}
         {{ template "ts_arrays_struct_reference" Params "Entries" .Float64Arrays "Type" "float64" }}
-        {{ template "ts_maps_struct_reference" Params "Entries" .Float64Maps "Type" "float64" }}
 
         {{ template "ts_enums_struct_reference" . }}
         {{ template "ts_enumarrays_struct_reference" . }}
@@ -87,11 +85,9 @@ import { Encoder, Decoder, Kind } from "@loopholelabs/polyglot-ts"
 
                 {{ template "ts_primitives_decode" Params "Entries" .Float32s "Type" "float32" }}
                 {{ template "ts_arrays_decode" Params "Entries" .Float32Arrays "Type" "float32" }}
-                {{ template "ts_maps_decode" Params "Entries" .Float32Maps "Type" "float32" }}
 
                 {{ template "ts_primitives_decode" Params "Entries" .Float64s "Type" "float64" }}
                 {{ template "ts_arrays_decode" Params "Entries" .Float64Arrays "Type" "float64" }}
-                {{ template "ts_maps_decode" Params "Entries" .Float64Maps "Type" "float64" }}
 
                 {{ template "ts_primitives_decode" Params "Entries" .Enums "Type" "uint32" }}
                 {{ template "ts_arrays_decode" Params "Entries" .EnumArrays "Type" "uint32" }}
@@ -129,11 +125,9 @@ import { Encoder, Decoder, Kind } from "@loopholelabs/polyglot-ts"
 
                 {{ template "ts_primitives_new_struct_reference" Params "Entries" .Float32s }}
                 {{ template "ts_arrays_new_struct_reference" Params "Entries" .Float32Arrays "Type" "float32" }}
-                {{ template "ts_maps_new_struct_reference" Params "Entries" .Float32Maps "Type" "float32" }}
 
                 {{ template "ts_primitives_new_struct_reference" Params "Entries" .Float64s }}
                 {{ template "ts_arrays_new_struct_reference" Params "Entries" .Float64Arrays "Type" "float64" }}
-                {{ template "ts_maps_new_struct_reference" Params "Entries" .Float64Maps "Type" "float64" }}
 
                 {{ template "ts_enums_new_struct_reference" . }}
                 {{ template "ts_enumarrays_new_struct_reference" . }}
@@ -188,11 +182,9 @@ import { Encoder, Decoder, Kind } from "@loopholelabs/polyglot-ts"
 
             {{ template "ts_primitives_encode" Params "Entries" .Float32s "Type" "float32" }}
             {{ template "ts_arrays_encode" Params "Entries" .Float32Arrays "Type" "float32" }}
-            {{ template "ts_maps_encode" Params "Entries" .Float32Maps "Type" "float32" }}
 
             {{ template "ts_primitives_encode" Params "Entries" .Float64s "Type" "float64" }}
             {{ template "ts_arrays_encode" Params "Entries" .Float64Arrays "Type" "float64" }}
-            {{ template "ts_maps_encode" Params "Entries" .Float64Maps "Type" "float64" }}
 
             {{ template "ts_primitives_encode" Params "Entries" .Enums "Type" "uint32" }}
             {{ template "ts_arrays_encode" Params "Entries" .EnumArrays "Type" "uint32" }}

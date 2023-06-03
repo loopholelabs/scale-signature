@@ -171,22 +171,6 @@ func (s *Schema) Validate() error {
 				}
 			}
 
-			for _, f32Map := range model.Float32Maps {
-				if !ValidPrimitiveType(f32Map.Value) {
-					if _, ok := knownModels[f32Map.Value]; !ok {
-						return fmt.Errorf("unknown %s.%s.value: %s", model.Name, f32Map.Name, f32Map.Value)
-					}
-				}
-			}
-
-			for _, f64Map := range model.Float64Maps {
-				if !ValidPrimitiveType(f64Map.Value) {
-					if _, ok := knownModels[f64Map.Value]; !ok {
-						return fmt.Errorf("unknown %s.%s.value: %s", model.Name, f64Map.Name, f64Map.Value)
-					}
-				}
-			}
-
 			for _, enumReference := range model.Enums {
 				if _, ok := knownEnums[enumReference.Reference]; !ok {
 					return fmt.Errorf("unknown %s.%s.reference: %s", model.Name, enumReference.Name, enumReference.Reference)
@@ -507,28 +491,12 @@ model ModelWithAllFieldTypes {
 		initial_size = 0
 	}
 
-	float32_map Float32MapField {
-		value = "float32"
-	}
-
-	float32_map Float32MapFieldEmbedded {
-		value = "EmptyModel"
-	}
-
 	float64 Float64Field {
 		default = 64.64
 	}
 
 	float64_array Float64ArrayField {
 		initial_size = 0
-	}
-
-	float64_map Float64MapField {
-		value = "float64"
-	}
-
-	float64_map Float64MapFieldEmbedded {
-		value = "EmptyModel"
 	}
 
 	bool BoolField {

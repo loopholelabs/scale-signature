@@ -37,11 +37,11 @@
     {{- range .ModelArrays }}
         {{- if .Accessor }}
             impl {{ $current_model.Name }} {
-                fn get_{{ SnakeCase .Name }} (&self) -> Result<&Vec<{{ .Reference }}>, Box<dyn std::error::Error>> {
-                    Ok(&self.{{ SnakeCase .Name }})
+                pub fn get_{{ SnakeCase .Name }} (&self) -> Option<&Vec<{{ .Reference }}>> {
+                    Some(&self.{{ SnakeCase .Name }})
                 }
 
-                fn set_{{ SnakeCase .Name }} (&mut self, v: Vec<{{ .Reference }}>) {
+                pub fn set_{{ SnakeCase .Name }} (&mut self, v: Vec<{{ .Reference }}>) {
                     self.{{ SnakeCase .Name }} = v;
                 }
             }
