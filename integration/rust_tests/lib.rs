@@ -117,6 +117,7 @@ mod tests {
         assert_eq!(string_value, String::from("DefaultValue"));
         assert_eq!(int32_value, 32);
         assert!(model_with_multiple_fields_accessor.set_string_field(String::from("hello world")).is_err());
+        assert!(model_with_multiple_fields_accessor.set_string_field(String::from("")).is_err());
         model_with_multiple_fields_accessor.set_string_field(String::from("hello"))?;
         string_value = model_with_multiple_fields_accessor.get_string_field();
         assert_eq!(string_value, String::from("HELLO"));

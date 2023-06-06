@@ -18,6 +18,7 @@ package integration
 import (
 	"github.com/loopholelabs/scale-signature/pkg/generator/golang"
 	"github.com/loopholelabs/scale-signature/pkg/generator/rust"
+	"github.com/loopholelabs/scale-signature/pkg/generator/typescript"
 	"github.com/loopholelabs/scale-signature/pkg/schema"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -52,6 +53,68 @@ func TestGolangToGolang(t *testing.T) {
 
 	cmd = exec.Command("go", "test", "./...", "-v", "--tags=integration,golang", "-run", "TestInput")
 	cmd.Dir = golangDir
+	out, err = cmd.CombinedOutput()
+	assert.NoError(t, err)
+	t.Log(string(out))
+}
+
+func TestRustToRust(t *testing.T) {
+	r, err := rust.New()
+	require.NoError(t, err)
+
+	s := new(schema.Schema)
+	err = s.Decode([]byte(schema.MasterTestingSchema))
+	require.NoError(t, err)
+
+	require.NoError(t, s.Validate())
+
+	const rustDir = "./rust_tests"
+
+	formatted, err := r.Generate(s, "rust_tests", "v0.1.0")
+	require.NoError(t, err)
+
+	err = os.WriteFile(rustDir+"/generated.rs", formatted, 0644)
+	require.NoError(t, err)
+
+	cmd := exec.Command("cargo", "test", "test_output")
+	cmd.Dir = rustDir
+	out, err := cmd.CombinedOutput()
+	assert.NoError(t, err)
+	t.Log(string(out))
+
+	cmd = exec.Command("cargo", "test", "test_input")
+	cmd.Dir = rustDir
+	out, err = cmd.CombinedOutput()
+	assert.NoError(t, err)
+	t.Log(string(out))
+}
+
+func TestTypescriptToTypescript(t *testing.T) {
+	ts, err := typescript.New()
+	require.NoError(t, err)
+
+	s := new(schema.Schema)
+	err = s.Decode([]byte(schema.MasterTestingSchema))
+	require.NoError(t, err)
+
+	require.NoError(t, s.Validate())
+
+	const typescriptDir = "./typescript_tests"
+
+	formatted, err := ts.Generate(s, "typescript_tests", "v0.1.0")
+	require.NoError(t, err)
+
+	err = os.WriteFile(typescriptDir+"/generated.ts", formatted, 0644)
+	require.NoError(t, err)
+
+	cmd := exec.Command("npm", "run", "test", "--", "-t", "test-output")
+	cmd.Dir = typescriptDir
+	out, err := cmd.CombinedOutput()
+	assert.NoError(t, err)
+	t.Log(string(out))
+
+	cmd = exec.Command("npm", "run", "test", "--", "-t", "test-input")
+	cmd.Dir = typescriptDir
 	out, err = cmd.CombinedOutput()
 	assert.NoError(t, err)
 	t.Log(string(out))
