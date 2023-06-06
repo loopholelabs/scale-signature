@@ -221,6 +221,61 @@ test('test-output', () => {
     modelWithAllFieldTypes.int64ArrayField.push(BigInt(100), BigInt(200));
     modelWithAllFieldTypes.int64MapField.set(BigInt(100), BigInt(200));
     modelWithAllFieldTypes.int64MapFieldEmbedded.set(BigInt(100), emptyModel);
+
+    expect(modelWithAllFieldTypes.uint32Field).toEqual(32);
+    modelWithAllFieldTypes.uint32Field = 42;
+    expect(modelWithAllFieldTypes.uint32ArrayField.length).toEqual(0);
+    expect(modelWithAllFieldTypes.uint32MapField).toEqual(new Map<number, number>());
+    expect(modelWithAllFieldTypes.uint32MapFieldEmbedded).toEqual(new Map<number, generated.EmptyModel>());
+    modelWithAllFieldTypes.uint32ArrayField.push(42, 84);
+    modelWithAllFieldTypes.uint32MapField.set(42, 84);
+    modelWithAllFieldTypes.uint32MapFieldEmbedded.set(42, emptyModel);
+
+    expect(modelWithAllFieldTypes.uint64Field).toEqual(BigInt(64));
+    modelWithAllFieldTypes.uint64Field = BigInt(100);
+    expect(modelWithAllFieldTypes.uint64ArrayField.length).toEqual(0);
+    expect(modelWithAllFieldTypes.uint64MapField).toEqual(new Map<bigint, bigint>());
+    expect(modelWithAllFieldTypes.uint64MapFieldEmbedded).toEqual(new Map<bigint, generated.EmptyModel>());
+    modelWithAllFieldTypes.uint64ArrayField.push(BigInt(100), BigInt(200));
+    modelWithAllFieldTypes.uint64MapField.set(BigInt(100), BigInt(200));
+    modelWithAllFieldTypes.uint64MapFieldEmbedded.set(BigInt(100), emptyModel);
+
+    expect(modelWithAllFieldTypes.float32Field).toEqual(32.32);
+    modelWithAllFieldTypes.float32Field = 42.0;
+    expect(modelWithAllFieldTypes.float32ArrayField.length).toEqual(0);
+    modelWithAllFieldTypes.float32ArrayField.push(42.0, 84.0);
+
+    expect(modelWithAllFieldTypes.float64Field).toEqual(64.64);
+    modelWithAllFieldTypes.float64Field = 100.0;
+    expect(modelWithAllFieldTypes.float64ArrayField.length).toEqual(0);
+    modelWithAllFieldTypes.float64ArrayField.push(100.0, 200.0);
+
+    expect(modelWithAllFieldTypes.boolField).toEqual(true);
+    modelWithAllFieldTypes.boolField = false;
+    expect(modelWithAllFieldTypes.boolArrayField.length).toEqual(0);
+    modelWithAllFieldTypes.boolArrayField.push(true, false);
+
+    expect(modelWithAllFieldTypes.bytesField.length).toEqual(512);
+    modelWithAllFieldTypes.bytesField = Uint8Array.from([42, 84]);
+    expect(modelWithAllFieldTypes.bytesArrayField.length).toEqual(0);
+    modelWithAllFieldTypes.bytesArrayField.push(Uint8Array.from([42, 84]), Uint8Array.from([84, 42]));
+
+    expect(modelWithAllFieldTypes.enumField).toEqual(generated.GenericEnum.DefaultValue);
+    modelWithAllFieldTypes.enumField = generated.GenericEnum.SecondValue;
+    expect(modelWithAllFieldTypes.enumArrayField.length).toEqual(0);
+    modelWithAllFieldTypes.enumArrayField.push(generated.GenericEnum.FirstValue, generated.GenericEnum.SecondValue);
+    expect(modelWithAllFieldTypes.enumMapField).toEqual(new Map<generated.GenericEnum, string>());
+    expect(modelWithAllFieldTypes.enumMapFieldEmbedded).toEqual(new Map<generated.GenericEnum, generated.EmptyModel>());
+    modelWithAllFieldTypes.enumMapField.set(generated.GenericEnum.FirstValue, 'hello world');
+    modelWithAllFieldTypes.enumMapFieldEmbedded.set(generated.GenericEnum.FirstValue, emptyModel);
+
+    expect(modelWithAllFieldTypes.modelField).not.toBeNull();
+    expect(modelWithAllFieldTypes.modelField).not.toBeUndefined();
+    expect(modelWithAllFieldTypes.modelArrayField.length).toEqual(0);
+    modelWithAllFieldTypes.modelArrayField.push(emptyModel, emptyModel);
+
+    modelWithAllFieldTypes.encode(modelWithAllFieldTypesEncoder);
+    fs.writeFileSync('../binaries/model_with_all_field_types.bin', modelWithAllFieldTypesEncoder.bytes, 'binary');
 });
 
 test('test-input', () => {
