@@ -32,5 +32,8 @@ jobs:
         with:
           path: integration/typescript_tests/node_modules
           key: ${{ runner.os }}-${{ hashFiles('integration/typescript_tests/*.json') }}
+      - name: Install dependencies with npm
+        run: npm install
+        working-directory: integration/typescript_tests
       - name: Test
         run: go test -v ./... -tags=integration
