@@ -22,5 +22,15 @@ jobs:
           components: rustfmt, clippy
       - name: Add wasm32-unknown-unknown target
         run: rustup target add wasm32-unknown-unknown
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+          registry-url: "https://registry.npmjs.org"
+      - name: Cache the dependency directories
+        uses: actions/cache@v3
+        with:
+          path: integration/typescript_tests/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('integration/typescript_tests/*.json') }}
       - name: Test
         run: go test -v ./... -tags=integration
