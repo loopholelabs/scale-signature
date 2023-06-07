@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@loopholelabs/polyglot-ts": "^1.0.0",
+    "@loopholelabs/polyglot-ts": "^1.0.1",
     "@types/jest": "^29.5.2",
     "jest": "^29.5.0",
     "ts-jest": "^29.1.0",

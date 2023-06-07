@@ -281,4 +281,195 @@ test('test-output', () => {
 test('test-input', () => {
     const emptyModelData = fs.readFileSync("../binaries/empty_model.bin")
     const emptyModel = generated.EmptyModel.decode(new polyglot.Decoder(emptyModelData));
+    expect(emptyModel).not.toBeNull();
+    expect(emptyModel).not.toBeUndefined();
+
+    const emptyModelWithDescriptionData = fs.readFileSync("../binaries/empty_model_with_description.bin")
+    const emptyModelWithDescription = generated.EmptyModelWithDescription.decode(new polyglot.Decoder(emptyModelWithDescriptionData));
+    expect(emptyModelWithDescription).not.toBeNull();
+    expect(emptyModelWithDescription).not.toBeUndefined();
+
+    const modelWithSingleStringFieldData = fs.readFileSync("../binaries/model_with_single_string_field.bin")
+    const modelWithSingleStringField = generated.ModelWithSingleStringField.decode(new polyglot.Decoder(modelWithSingleStringFieldData));
+    expect(modelWithSingleStringField).not.toBeNull();
+    expect(modelWithSingleStringField).not.toBeUndefined();
+    expect(modelWithSingleStringField?.stringField).toEqual("hello world");
+
+    const modelWithSingleStringFieldAndDescriptionData = fs.readFileSync("../binaries/model_with_single_string_field_and_description.bin")
+    const modelWithSingleStringFieldAndDescription = generated.ModelWithSingleStringFieldAndDescription.decode(new polyglot.Decoder(modelWithSingleStringFieldAndDescriptionData));
+    expect(modelWithSingleStringFieldAndDescription).not.toBeNull();
+    expect(modelWithSingleStringFieldAndDescription).not.toBeUndefined();
+    expect(modelWithSingleStringFieldAndDescription?.stringField).toEqual("hello world");
+
+    const modelWithSingleInt32FieldData = fs.readFileSync("../binaries/model_with_single_int32_field.bin")
+    const modelWithSingleInt32Field = generated.ModelWithSingleInt32Field.decode(new polyglot.Decoder(modelWithSingleInt32FieldData));
+    expect(modelWithSingleInt32Field).not.toBeNull();
+    expect(modelWithSingleInt32Field).not.toBeUndefined();
+    expect(modelWithSingleInt32Field?.int32Field).toEqual(42);
+
+    const modelWithSingleInt32FieldAndDescriptionData = fs.readFileSync("../binaries/model_with_single_int32_field_and_description.bin")
+    const modelWithSingleInt32FieldAndDescription = generated.ModelWithSingleInt32FieldAndDescription.decode(new polyglot.Decoder(modelWithSingleInt32FieldAndDescriptionData));
+    expect(modelWithSingleInt32FieldAndDescription).not.toBeNull();
+    expect(modelWithSingleInt32FieldAndDescription).not.toBeUndefined();
+    expect(modelWithSingleInt32FieldAndDescription?.int32Field).toEqual(42);
+
+    const modelWithMultipleFieldsData = fs.readFileSync("../binaries/model_with_multiple_fields.bin")
+    const modelWithMultipleFields = generated.ModelWithMultipleFields.decode(new polyglot.Decoder(modelWithMultipleFieldsData));
+    expect(modelWithMultipleFields).not.toBeNull();
+    expect(modelWithMultipleFields).not.toBeUndefined();
+    expect(modelWithMultipleFields?.stringField).toEqual("hello world");
+    expect(modelWithMultipleFields?.int32Field).toEqual(42);
+
+    const modelWithMultipleFieldsAndDescriptionData = fs.readFileSync("../binaries/model_with_multiple_fields_and_description.bin")
+    const modelWithMultipleFieldsAndDescription = generated.ModelWithMultipleFieldsAndDescription.decode(new polyglot.Decoder(modelWithMultipleFieldsAndDescriptionData));
+    expect(modelWithMultipleFieldsAndDescription).not.toBeNull();
+    expect(modelWithMultipleFieldsAndDescription).not.toBeUndefined();
+    expect(modelWithMultipleFieldsAndDescription?.stringField).toEqual("hello world");
+    expect(modelWithMultipleFieldsAndDescription?.int32Field).toEqual(42);
+
+    const modelWithEnumData = fs.readFileSync("../binaries/model_with_enum.bin")
+    const modelWithEnum = generated.ModelWithEnum.decode(new polyglot.Decoder(modelWithEnumData));
+    expect(modelWithEnum).not.toBeNull();
+    expect(modelWithEnum).not.toBeUndefined();
+    expect(modelWithEnum?.enumField).toEqual(generated.GenericEnum.SecondValue);
+
+    const modelWithEnumAndDescriptionData = fs.readFileSync("../binaries/model_with_enum_and_description.bin")
+    const modelWithEnumAndDescription = generated.ModelWithEnumAndDescription.decode(new polyglot.Decoder(modelWithEnumAndDescriptionData));
+    expect(modelWithEnumAndDescription).not.toBeNull();
+    expect(modelWithEnumAndDescription).not.toBeUndefined();
+    expect(modelWithEnumAndDescription?.enumField).toEqual(generated.GenericEnum.SecondValue);
+
+    const modelWithEnumAccessorData = fs.readFileSync("../binaries/model_with_enum_accessor.bin")
+    const modelWithEnumAccessor = generated.ModelWithEnumAccessor.decode(new polyglot.Decoder(modelWithEnumAccessorData));
+    expect(modelWithEnumAccessor).not.toBeNull();
+    expect(modelWithEnumAccessor).not.toBeUndefined();
+    expect(modelWithEnumAccessor?.enumField).toEqual(generated.GenericEnum.SecondValue);
+
+    const modelWithEnumAccessorAndDescriptionData = fs.readFileSync("../binaries/model_with_enum_accessor_and_description.bin")
+    const modelWithEnumAccessorAndDescription = generated.ModelWithEnumAccessorAndDescription.decode(new polyglot.Decoder(modelWithEnumAccessorAndDescriptionData));
+    expect(modelWithEnumAccessorAndDescription).not.toBeNull();
+    expect(modelWithEnumAccessorAndDescription).not.toBeUndefined();
+    expect(modelWithEnumAccessorAndDescription?.enumField).toEqual(generated.GenericEnum.SecondValue);
+
+    const modelWithMultipleFieldsAccessorData = fs.readFileSync("../binaries/model_with_multiple_fields_accessor.bin")
+    const modelWithMultipleFieldsAccessor = generated.ModelWithMultipleFieldsAccessor.decode(new polyglot.Decoder(modelWithMultipleFieldsAccessorData));
+    expect(modelWithMultipleFieldsAccessor).not.toBeNull();
+    expect(modelWithMultipleFieldsAccessor).not.toBeUndefined();
+    expect(modelWithMultipleFieldsAccessor?.stringField).toEqual("HELLO");
+    expect(modelWithMultipleFieldsAccessor?.int32Field).toEqual(42);
+
+    const modelWithMultipleFieldsAccessorAndDescriptionData = fs.readFileSync("../binaries/model_with_multiple_fields_accessor_and_description.bin")
+    const modelWithMultipleFieldsAccessorAndDescription = generated.ModelWithMultipleFieldsAccessorAndDescription.decode(new polyglot.Decoder(modelWithMultipleFieldsAccessorAndDescriptionData));
+    expect(modelWithMultipleFieldsAccessorAndDescription).not.toBeNull();
+    expect(modelWithMultipleFieldsAccessorAndDescription).not.toBeUndefined();
+    expect(modelWithMultipleFieldsAccessorAndDescription?.stringField).toEqual("hello world");
+    expect(modelWithMultipleFieldsAccessorAndDescription?.int32Field).toEqual(42);
+
+    const modelWithEmbeddedModelsData = fs.readFileSync("../binaries/model_with_embedded_models.bin")
+    const modelWithEmbeddedModels = generated.ModelWithEmbeddedModels.decode(new polyglot.Decoder(modelWithEmbeddedModelsData));
+    expect(modelWithEmbeddedModels).not.toBeNull();
+    expect(modelWithEmbeddedModels).not.toBeUndefined();
+    expect(modelWithEmbeddedModels?.embeddedEmptyModel).not.toBeNull();
+    expect(modelWithEmbeddedModels?.embeddedEmptyModel).not.toBeUndefined();
+    expect(modelWithEmbeddedModels?.embeddedModelArrayWithMultipleFieldsAccessor).toHaveLength(1);
+    expect(modelWithEmbeddedModels?.embeddedModelArrayWithMultipleFieldsAccessor[0]?.int32Field).toEqual(42);
+    expect(modelWithEmbeddedModels?.embeddedModelArrayWithMultipleFieldsAccessor[0]?.stringField).toEqual("HELLO");
+
+    const modelWithEmbeddedModelsAndDescriptionData = fs.readFileSync("../binaries/model_with_embedded_models_and_description.bin")
+    const modelWithEmbeddedModelsAndDescription = generated.ModelWithEmbeddedModelsAndDescription.decode(new polyglot.Decoder(modelWithEmbeddedModelsAndDescriptionData));
+    expect(modelWithEmbeddedModelsAndDescription).not.toBeNull();
+    expect(modelWithEmbeddedModelsAndDescription).not.toBeUndefined();
+    expect(modelWithEmbeddedModelsAndDescription?.embeddedEmptyModel).not.toBeNull();
+    expect(modelWithEmbeddedModelsAndDescription?.embeddedEmptyModel).not.toBeUndefined();
+    expect(modelWithEmbeddedModelsAndDescription?.embeddedModelArrayWithMultipleFieldsAccessor).toHaveLength(1);
+    expect(modelWithEmbeddedModelsAndDescription?.embeddedModelArrayWithMultipleFieldsAccessor[0]?.int32Field).toEqual(42);
+    expect(modelWithEmbeddedModelsAndDescription?.embeddedModelArrayWithMultipleFieldsAccessor[0]?.stringField).toEqual("HELLO");
+
+    const modelWithEmbeddedModelsAccessorData = fs.readFileSync("../binaries/model_with_embedded_models_accessor.bin")
+    const modelWithEmbeddedModelsAccessor = generated.ModelWithEmbeddedModelsAccessor.decode(new polyglot.Decoder(modelWithEmbeddedModelsAccessorData));
+    expect(modelWithEmbeddedModelsAccessor).not.toBeNull();
+    expect(modelWithEmbeddedModelsAccessor).not.toBeUndefined();
+    expect(modelWithEmbeddedModelsAccessor?.embeddedEmptyModel).not.toBeNull();
+    expect(modelWithEmbeddedModelsAccessor?.embeddedEmptyModel).not.toBeUndefined();
+    expect(modelWithEmbeddedModelsAccessor?.embeddedModelArrayWithMultipleFieldsAccessor).toHaveLength(1);
+    expect(modelWithEmbeddedModelsAccessor?.embeddedModelArrayWithMultipleFieldsAccessor[0]?.int32Field).toEqual(42);
+    expect(modelWithEmbeddedModelsAccessor?.embeddedModelArrayWithMultipleFieldsAccessor[0]?.stringField).toEqual("HELLO");
+
+    const modelWithEmbeddedModelsAccessorAndDescriptionData = fs.readFileSync("../binaries/model_with_embedded_models_accessor_and_description.bin")
+    const modelWithEmbeddedModelsAccessorAndDescription = generated.ModelWithEmbeddedModelsAccessorAndDescription.decode(new polyglot.Decoder(modelWithEmbeddedModelsAccessorAndDescriptionData));
+    expect(modelWithEmbeddedModelsAccessorAndDescription).not.toBeNull();
+    expect(modelWithEmbeddedModelsAccessorAndDescription).not.toBeUndefined();
+    expect(modelWithEmbeddedModelsAccessorAndDescription?.embeddedEmptyModel).not.toBeNull();
+    expect(modelWithEmbeddedModelsAccessorAndDescription?.embeddedEmptyModel).not.toBeUndefined();
+    expect(modelWithEmbeddedModelsAccessorAndDescription?.embeddedModelArrayWithMultipleFieldsAccessor).toHaveLength(1);
+    expect(modelWithEmbeddedModelsAccessorAndDescription?.embeddedModelArrayWithMultipleFieldsAccessor[0]?.int32Field).toEqual(42);
+    expect(modelWithEmbeddedModelsAccessorAndDescription?.embeddedModelArrayWithMultipleFieldsAccessor[0]?.stringField).toEqual("HELLO");
+
+    const modelWithAllFieldTypesData = fs.readFileSync("../binaries/model_with_all_field_types.bin")
+    const modelWithAllFieldTypes = generated.ModelWithAllFieldTypes.decode(new polyglot.Decoder(modelWithAllFieldTypesData));
+    expect(modelWithAllFieldTypes).not.toBeNull();
+    expect(modelWithAllFieldTypes).not.toBeUndefined();
+    expect(modelWithAllFieldTypes?.stringField).toEqual("hello world");
+    expect(modelWithAllFieldTypes?.stringArrayField).toHaveLength(2);
+    expect(modelWithAllFieldTypes?.stringArrayField[0]).toEqual("hello");
+    expect(modelWithAllFieldTypes?.stringArrayField[1]).toEqual("world");
+    expect(modelWithAllFieldTypes?.stringMapField.get("hello")).toEqual("world");
+    expect(modelWithAllFieldTypes?.stringMapFieldEmbedded.get("hello")).toEqual(emptyModel);
+
+    expect(modelWithAllFieldTypes?.int32Field).toEqual(42);
+    expect(modelWithAllFieldTypes?.int32ArrayField).toHaveLength(2);
+    expect(modelWithAllFieldTypes?.int32ArrayField[0]).toEqual(42);
+    expect(modelWithAllFieldTypes?.int32ArrayField[1]).toEqual(84);
+    expect(modelWithAllFieldTypes?.int32MapField.get(42)).toEqual(84);
+    expect(modelWithAllFieldTypes?.int32MapFieldEmbedded.get(42)).toEqual(emptyModel);
+
+    expect(modelWithAllFieldTypes?.int64Field).toEqual(BigInt(100));
+    expect(modelWithAllFieldTypes?.int64ArrayField).toHaveLength(2);
+    expect(modelWithAllFieldTypes?.int64ArrayField[0]).toEqual(BigInt(100));
+    expect(modelWithAllFieldTypes?.int64ArrayField[1]).toEqual(BigInt(200));
+    expect(modelWithAllFieldTypes?.int64MapField.get(BigInt(100))).toEqual(BigInt(200));
+    expect(modelWithAllFieldTypes?.int64MapFieldEmbedded.get(BigInt(100))).toEqual(emptyModel);
+
+    expect(modelWithAllFieldTypes?.uint32Field).toEqual(42);
+    expect(modelWithAllFieldTypes?.uint32ArrayField).toHaveLength(2);
+    expect(modelWithAllFieldTypes?.uint32ArrayField[0]).toEqual(42);
+    expect(modelWithAllFieldTypes?.uint32ArrayField[1]).toEqual(84);
+    expect(modelWithAllFieldTypes?.uint32MapField.get(42)).toEqual(84);
+    expect(modelWithAllFieldTypes?.uint32MapFieldEmbedded.get(42)).toEqual(emptyModel);
+
+    expect(modelWithAllFieldTypes?.uint64Field).toEqual(BigInt(100));
+    expect(modelWithAllFieldTypes?.uint64ArrayField).toHaveLength(2);
+    expect(modelWithAllFieldTypes?.uint64ArrayField[0]).toEqual(BigInt(100));
+    expect(modelWithAllFieldTypes?.uint64ArrayField[1]).toEqual(BigInt(200));
+    expect(modelWithAllFieldTypes?.uint64MapField.get(BigInt(100))).toEqual(BigInt(200));
+    expect(modelWithAllFieldTypes?.uint64MapFieldEmbedded.get(BigInt(100))).toEqual(emptyModel);
+
+    expect(modelWithAllFieldTypes?.float32Field).toEqual(42.0);
+    expect(modelWithAllFieldTypes?.float32ArrayField).toHaveLength(2);
+    expect(modelWithAllFieldTypes?.float32ArrayField[0]).toEqual(42.0);
+    expect(modelWithAllFieldTypes?.float32ArrayField[1]).toEqual(84.0);
+
+    expect(modelWithAllFieldTypes?.float64Field).toEqual(100.0);
+    expect(modelWithAllFieldTypes?.float64ArrayField).toHaveLength(2);
+    expect(modelWithAllFieldTypes?.float64ArrayField[0]).toEqual(100.0);
+    expect(modelWithAllFieldTypes?.float64ArrayField[1]).toEqual(200.0);
+
+    expect(modelWithAllFieldTypes?.boolField).toEqual(false);
+    expect(modelWithAllFieldTypes?.boolArrayField).toHaveLength(2);
+    expect(modelWithAllFieldTypes?.boolArrayField[0]).toEqual(true);
+    expect(modelWithAllFieldTypes?.boolArrayField[1]).toEqual(false);
+
+    expect(modelWithAllFieldTypes?.bytesField).toEqual(Buffer.from([42, 84]));
+    expect(modelWithAllFieldTypes?.bytesArrayField).toHaveLength(2);
+    expect(modelWithAllFieldTypes?.bytesArrayField[0]).toEqual(Buffer.from([42, 84]));
+    expect(modelWithAllFieldTypes?.bytesArrayField[1]).toEqual(Buffer.from([84, 42]));
+
+    expect(modelWithAllFieldTypes?.enumField).toEqual(generated.GenericEnum.SecondValue);
+    expect(modelWithAllFieldTypes?.enumArrayField).toHaveLength(2);
+    expect(modelWithAllFieldTypes?.enumArrayField[0]).toEqual(generated.GenericEnum.FirstValue);
+    expect(modelWithAllFieldTypes?.enumArrayField[1]).toEqual(generated.GenericEnum.SecondValue);
+    expect(modelWithAllFieldTypes?.enumMapField.get(generated.GenericEnum.FirstValue)).toEqual("hello world");
+    expect(modelWithAllFieldTypes?.enumMapFieldEmbedded.get(generated.GenericEnum.FirstValue)).toEqual(emptyModel);
+
+    expect(modelWithAllFieldTypes?.modelArrayField).toHaveLength(2);
 });
