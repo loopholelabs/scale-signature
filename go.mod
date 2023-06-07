@@ -6,7 +6,7 @@ require (
 	github.com/hashicorp/hcl/v2 v2.16.1
 	github.com/loopholelabs/polyglot-go v0.5.1
 	github.com/loopholelabs/polyglot-rs v0.6.2
-	github.com/loopholelabs/scalefile v0.1.7
+	github.com/loopholelabs/scalefile v0.1.9
 	github.com/stretchr/testify v1.8.1
 	github.com/yalue/merged_fs v1.2.2
 	golang.org/x/text v0.3.8
