@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "test": "jest"
+    "test": "tsc && jest index.test.ts"
   },
   "author": "",
   "license": "ISC",
