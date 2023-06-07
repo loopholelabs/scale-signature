@@ -1,5 +1,5 @@
 import * as generated from "./generated";
-import * as polyglot from "@loopholelabs/polyglot-ts";
+import * as polyglot from "@loopholelabs/polyglot";
 import * as fs from 'fs';
 
 test('test-output', () => {

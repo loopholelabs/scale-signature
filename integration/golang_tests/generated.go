@@ -7,7 +7,7 @@ package golang_tests
 import (
 	"errors"
 	"fmt"
-	"github.com/loopholelabs/polyglot-go"
+	"github.com/loopholelabs/polyglot"
 	"regexp"
 	"strings"
 )

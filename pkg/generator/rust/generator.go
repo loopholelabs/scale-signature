@@ -18,7 +18,7 @@ import (
 	"os/exec"
 	"text/template"
 
-	rsUtils "github.com/loopholelabs/polyglot-rs/pkg/utils"
+	polyglotUtils "github.com/loopholelabs/polyglot/utils"
 	"github.com/loopholelabs/scale-signature/pkg/generator/templates"
 	"github.com/loopholelabs/scale-signature/pkg/generator/utils"
 	"github.com/loopholelabs/scale-signature/pkg/schema"
@@ -78,7 +78,7 @@ func templateFunctions() template.FuncMap {
 		"PolyglotPrimitiveDecode": polyglotPrimitiveDecode,
 		"Deref":                   func(i *bool) bool { return *i },
 		"LowerFirst":              func(s string) string { return string(s[0]+32) + s[1:] },
-		"SnakeCase":               rsUtils.SnakeCase,
+		"SnakeCase":               polyglotUtils.SnakeCase,
 		"Params":                  utils.Params,
 	}
 }

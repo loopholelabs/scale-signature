@@ -2,7 +2,7 @@
 // schema: MasterSchema:MasterSchemaTag
 // output: types.ts
 
-import { Encoder, Decoder, Kind } from "@loopholelabs/polyglot-ts"
+import { Encoder, Decoder, Kind } from "@loopholelabs/polyglot"
 
 export enum GenericEnum {
   FirstValue = 0,

@@ -2,7 +2,7 @@
 // schema: {{ .schema.Name }}:{{ .schema.Tag }}
 // output: types.ts
 
-import { Encoder, Decoder, Kind } from "@loopholelabs/polyglot-ts"
+import { Encoder, Decoder, Kind } from "@loopholelabs/polyglot"
 
 {{ range .schema.Enums }}
     {{ template "ts_enums_definition" . }}

@@ -20,9 +20,9 @@ package generator
 
 import (
 	"fmt"
-	"github.com/loopholelabs/polyglot-go/pkg/generator"
-	"github.com/loopholelabs/polyglot-go/pkg/utils"
-	polyglotTemplates "github.com/loopholelabs/polyglot-go/templates"
+	"github.com/loopholelabs/polyglot/generator/golang"
+	polyglotTemplates "github.com/loopholelabs/polyglot/generator/golang/templates"
+	"github.com/loopholelabs/polyglot/utils"
 	"github.com/loopholelabs/scale-signature/templates"
 	"github.com/loopholelabs/scale-signature/templates/override"
 	"github.com/loopholelabs/scalefile"
@@ -54,13 +54,13 @@ func New() (g *Generator) {
 		"Counter":            utils.Counter,
 		"FirstLowerCase":     utils.FirstLowerCase,
 		"FirstLowerCaseName": utils.FirstLowerCaseName,
-		"FindValue":          generator.FindValue,
-		"GetKind":            generator.GetKind,
-		"GetLUTEncoder":      generator.GetLUTEncoder,
-		"GetLUTDecoder":      generator.GetLUTDecoder,
-		"GetEncodingFields":  generator.GetEncodingFields,
-		"GetDecodingFields":  generator.GetDecodingFields,
-		"GetKindLUT":         generator.GetKindLUT,
+		"FindValue":          golang.FindValue,
+		"GetKind":            golang.GetKind,
+		"GetLUTEncoder":      golang.GetLUTEncoder,
+		"GetLUTDecoder":      golang.GetLUTDecoder,
+		"GetEncodingFields":  golang.GetEncodingFields,
+		"GetDecodingFields":  golang.GetDecodingFields,
+		"GetKindLUT":         golang.GetKindLUT,
 		"CustomFields": func() string {
 			return g.CustomFields()
 		},
@@ -143,7 +143,7 @@ func (g *Generator) ExecutePolyglotTemplate(writer io.Writer, protoFile *protoge
 		"pluginVersion":   version,
 		"sourcePath":      protoFile.Desc.Path(),
 		"package":         packageName,
-		"requiredImports": generator.RequiredImports,
+		"requiredImports": golang.RequiredImports,
 		"enums":           protoFile.Desc.Enums(),
 		"messages":        protoFile.Desc.Messages(),
 		"header":          header,

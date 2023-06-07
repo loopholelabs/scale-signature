@@ -3,7 +3,7 @@
 package golang_tests
 
 import (
-	"github.com/loopholelabs/polyglot-go"
+	"github.com/loopholelabs/polyglot"
 	"github.com/stretchr/testify/require"
 	"os"
 	"strings"
