@@ -48,10 +48,16 @@ var (
 
 type Schema struct {
 	Version string         `hcl:"version,attr"`
-	Name    string         `hcl:"name,attr"`
-	Tag     string         `hcl:"tag,attr"`
+	Config  ConfigSchema   `hcl:"config,block"`
 	Enums   []*EnumSchema  `hcl:"enum,block"`
 	Models  []*ModelSchema `hcl:"model,block"`
+}
+
+type ConfigSchema struct {
+	Name   string `hcl:"name,attr"`
+	Tag    string `hcl:"tag,attr"`
+	Input  string `hcl:"input,attr"`
+	Output string `hcl:"output,attr"`
 }
 
 func ReadSchema(path string) (*Schema, error) {
@@ -81,11 +87,11 @@ func (s *Schema) Decode(data []byte) error {
 func (s *Schema) Validate() error {
 	switch s.Version {
 	case V1AlphaVersion:
-		if !ValidLabel.MatchString(s.Name) {
+		if !ValidLabel.MatchString(s.Config.Name) {
 			return ErrInvalidName
 		}
 
-		if InvalidString.MatchString(s.Tag) {
+		if InvalidString.MatchString(s.Config.Tag) {
 			return ErrInvalidTag
 		}
 
@@ -194,6 +200,16 @@ func (s *Schema) Validate() error {
 					}
 				}
 			}
+		}
+
+		// Ensure that the config.input is a valid model
+		if _, ok := knownModels[s.Config.Input]; !ok {
+			return fmt.Errorf("unknown config.input: %s", s.Config.Input)
+		}
+
+		// Ensure that the config.output is a valid model
+		if _, ok := knownModels[s.Config.Output]; !ok {
+			return fmt.Errorf("unknown config.output: %s", s.Config.Output)
 		}
 
 		return nil
@@ -360,8 +376,13 @@ func ValidPrimitiveType(t string) bool {
 
 const MasterTestingSchema = `
 version = "v1alpha"
-name = "MasterSchema"
-tag = "MasterSchemaTag"
+
+config {
+	name = "MasterSchema"
+	tag = "MasterSchemaTag"
+	input = "EmptyModel"
+	output = "ModelWithAllFieldTypes"
+}
 
 model EmptyModel {}
 
