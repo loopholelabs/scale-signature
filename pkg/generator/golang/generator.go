@@ -34,7 +34,7 @@ type Generator struct {
 
 // New creates a new go generator
 func New() (*Generator, error) {
-	templ, err := template.New("").Funcs(templateFunctions()).ParseFS(templates.FS, "*go.templ")
+	templ, err := template.New("").Funcs(templateFunctions()).ParseFS(templates.FS, "*_go.templ")
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +51,7 @@ func (g *Generator) Generate(schema *schema.Schema, packageName string, version 
 	}
 
 	buf := new(bytes.Buffer)
-	err := g.templ.ExecuteTemplate(buf, "types.go.templ", map[string]any{
+	err := g.templ.ExecuteTemplate(buf, "types_go.templ", map[string]any{
 		"schema":  schema,
 		"version": version,
 		"package": packageName,
@@ -59,6 +59,7 @@ func (g *Generator) Generate(schema *schema.Schema, packageName string, version 
 	if err != nil {
 		return nil, err
 	}
+
 	return format.Source(buf.Bytes())
 }
 

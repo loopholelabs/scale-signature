@@ -56,7 +56,7 @@ type Schema struct {
 type ConfigSchema struct {
 	Name   string `hcl:"name,attr"`
 	Tag    string `hcl:"tag,attr"`
-	Input  string `hcl:"input,attr"`
+	Input  string `hcl:"input,optional"`
 	Output string `hcl:"output,attr"`
 }
 
@@ -202,9 +202,10 @@ func (s *Schema) Validate() error {
 			}
 		}
 
-		// Ensure that the config.input is a valid model
-		if _, ok := knownModels[s.Config.Input]; !ok {
-			return fmt.Errorf("unknown config.input: %s", s.Config.Input)
+		if s.Config.Input != "" {
+			if _, ok := knownModels[s.Config.Input]; !ok {
+				return fmt.Errorf("unknown config.input: %s", s.Config.Input)
+			}
 		}
 
 		// Ensure that the config.output is a valid model

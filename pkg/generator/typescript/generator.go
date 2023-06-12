@@ -15,7 +15,6 @@ package typescript
 
 import (
 	"bytes"
-	"os"
 	"strings"
 	"text/template"
 
@@ -35,7 +34,7 @@ type Generator struct {
 
 // New creates a new typescript generator
 func New() (*Generator, error) {
-	templ, err := template.New("").Funcs(templateFunctions()).ParseFS(templates.FS, "*ts.templ")
+	templ, err := template.New("").Funcs(templateFunctions()).ParseFS(templates.FS, "*_ts.templ")
 	if err != nil {
 		return nil, err
 	}
@@ -52,7 +51,7 @@ func (g *Generator) Generate(schema *schema.Schema, packageName string, version 
 	}
 
 	buf := new(bytes.Buffer)
-	err := g.templ.ExecuteTemplate(buf, "types.ts.templ", map[string]any{
+	err := g.templ.ExecuteTemplate(buf, "types_ts.templ", map[string]any{
 		"schema":  schema,
 		"version": version,
 		"package": packageName,
@@ -60,7 +59,6 @@ func (g *Generator) Generate(schema *schema.Schema, packageName string, version 
 	if err != nil {
 		return nil, err
 	}
-	os.WriteFile("/Users/alex/Developer/scale-signature-http/http_signature.ts", buf.Bytes(), 0644)
 
 	return []byte(formatTS(buf.String())), nil
 }
