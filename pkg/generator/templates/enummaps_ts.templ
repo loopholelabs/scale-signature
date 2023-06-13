@@ -6,7 +6,7 @@
         {{- end }}
 
         {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
-            #{{ CamelCase .Name }}: Map<{{ .Reference }}, {{ .Value }} | undefined>;
+            #{{ CamelCase .Name }}: Map<{{ .Reference }}, {{ .Value }}>;
         {{- end }}
 
         {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
@@ -14,7 +14,7 @@
         {{- end }}
 
         {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
-            {{ CamelCase .Name }}: Map<{{ .Reference }}, {{ .Value }} | undefined>;
+            {{ CamelCase .Name }}: Map<{{ .Reference }}, {{ .Value }}>;
         {{- end }}
     {{ end }}
 {{ end }}
@@ -27,7 +27,7 @@
         {{- end }}
 
         {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
-            this.#{{ CamelCase .Name }} = new Map<{{ .Reference }}, {{ .Value }} | undefined>();
+            this.#{{ CamelCase .Name }} = new Map<{{ .Reference }}, {{ .Value }}>();
         {{- end }}
 
         {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
@@ -35,7 +35,7 @@
         {{- end }}
 
         {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
-            this.{{ CamelCase .Name }} = new Map<{{ .Reference }}, {{ .Value }} | undefined>();
+            this.{{ CamelCase .Name }} = new Map<{{ .Reference }}, {{ .Value }}>();
         {{- end }}
     {{ end }}
 {{ end }}

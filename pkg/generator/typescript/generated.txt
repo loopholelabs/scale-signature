@@ -636,7 +636,7 @@ export class ModelWithMultipleFieldsAccessorAndDescription {
 export class ModelWithEmbeddedModels {
   embeddedEmptyModel: EmptyModel | undefined;
 
-  embeddedModelArrayWithMultipleFieldsAccessor: Array<ModelWithMultipleFieldsAccessor | undefined>;
+  embeddedModelArrayWithMultipleFieldsAccessor: Array<ModelWithMultipleFieldsAccessor>;
 
   /**
   * @throws {Error}
@@ -647,7 +647,10 @@ export class ModelWithEmbeddedModels {
       const embeddedModelArrayWithMultipleFieldsAccessorSize = decoder.array(Kind.Any);
       this.embeddedModelArrayWithMultipleFieldsAccessor = new Array(embeddedModelArrayWithMultipleFieldsAccessorSize);
       for (let i = 0; i < embeddedModelArrayWithMultipleFieldsAccessorSize; i += 1) {
-        this.embeddedModelArrayWithMultipleFieldsAccessor[i] = ModelWithMultipleFieldsAccessor.decode(decoder);
+        const x = ModelWithMultipleFieldsAccessor.decode(decoder);
+        if (x !== undefined) {
+          this.embeddedModelArrayWithMultipleFieldsAccessor[i] = x;
+        }
       }
     } else {
       this.embeddedEmptyModel = new EmptyModel();
@@ -668,11 +671,7 @@ export class ModelWithEmbeddedModels {
     encoder.array(embeddedModelArrayWithMultipleFieldsAccessorLength, Kind.Any);
     for (let i = 0; i < embeddedModelArrayWithMultipleFieldsAccessorLength; i += 1) {
       let el = this.embeddedModelArrayWithMultipleFieldsAccessor[i];
-      if (el === undefined) {
-        encoder.null();
-      } else {
-        el.encode(encoder);
-      }
+      el.encode(encoder);
     }
   }
 
@@ -698,7 +697,7 @@ export class ModelWithEmbeddedModels {
 export class ModelWithEmbeddedModelsAndDescription {
   embeddedEmptyModel: EmptyModel | undefined;
 
-  embeddedModelArrayWithMultipleFieldsAccessor: Array<ModelWithMultipleFieldsAccessor | undefined>;
+  embeddedModelArrayWithMultipleFieldsAccessor: Array<ModelWithMultipleFieldsAccessor>;
 
   /**
   * @throws {Error}
@@ -709,7 +708,10 @@ export class ModelWithEmbeddedModelsAndDescription {
       const embeddedModelArrayWithMultipleFieldsAccessorSize = decoder.array(Kind.Any);
       this.embeddedModelArrayWithMultipleFieldsAccessor = new Array(embeddedModelArrayWithMultipleFieldsAccessorSize);
       for (let i = 0; i < embeddedModelArrayWithMultipleFieldsAccessorSize; i += 1) {
-        this.embeddedModelArrayWithMultipleFieldsAccessor[i] = ModelWithMultipleFieldsAccessor.decode(decoder);
+        const x = ModelWithMultipleFieldsAccessor.decode(decoder);
+        if (x !== undefined) {
+          this.embeddedModelArrayWithMultipleFieldsAccessor[i] = x;
+        }
       }
     } else {
       this.embeddedEmptyModel = new EmptyModel();
@@ -730,11 +732,7 @@ export class ModelWithEmbeddedModelsAndDescription {
     encoder.array(embeddedModelArrayWithMultipleFieldsAccessorLength, Kind.Any);
     for (let i = 0; i < embeddedModelArrayWithMultipleFieldsAccessorLength; i += 1) {
       let el = this.embeddedModelArrayWithMultipleFieldsAccessor[i];
-      if (el === undefined) {
-        encoder.null();
-      } else {
-        el.encode(encoder);
-      }
+      el.encode(encoder);
     }
   }
 
@@ -759,7 +757,7 @@ export class ModelWithEmbeddedModelsAndDescription {
 export class ModelWithEmbeddedModelsAccessor {
   #embeddedEmptyModel: EmptyModel | undefined;
 
-  #embeddedModelArrayWithMultipleFieldsAccessor: Array<ModelWithMultipleFieldsAccessor | undefined>;
+  #embeddedModelArrayWithMultipleFieldsAccessor: Array<ModelWithMultipleFieldsAccessor>;
 
   /**
   * @throws {Error}
@@ -770,7 +768,10 @@ export class ModelWithEmbeddedModelsAccessor {
       const embeddedModelArrayWithMultipleFieldsAccessorSize = decoder.array(Kind.Any);
       this.#embeddedModelArrayWithMultipleFieldsAccessor = new Array(embeddedModelArrayWithMultipleFieldsAccessorSize);
       for (let i = 0; i < embeddedModelArrayWithMultipleFieldsAccessorSize; i += 1) {
-        this.#embeddedModelArrayWithMultipleFieldsAccessor[i] = ModelWithMultipleFieldsAccessor.decode(decoder);
+        const x = ModelWithMultipleFieldsAccessor.decode(decoder);
+        if (x !== undefined) {
+          this.#embeddedModelArrayWithMultipleFieldsAccessor[i] = x;
+        }
       }
     } else {
       this.#embeddedEmptyModel = new EmptyModel();
@@ -786,11 +787,11 @@ export class ModelWithEmbeddedModelsAccessor {
     this.#embeddedEmptyModel = val;
   }
 
-  get embeddedModelArrayWithMultipleFieldsAccessor(): Array<ModelWithMultipleFieldsAccessor | undefined> {
+  get embeddedModelArrayWithMultipleFieldsAccessor(): Array<ModelWithMultipleFieldsAccessor> {
     return this.#embeddedModelArrayWithMultipleFieldsAccessor;
   }
 
-  set EmbeddedModelArrayWithMultipleFieldsAccessor(val: Array<ModelWithMultipleFieldsAccessor | undefined>) {
+  set EmbeddedModelArrayWithMultipleFieldsAccessor(val: Array<ModelWithMultipleFieldsAccessor>) {
     this.#embeddedModelArrayWithMultipleFieldsAccessor = val;
   }
 
@@ -807,11 +808,7 @@ export class ModelWithEmbeddedModelsAccessor {
     encoder.array(embeddedModelArrayWithMultipleFieldsAccessorLength, Kind.Any);
     for (let i = 0; i < embeddedModelArrayWithMultipleFieldsAccessorLength; i += 1) {
       let el = this.#embeddedModelArrayWithMultipleFieldsAccessor[i];
-      if (el === undefined) {
-        encoder.null();
-      } else {
-        el.encode(encoder);
-      }
+      el.encode(encoder);
     }
   }
 
@@ -837,7 +834,7 @@ export class ModelWithEmbeddedModelsAccessor {
 export class ModelWithEmbeddedModelsAccessorAndDescription {
   #embeddedEmptyModel: EmptyModel | undefined;
 
-  #embeddedModelArrayWithMultipleFieldsAccessor: Array<ModelWithMultipleFieldsAccessor | undefined>;
+  #embeddedModelArrayWithMultipleFieldsAccessor: Array<ModelWithMultipleFieldsAccessor>;
 
   /**
   * @throws {Error}
@@ -848,7 +845,10 @@ export class ModelWithEmbeddedModelsAccessorAndDescription {
       const embeddedModelArrayWithMultipleFieldsAccessorSize = decoder.array(Kind.Any);
       this.#embeddedModelArrayWithMultipleFieldsAccessor = new Array(embeddedModelArrayWithMultipleFieldsAccessorSize);
       for (let i = 0; i < embeddedModelArrayWithMultipleFieldsAccessorSize; i += 1) {
-        this.#embeddedModelArrayWithMultipleFieldsAccessor[i] = ModelWithMultipleFieldsAccessor.decode(decoder);
+        const x = ModelWithMultipleFieldsAccessor.decode(decoder);
+        if (x !== undefined) {
+          this.#embeddedModelArrayWithMultipleFieldsAccessor[i] = x;
+        }
       }
     } else {
       this.#embeddedEmptyModel = new EmptyModel();
@@ -864,11 +864,11 @@ export class ModelWithEmbeddedModelsAccessorAndDescription {
     this.#embeddedEmptyModel = val;
   }
 
-  get embeddedModelArrayWithMultipleFieldsAccessor(): Array<ModelWithMultipleFieldsAccessor | undefined> {
+  get embeddedModelArrayWithMultipleFieldsAccessor(): Array<ModelWithMultipleFieldsAccessor> {
     return this.#embeddedModelArrayWithMultipleFieldsAccessor;
   }
 
-  set EmbeddedModelArrayWithMultipleFieldsAccessor(val: Array<ModelWithMultipleFieldsAccessor | undefined>) {
+  set EmbeddedModelArrayWithMultipleFieldsAccessor(val: Array<ModelWithMultipleFieldsAccessor>) {
     this.#embeddedModelArrayWithMultipleFieldsAccessor = val;
   }
 
@@ -885,11 +885,7 @@ export class ModelWithEmbeddedModelsAccessorAndDescription {
     encoder.array(embeddedModelArrayWithMultipleFieldsAccessorLength, Kind.Any);
     for (let i = 0; i < embeddedModelArrayWithMultipleFieldsAccessorLength; i += 1) {
       let el = this.#embeddedModelArrayWithMultipleFieldsAccessor[i];
-      if (el === undefined) {
-        encoder.null();
-      } else {
-        el.encode(encoder);
-      }
+      el.encode(encoder);
     }
   }
 
@@ -914,7 +910,7 @@ export class ModelWithEmbeddedModelsAccessorAndDescription {
 export class ModelWithAllFieldTypes {
   modelField: EmptyModel | undefined;
 
-  modelArrayField: Array<EmptyModel | undefined>;
+  modelArrayField: Array<EmptyModel>;
 
   stringField: string;
 
@@ -922,7 +918,7 @@ export class ModelWithAllFieldTypes {
 
   stringMapField: Map<string, string>;
 
-  stringMapFieldEmbedded: Map<string, EmptyModel | undefined>;
+  stringMapFieldEmbedded: Map<string, EmptyModel>;
 
   int32Field: number;
 
@@ -930,7 +926,7 @@ export class ModelWithAllFieldTypes {
 
   int32MapField: Map<number, number>;
 
-  int32MapFieldEmbedded: Map<number, EmptyModel | undefined>;
+  int32MapFieldEmbedded: Map<number, EmptyModel>;
 
   int64Field: bigint;
 
@@ -938,7 +934,7 @@ export class ModelWithAllFieldTypes {
 
   int64MapField: Map<bigint, bigint>;
 
-  int64MapFieldEmbedded: Map<bigint, EmptyModel | undefined>;
+  int64MapFieldEmbedded: Map<bigint, EmptyModel>;
 
   uint32Field: number;
 
@@ -946,7 +942,7 @@ export class ModelWithAllFieldTypes {
 
   uint32MapField: Map<number, number>;
 
-  uint32MapFieldEmbedded: Map<number, EmptyModel | undefined>;
+  uint32MapFieldEmbedded: Map<number, EmptyModel>;
 
   uint64Field: bigint;
 
@@ -954,7 +950,7 @@ export class ModelWithAllFieldTypes {
 
   uint64MapField: Map<bigint, bigint>;
 
-  uint64MapFieldEmbedded: Map<bigint, EmptyModel | undefined>;
+  uint64MapFieldEmbedded: Map<bigint, EmptyModel>;
 
   float32Field: number;
 
@@ -970,7 +966,7 @@ export class ModelWithAllFieldTypes {
 
   enumMapField: Map<GenericEnum, string>;
 
-  enumMapFieldEmbedded: Map<GenericEnum, EmptyModel | undefined>;
+  enumMapFieldEmbedded: Map<GenericEnum, EmptyModel>;
 
   bytesField: Uint8Array;
 
@@ -989,7 +985,10 @@ export class ModelWithAllFieldTypes {
       const modelArrayFieldSize = decoder.array(Kind.Any);
       this.modelArrayField = new Array(modelArrayFieldSize);
       for (let i = 0; i < modelArrayFieldSize; i += 1) {
-        this.modelArrayField[i] = EmptyModel.decode(decoder);
+        const x = EmptyModel.decode(decoder);
+        if (x !== undefined) {
+          this.modelArrayField[i] = x;
+        }
       }
       this.stringField = decoder.string();
       const stringArrayFieldSize = decoder.array(Kind.String);
@@ -1009,7 +1008,9 @@ export class ModelWithAllFieldTypes {
       for (let i = 0; i < stringMapFieldEmbeddedSize; i++) {
         let key = decoder.string();
         let val = EmptyModel.decode(decoder);
-        this.stringMapFieldEmbedded.set(key, val);
+        if (val !== undefined) {
+          this.stringMapFieldEmbedded.set(key, val);
+        }
       }
       this.int32Field = decoder.int32();
       const int32ArrayFieldSize = decoder.array(Kind.Int32);
@@ -1029,7 +1030,9 @@ export class ModelWithAllFieldTypes {
       for (let i = 0; i < int32MapFieldEmbeddedSize; i++) {
         let key = decoder.int32();
         let val = EmptyModel.decode(decoder);
-        this.int32MapFieldEmbedded.set(key, val);
+        if (val !== undefined) {
+          this.int32MapFieldEmbedded.set(key, val);
+        }
       }
       this.int64Field = decoder.int64();
       const int64ArrayFieldSize = decoder.array(Kind.Int64);
@@ -1049,7 +1052,9 @@ export class ModelWithAllFieldTypes {
       for (let i = 0; i < int64MapFieldEmbeddedSize; i++) {
         let key = decoder.int64();
         let val = EmptyModel.decode(decoder);
-        this.int64MapFieldEmbedded.set(key, val);
+        if (val !== undefined) {
+          this.int64MapFieldEmbedded.set(key, val);
+        }
       }
       this.uint32Field = decoder.uint32();
       const uint32ArrayFieldSize = decoder.array(Kind.Uint32);
@@ -1069,7 +1074,9 @@ export class ModelWithAllFieldTypes {
       for (let i = 0; i < uint32MapFieldEmbeddedSize; i++) {
         let key = decoder.uint32();
         let val = EmptyModel.decode(decoder);
-        this.uint32MapFieldEmbedded.set(key, val);
+        if (val !== undefined) {
+          this.uint32MapFieldEmbedded.set(key, val);
+        }
       }
       this.uint64Field = decoder.uint64();
       const uint64ArrayFieldSize = decoder.array(Kind.Uint64);
@@ -1089,7 +1096,9 @@ export class ModelWithAllFieldTypes {
       for (let i = 0; i < uint64MapFieldEmbeddedSize; i++) {
         let key = decoder.uint64();
         let val = EmptyModel.decode(decoder);
-        this.uint64MapFieldEmbedded.set(key, val);
+        if (val !== undefined) {
+          this.uint64MapFieldEmbedded.set(key, val);
+        }
       }
       this.float32Field = decoder.float32();
       const float32ArrayFieldSize = decoder.array(Kind.Float32);
@@ -1121,7 +1130,9 @@ export class ModelWithAllFieldTypes {
       for (let i = 0; i < enumMapFieldEmbeddedSize; i++) {
         let key = decoder.uint32();
         let val = EmptyModel.decode(decoder);
-        this.enumMapFieldEmbedded.set(key, val);
+        if (val !== undefined) {
+          this.enumMapFieldEmbedded.set(key, val);
+        }
       }
       this.bytesField = decoder.uint8Array();
       const bytesArrayFieldSize = decoder.array(Kind.Uint8Array);
@@ -1141,23 +1152,23 @@ export class ModelWithAllFieldTypes {
       this.stringField = "DefaultValue";
       this.stringArrayField = [];
       this.stringMapField = new Map<string, string>();
-      this.stringMapFieldEmbedded = new Map<string, EmptyModel | undefined>();
+      this.stringMapFieldEmbedded = new Map<string, EmptyModel>();
       this.int32Field = 32;
       this.int32ArrayField = [];
       this.int32MapField = new Map<number, number>();
-      this.int32MapFieldEmbedded = new Map<number, EmptyModel | undefined>();
+      this.int32MapFieldEmbedded = new Map<number, EmptyModel>();
       this.int64Field = 64n;
       this.int64ArrayField = [];
       this.int64MapField = new Map<bigint, bigint>();
-      this.int64MapFieldEmbedded = new Map<bigint, EmptyModel | undefined>();
+      this.int64MapFieldEmbedded = new Map<bigint, EmptyModel>();
       this.uint32Field = 32;
       this.uint32ArrayField = [];
       this.uint32MapField = new Map<number, number>();
-      this.uint32MapFieldEmbedded = new Map<number, EmptyModel | undefined>();
+      this.uint32MapFieldEmbedded = new Map<number, EmptyModel>();
       this.uint64Field = 64n;
       this.uint64ArrayField = [];
       this.uint64MapField = new Map<bigint, bigint>();
-      this.uint64MapFieldEmbedded = new Map<bigint, EmptyModel | undefined>();
+      this.uint64MapFieldEmbedded = new Map<bigint, EmptyModel>();
       this.float32Field = 32.32;
       this.float32ArrayField = [];
       this.float64Field = 64.64;
@@ -1165,7 +1176,7 @@ export class ModelWithAllFieldTypes {
       this.enumField = GenericEnum.DefaultValue;
       this.enumArrayField = [];
       this.enumMapField = new Map<GenericEnum, string>();
-      this.enumMapFieldEmbedded = new Map<GenericEnum, EmptyModel | undefined>();
+      this.enumMapFieldEmbedded = new Map<GenericEnum, EmptyModel>();
       this.bytesField = new Uint8Array(512);
       this.bytesArrayField = [];
       this.boolField = true;
@@ -1186,11 +1197,7 @@ export class ModelWithAllFieldTypes {
     encoder.array(modelArrayFieldLength, Kind.Any);
     for (let i = 0; i < modelArrayFieldLength; i += 1) {
       let el = this.modelArrayField[i];
-      if (el === undefined) {
-        encoder.null();
-      } else {
-        el.encode(encoder);
-      }
+      el.encode(encoder);
     }
     encoder.string(this.stringField);
     const stringArrayFieldLength = this.stringArrayField.length;
@@ -1206,10 +1213,6 @@ export class ModelWithAllFieldTypes {
     encoder.map(this.stringMapFieldEmbedded.size, Kind.String, Kind.Any);
     this.stringMapFieldEmbedded.forEach((val, key) => {
       encoder.string(key);
-      if (val === undefined) {
-        encoder.null();
-        return;
-      }
       val.encode(encoder);
     });
     encoder.int32(this.int32Field);
@@ -1226,10 +1229,6 @@ export class ModelWithAllFieldTypes {
     encoder.map(this.int32MapFieldEmbedded.size, Kind.Int32, Kind.Any);
     this.int32MapFieldEmbedded.forEach((val, key) => {
       encoder.int32(key);
-      if (val === undefined) {
-        encoder.null();
-        return;
-      }
       val.encode(encoder);
     });
     encoder.int64(this.int64Field);
@@ -1246,10 +1245,6 @@ export class ModelWithAllFieldTypes {
     encoder.map(this.int64MapFieldEmbedded.size, Kind.Int64, Kind.Any);
     this.int64MapFieldEmbedded.forEach((val, key) => {
       encoder.int64(key);
-      if (val === undefined) {
-        encoder.null();
-        return;
-      }
       val.encode(encoder);
     });
     encoder.uint32(this.uint32Field);
@@ -1266,10 +1261,6 @@ export class ModelWithAllFieldTypes {
     encoder.map(this.uint32MapFieldEmbedded.size, Kind.Uint32, Kind.Any);
     this.uint32MapFieldEmbedded.forEach((val, key) => {
       encoder.uint32(key);
-      if (val === undefined) {
-        encoder.null();
-        return;
-      }
       val.encode(encoder);
     });
     encoder.uint64(this.uint64Field);
@@ -1286,10 +1277,6 @@ export class ModelWithAllFieldTypes {
     encoder.map(this.uint64MapFieldEmbedded.size, Kind.Uint64, Kind.Any);
     this.uint64MapFieldEmbedded.forEach((val, key) => {
       encoder.uint64(key);
-      if (val === undefined) {
-        encoder.null();
-        return;
-      }
       val.encode(encoder);
     });
     encoder.float32(this.float32Field);
@@ -1318,10 +1305,6 @@ export class ModelWithAllFieldTypes {
     encoder.map(this.enumMapFieldEmbedded.size, Kind.Uint32, Kind.Any);
     this.enumMapFieldEmbedded.forEach((val, key) => {
       encoder.uint32(key);
-      if (val === undefined) {
-        encoder.null();
-        return;
-      }
       val.encode(encoder);
     });
     encoder.uint8Array(this.bytesField);

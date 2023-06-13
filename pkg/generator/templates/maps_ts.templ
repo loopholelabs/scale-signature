@@ -6,7 +6,7 @@
         {{- end }}
 
         {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
-            #{{ CamelCase .Name }}: Map<{{ Primitive $type }}, {{ .Value }} | undefined>;
+            #{{ CamelCase .Name }}: Map<{{ Primitive $type }}, {{ .Value }}>;
         {{- end }}
 
         {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
@@ -14,7 +14,7 @@
         {{- end }}
 
         {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
-            {{ CamelCase .Name }}: Map<{{ Primitive $type }}, {{ .Value }} | undefined>;
+            {{ CamelCase .Name }}: Map<{{ Primitive $type }}, {{ .Value }}>;
         {{- end }}
     {{ end }}
 {{ end }}
@@ -27,7 +27,7 @@
         {{- end }}
 
         {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
-            this.#{{ CamelCase .Name }} = new Map<{{ Primitive $type }}, {{ .Value }} | undefined>();
+            this.#{{ CamelCase .Name }} = new Map<{{ Primitive $type }}, {{ .Value }}>();
         {{- end }}
 
         {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
@@ -35,7 +35,7 @@
         {{- end }}
 
         {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
-            this.{{ CamelCase .Name }} = new Map<{{ Primitive $type }}, {{ .Value }} | undefined>();
+            this.{{ CamelCase .Name }} = new Map<{{ Primitive $type }}, {{ .Value }}>();
         {{- end }}
     {{ end }}
 {{ end }}
@@ -55,10 +55,6 @@
             encoder.map(this.#{{ CamelCase .Name }}.size, {{ PolyglotPrimitive $type }}, Kind.Any);
             this.#{{ CamelCase .Name }}.forEach((val, key) => {
                 encoder.{{ PolyglotPrimitiveEncode $type }}(key);
-                if (val === undefined) {
-                    encoder.null();
-                    return;
-                }
                 val.encode(encoder);
             });
         {{- end }}
@@ -75,10 +71,6 @@
             encoder.map(this.{{ CamelCase .Name }}.size, {{ PolyglotPrimitive $type }}, Kind.Any);
             this.{{ CamelCase .Name }}.forEach((val, key) => {
                 encoder.{{ PolyglotPrimitiveEncode $type }}(key);
-                if (val === undefined) {
-                    encoder.null();
-                    return;
-                }
                 val.encode(encoder);
             });
         {{- end }}
@@ -104,7 +96,9 @@
             for (let i = 0; i < {{ CamelCase .Name }}Size; i++) {
                 let key = decoder.{{ PolyglotPrimitiveDecode $type }}();
                 let val = {{ .Value }}.decode(decoder);
-                this.#{{ CamelCase .Name }}.set(key, val);
+                if (val !== undefined) {
+                    this.#{{ CamelCase .Name }}.set(key, val);
+                }
             }
         {{- end }}
 
@@ -124,7 +118,9 @@
             for (let i = 0; i < {{ CamelCase .Name }}Size; i++) {
                 let key = decoder.{{ PolyglotPrimitiveDecode $type }}();
                 let val = {{ .Value }}.decode(decoder);
-                this.{{ CamelCase .Name }}.set(key, val);
+                if (val !== undefined) {
+                    this.{{ CamelCase .Name }}.set(key, val);
+                }
             }
         {{- end }}
     {{ end }}
