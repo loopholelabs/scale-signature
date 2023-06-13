@@ -33,19 +33,15 @@ func _Write({{ if .schema.Config.Input }}input *{{ .schema.Config.Input}}, {{ en
 //
 // Users should not use this method.
 func _Read({{ if .schema.Config.Input }}input *{{ .schema.Config.Input}}, {{ end }}output *{{ .schema.Config.Output }}) ({{if .schema.Config.Input}}*{{ .schema.Config.Input}}, {{end}}*{{ .schema.Config.Output }}, error) {
+    var err error
     {{ if .schema.Config.Input }}
-    if input == nil {
-        input = New{{ .schema.Config.Input }}()
-    }
-    err := input.Decode(readBuffer)
+    input, err = Decode{{ .schema.Config.Input }}(input, readBuffer)
     if err != nil {
         return nil, nil, err
     }
     {{ end }}
-    if output == nil {
-        output = New{{ .schema.Config.Output }}()
-    }
-    return {{ if .schema.Config.Input }}input, {{ end }}output, output.Decode(readBuffer)
+    output, err = Decode{{ .schema.Config.Output }}(output, readBuffer)
+    return {{ if .schema.Config.Input }}input, {{ end }}output, err
 }
 
 // _Error serializes an error into the global writeBuffer and returns a pointer to the buffer and its size

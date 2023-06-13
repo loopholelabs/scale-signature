@@ -42,7 +42,13 @@ func TestGolangToGolang(t *testing.T) {
 	formatted, err := g.Generate(s, "golang_tests", "v0.1.0")
 	require.NoError(t, err)
 
+	guest, err := g.GenerateGuest(s, "golang_tests", "v0.1.0")
+	require.NoError(t, err)
+
 	err = os.WriteFile(golangDir+"/generated.go", formatted, 0644)
+	require.NoError(t, err)
+
+	err = os.WriteFile(golangDir+"/guest.go", guest, 0644)
 	require.NoError(t, err)
 
 	cmd := exec.Command("go", "test", "./...", "-v", "--tags=integration,golang", "-run", "TestOutput")

@@ -35,7 +35,7 @@ type Generator struct {
 
 // New creates a new rust generator
 func New() (*Generator, error) {
-	templ, err := template.New("").Funcs(templateFunctions()).ParseFS(templates.FS, "*_rs.templ")
+	templ, err := template.New("").Funcs(templateFunctions()).ParseFS(templates.FS, "*.rs.templ")
 	if err != nil {
 		return nil, err
 	}
@@ -52,7 +52,7 @@ func (g *Generator) Generate(schema *schema.Schema, packageName string, version 
 	}
 
 	buf := new(bytes.Buffer)
-	err := g.templ.ExecuteTemplate(buf, "types_rs.templ", map[string]any{
+	err := g.templ.ExecuteTemplate(buf, "types.rs.templ", map[string]any{
 		"schema":  schema,
 		"version": version,
 		"package": packageName,
