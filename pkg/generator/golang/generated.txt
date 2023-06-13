@@ -850,7 +850,7 @@ func (x *ModelWithMultipleFieldsAccessorAndDescription) SetInt32Field(v int32) e
 type ModelWithEmbeddedModels struct {
 	EmbeddedEmptyModel *EmptyModel
 
-	EmbeddedModelArrayWithMultipleFieldsAccessor []*ModelWithMultipleFieldsAccessor
+	EmbeddedModelArrayWithMultipleFieldsAccessor []ModelWithMultipleFieldsAccessor
 }
 
 func NewModelWithEmbeddedModels() *ModelWithEmbeddedModels {
@@ -858,7 +858,7 @@ func NewModelWithEmbeddedModels() *ModelWithEmbeddedModels {
 
 		EmbeddedEmptyModel: NewEmptyModel(),
 
-		EmbeddedModelArrayWithMultipleFieldsAccessor: make([]*ModelWithMultipleFieldsAccessor, 0, 64),
+		EmbeddedModelArrayWithMultipleFieldsAccessor: make([]ModelWithMultipleFieldsAccessor, 0, 64),
 	}
 }
 
@@ -908,13 +908,14 @@ func _decodeModelWithEmbeddedModels(x *ModelWithEmbeddedModels, d *polyglot.Deco
 		return nil, err
 	}
 	if uint32(len(x.EmbeddedModelArrayWithMultipleFieldsAccessor)) != sliceSizeEmbeddedModelArrayWithMultipleFieldsAccessor {
-		x.EmbeddedModelArrayWithMultipleFieldsAccessor = make([]*ModelWithMultipleFieldsAccessor, sliceSizeEmbeddedModelArrayWithMultipleFieldsAccessor)
+		x.EmbeddedModelArrayWithMultipleFieldsAccessor = make([]ModelWithMultipleFieldsAccessor, sliceSizeEmbeddedModelArrayWithMultipleFieldsAccessor)
 	}
 	for i := uint32(0); i < sliceSizeEmbeddedModelArrayWithMultipleFieldsAccessor; i++ {
-		x.EmbeddedModelArrayWithMultipleFieldsAccessor[i], err = _decodeModelWithMultipleFieldsAccessor(nil, d)
+		v, err := _decodeModelWithMultipleFieldsAccessor(nil, d)
 		if err != nil {
 			return nil, err
 		}
+		x.EmbeddedModelArrayWithMultipleFieldsAccessor[i] = *v
 	}
 
 	return x, nil
@@ -924,7 +925,7 @@ func _decodeModelWithEmbeddedModels(x *ModelWithEmbeddedModels, d *polyglot.Deco
 type ModelWithEmbeddedModelsAndDescription struct {
 	EmbeddedEmptyModel *EmptyModel
 
-	EmbeddedModelArrayWithMultipleFieldsAccessor []*ModelWithMultipleFieldsAccessor
+	EmbeddedModelArrayWithMultipleFieldsAccessor []ModelWithMultipleFieldsAccessor
 }
 
 func NewModelWithEmbeddedModelsAndDescription() *ModelWithEmbeddedModelsAndDescription {
@@ -932,7 +933,7 @@ func NewModelWithEmbeddedModelsAndDescription() *ModelWithEmbeddedModelsAndDescr
 
 		EmbeddedEmptyModel: NewEmptyModel(),
 
-		EmbeddedModelArrayWithMultipleFieldsAccessor: make([]*ModelWithMultipleFieldsAccessor, 0, 0),
+		EmbeddedModelArrayWithMultipleFieldsAccessor: make([]ModelWithMultipleFieldsAccessor, 0, 0),
 	}
 }
 
@@ -982,13 +983,14 @@ func _decodeModelWithEmbeddedModelsAndDescription(x *ModelWithEmbeddedModelsAndD
 		return nil, err
 	}
 	if uint32(len(x.EmbeddedModelArrayWithMultipleFieldsAccessor)) != sliceSizeEmbeddedModelArrayWithMultipleFieldsAccessor {
-		x.EmbeddedModelArrayWithMultipleFieldsAccessor = make([]*ModelWithMultipleFieldsAccessor, sliceSizeEmbeddedModelArrayWithMultipleFieldsAccessor)
+		x.EmbeddedModelArrayWithMultipleFieldsAccessor = make([]ModelWithMultipleFieldsAccessor, sliceSizeEmbeddedModelArrayWithMultipleFieldsAccessor)
 	}
 	for i := uint32(0); i < sliceSizeEmbeddedModelArrayWithMultipleFieldsAccessor; i++ {
-		x.EmbeddedModelArrayWithMultipleFieldsAccessor[i], err = _decodeModelWithMultipleFieldsAccessor(nil, d)
+		v, err := _decodeModelWithMultipleFieldsAccessor(nil, d)
 		if err != nil {
 			return nil, err
 		}
+		x.EmbeddedModelArrayWithMultipleFieldsAccessor[i] = *v
 	}
 
 	return x, nil
@@ -997,7 +999,7 @@ func _decodeModelWithEmbeddedModelsAndDescription(x *ModelWithEmbeddedModelsAndD
 type ModelWithEmbeddedModelsAccessor struct {
 	embeddedEmptyModel *EmptyModel
 
-	embeddedModelArrayWithMultipleFieldsAccessor []*ModelWithMultipleFieldsAccessor
+	embeddedModelArrayWithMultipleFieldsAccessor []ModelWithMultipleFieldsAccessor
 }
 
 func NewModelWithEmbeddedModelsAccessor() *ModelWithEmbeddedModelsAccessor {
@@ -1005,7 +1007,7 @@ func NewModelWithEmbeddedModelsAccessor() *ModelWithEmbeddedModelsAccessor {
 
 		embeddedEmptyModel: NewEmptyModel(),
 
-		embeddedModelArrayWithMultipleFieldsAccessor: make([]*ModelWithMultipleFieldsAccessor, 0),
+		embeddedModelArrayWithMultipleFieldsAccessor: make([]ModelWithMultipleFieldsAccessor, 0),
 	}
 }
 
@@ -1055,13 +1057,14 @@ func _decodeModelWithEmbeddedModelsAccessor(x *ModelWithEmbeddedModelsAccessor, 
 		return nil, err
 	}
 	if uint32(len(x.embeddedModelArrayWithMultipleFieldsAccessor)) != sliceSizeembeddedModelArrayWithMultipleFieldsAccessor {
-		x.embeddedModelArrayWithMultipleFieldsAccessor = make([]*ModelWithMultipleFieldsAccessor, sliceSizeembeddedModelArrayWithMultipleFieldsAccessor)
+		x.embeddedModelArrayWithMultipleFieldsAccessor = make([]ModelWithMultipleFieldsAccessor, sliceSizeembeddedModelArrayWithMultipleFieldsAccessor)
 	}
 	for i := uint32(0); i < sliceSizeembeddedModelArrayWithMultipleFieldsAccessor; i++ {
-		x.embeddedModelArrayWithMultipleFieldsAccessor[i], err = _decodeModelWithMultipleFieldsAccessor(nil, d)
+		v, err := _decodeModelWithMultipleFieldsAccessor(nil, d)
 		if err != nil {
 			return nil, err
 		}
+		x.embeddedModelArrayWithMultipleFieldsAccessor[i] = *v
 	}
 
 	return x, nil
@@ -1076,11 +1079,11 @@ func (x *ModelWithEmbeddedModelsAccessor) SetEmbeddedEmptyModel(v *EmptyModel) e
 	return nil
 }
 
-func (x *ModelWithEmbeddedModelsAccessor) GetEmbeddedModelArrayWithMultipleFieldsAccessor() ([]*ModelWithMultipleFieldsAccessor, error) {
+func (x *ModelWithEmbeddedModelsAccessor) GetEmbeddedModelArrayWithMultipleFieldsAccessor() ([]ModelWithMultipleFieldsAccessor, error) {
 	return x.embeddedModelArrayWithMultipleFieldsAccessor, nil
 }
 
-func (x *ModelWithEmbeddedModelsAccessor) SetEmbeddedModelArrayWithMultipleFieldsAccessor(v []*ModelWithMultipleFieldsAccessor) error {
+func (x *ModelWithEmbeddedModelsAccessor) SetEmbeddedModelArrayWithMultipleFieldsAccessor(v []ModelWithMultipleFieldsAccessor) error {
 	x.embeddedModelArrayWithMultipleFieldsAccessor = v
 	return nil
 }
@@ -1089,7 +1092,7 @@ func (x *ModelWithEmbeddedModelsAccessor) SetEmbeddedModelArrayWithMultipleField
 type ModelWithEmbeddedModelsAccessorAndDescription struct {
 	embeddedEmptyModel *EmptyModel
 
-	embeddedModelArrayWithMultipleFieldsAccessor []*ModelWithMultipleFieldsAccessor
+	embeddedModelArrayWithMultipleFieldsAccessor []ModelWithMultipleFieldsAccessor
 }
 
 func NewModelWithEmbeddedModelsAccessorAndDescription() *ModelWithEmbeddedModelsAccessorAndDescription {
@@ -1097,7 +1100,7 @@ func NewModelWithEmbeddedModelsAccessorAndDescription() *ModelWithEmbeddedModels
 
 		embeddedEmptyModel: NewEmptyModel(),
 
-		embeddedModelArrayWithMultipleFieldsAccessor: make([]*ModelWithMultipleFieldsAccessor, 0),
+		embeddedModelArrayWithMultipleFieldsAccessor: make([]ModelWithMultipleFieldsAccessor, 0),
 	}
 }
 
@@ -1147,13 +1150,14 @@ func _decodeModelWithEmbeddedModelsAccessorAndDescription(x *ModelWithEmbeddedMo
 		return nil, err
 	}
 	if uint32(len(x.embeddedModelArrayWithMultipleFieldsAccessor)) != sliceSizeembeddedModelArrayWithMultipleFieldsAccessor {
-		x.embeddedModelArrayWithMultipleFieldsAccessor = make([]*ModelWithMultipleFieldsAccessor, sliceSizeembeddedModelArrayWithMultipleFieldsAccessor)
+		x.embeddedModelArrayWithMultipleFieldsAccessor = make([]ModelWithMultipleFieldsAccessor, sliceSizeembeddedModelArrayWithMultipleFieldsAccessor)
 	}
 	for i := uint32(0); i < sliceSizeembeddedModelArrayWithMultipleFieldsAccessor; i++ {
-		x.embeddedModelArrayWithMultipleFieldsAccessor[i], err = _decodeModelWithMultipleFieldsAccessor(nil, d)
+		v, err := _decodeModelWithMultipleFieldsAccessor(nil, d)
 		if err != nil {
 			return nil, err
 		}
+		x.embeddedModelArrayWithMultipleFieldsAccessor[i] = *v
 	}
 
 	return x, nil
@@ -1168,11 +1172,11 @@ func (x *ModelWithEmbeddedModelsAccessorAndDescription) SetEmbeddedEmptyModel(v 
 	return nil
 }
 
-func (x *ModelWithEmbeddedModelsAccessorAndDescription) GetEmbeddedModelArrayWithMultipleFieldsAccessor() ([]*ModelWithMultipleFieldsAccessor, error) {
+func (x *ModelWithEmbeddedModelsAccessorAndDescription) GetEmbeddedModelArrayWithMultipleFieldsAccessor() ([]ModelWithMultipleFieldsAccessor, error) {
 	return x.embeddedModelArrayWithMultipleFieldsAccessor, nil
 }
 
-func (x *ModelWithEmbeddedModelsAccessorAndDescription) SetEmbeddedModelArrayWithMultipleFieldsAccessor(v []*ModelWithMultipleFieldsAccessor) error {
+func (x *ModelWithEmbeddedModelsAccessorAndDescription) SetEmbeddedModelArrayWithMultipleFieldsAccessor(v []ModelWithMultipleFieldsAccessor) error {
 	x.embeddedModelArrayWithMultipleFieldsAccessor = v
 	return nil
 }
@@ -1180,7 +1184,7 @@ func (x *ModelWithEmbeddedModelsAccessorAndDescription) SetEmbeddedModelArrayWit
 type ModelWithAllFieldTypes struct {
 	ModelField *EmptyModel
 
-	ModelArrayField []*EmptyModel
+	ModelArrayField []EmptyModel
 
 	StringField string
 
@@ -1188,7 +1192,7 @@ type ModelWithAllFieldTypes struct {
 
 	StringMapField map[string]string
 
-	StringMapFieldEmbedded map[string]*EmptyModel
+	StringMapFieldEmbedded map[string]EmptyModel
 
 	Int32Field int32
 
@@ -1196,7 +1200,7 @@ type ModelWithAllFieldTypes struct {
 
 	Int32MapField map[int32]int32
 
-	Int32MapFieldEmbedded map[int32]*EmptyModel
+	Int32MapFieldEmbedded map[int32]EmptyModel
 
 	Int64Field int64
 
@@ -1204,7 +1208,7 @@ type ModelWithAllFieldTypes struct {
 
 	Int64MapField map[int64]int64
 
-	Int64MapFieldEmbedded map[int64]*EmptyModel
+	Int64MapFieldEmbedded map[int64]EmptyModel
 
 	Uint32Field uint32
 
@@ -1212,7 +1216,7 @@ type ModelWithAllFieldTypes struct {
 
 	Uint32MapField map[uint32]uint32
 
-	Uint32MapFieldEmbedded map[uint32]*EmptyModel
+	Uint32MapFieldEmbedded map[uint32]EmptyModel
 
 	Uint64Field uint64
 
@@ -1220,7 +1224,7 @@ type ModelWithAllFieldTypes struct {
 
 	Uint64MapField map[uint64]uint64
 
-	Uint64MapFieldEmbedded map[uint64]*EmptyModel
+	Uint64MapFieldEmbedded map[uint64]EmptyModel
 
 	Float32Field float32
 
@@ -1236,7 +1240,7 @@ type ModelWithAllFieldTypes struct {
 
 	EnumMapField map[GenericEnum]string
 
-	EnumMapFieldEmbedded map[GenericEnum]*EmptyModel
+	EnumMapFieldEmbedded map[GenericEnum]EmptyModel
 
 	BytesField []byte
 
@@ -1252,7 +1256,7 @@ func NewModelWithAllFieldTypes() *ModelWithAllFieldTypes {
 
 		ModelField: NewEmptyModel(),
 
-		ModelArrayField: make([]*EmptyModel, 0, 0),
+		ModelArrayField: make([]EmptyModel, 0, 0),
 
 		StringField: "DefaultValue",
 
@@ -1260,7 +1264,7 @@ func NewModelWithAllFieldTypes() *ModelWithAllFieldTypes {
 
 		StringMapField: make(map[string]string),
 
-		StringMapFieldEmbedded: make(map[string]*EmptyModel),
+		StringMapFieldEmbedded: make(map[string]EmptyModel),
 
 		Int32Field: 32,
 
@@ -1268,7 +1272,7 @@ func NewModelWithAllFieldTypes() *ModelWithAllFieldTypes {
 
 		Int32MapField: make(map[int32]int32),
 
-		Int32MapFieldEmbedded: make(map[int32]*EmptyModel),
+		Int32MapFieldEmbedded: make(map[int32]EmptyModel),
 
 		Int64Field: 64,
 
@@ -1276,7 +1280,7 @@ func NewModelWithAllFieldTypes() *ModelWithAllFieldTypes {
 
 		Int64MapField: make(map[int64]int64),
 
-		Int64MapFieldEmbedded: make(map[int64]*EmptyModel),
+		Int64MapFieldEmbedded: make(map[int64]EmptyModel),
 
 		Uint32Field: 32,
 
@@ -1284,7 +1288,7 @@ func NewModelWithAllFieldTypes() *ModelWithAllFieldTypes {
 
 		Uint32MapField: make(map[uint32]uint32),
 
-		Uint32MapFieldEmbedded: make(map[uint32]*EmptyModel),
+		Uint32MapFieldEmbedded: make(map[uint32]EmptyModel),
 
 		Uint64Field: 64,
 
@@ -1292,7 +1296,7 @@ func NewModelWithAllFieldTypes() *ModelWithAllFieldTypes {
 
 		Uint64MapField: make(map[uint64]uint64),
 
-		Uint64MapFieldEmbedded: make(map[uint64]*EmptyModel),
+		Uint64MapFieldEmbedded: make(map[uint64]EmptyModel),
 
 		Float32Field: 32.32,
 
@@ -1308,7 +1312,7 @@ func NewModelWithAllFieldTypes() *ModelWithAllFieldTypes {
 
 		EnumMapField: make(map[GenericEnum]string),
 
-		EnumMapFieldEmbedded: make(map[GenericEnum]*EmptyModel),
+		EnumMapFieldEmbedded: make(map[GenericEnum]EmptyModel),
 
 		BytesField: make([]byte, 0, 512),
 
@@ -1508,13 +1512,14 @@ func _decodeModelWithAllFieldTypes(x *ModelWithAllFieldTypes, d *polyglot.Decode
 		return nil, err
 	}
 	if uint32(len(x.ModelArrayField)) != sliceSizeModelArrayField {
-		x.ModelArrayField = make([]*EmptyModel, sliceSizeModelArrayField)
+		x.ModelArrayField = make([]EmptyModel, sliceSizeModelArrayField)
 	}
 	for i := uint32(0); i < sliceSizeModelArrayField; i++ {
-		x.ModelArrayField[i], err = _decodeEmptyModel(nil, d)
+		v, err := _decodeEmptyModel(nil, d)
 		if err != nil {
 			return nil, err
 		}
+		x.ModelArrayField[i] = *v
 	}
 
 	x.StringField, err = d.String()
@@ -1564,7 +1569,7 @@ func _decodeModelWithAllFieldTypes(x *ModelWithAllFieldTypes, d *polyglot.Decode
 	}
 
 	if uint32(len(x.StringMapFieldEmbedded)) != mapSizeStringMapFieldEmbedded {
-		x.StringMapFieldEmbedded = make(map[string]*EmptyModel, mapSizeStringMapFieldEmbedded)
+		x.StringMapFieldEmbedded = make(map[string]EmptyModel, mapSizeStringMapFieldEmbedded)
 	}
 
 	for i := uint32(0); i < mapSizeStringMapFieldEmbedded; i++ {
@@ -1576,7 +1581,7 @@ func _decodeModelWithAllFieldTypes(x *ModelWithAllFieldTypes, d *polyglot.Decode
 		if err != nil {
 			return nil, err
 		}
-		x.StringMapFieldEmbedded[k] = v
+		x.StringMapFieldEmbedded[k] = *v
 	}
 
 	x.Int32Field, err = d.Int32()
@@ -1626,7 +1631,7 @@ func _decodeModelWithAllFieldTypes(x *ModelWithAllFieldTypes, d *polyglot.Decode
 	}
 
 	if uint32(len(x.Int32MapFieldEmbedded)) != mapSizeInt32MapFieldEmbedded {
-		x.Int32MapFieldEmbedded = make(map[int32]*EmptyModel, mapSizeInt32MapFieldEmbedded)
+		x.Int32MapFieldEmbedded = make(map[int32]EmptyModel, mapSizeInt32MapFieldEmbedded)
 	}
 
 	for i := uint32(0); i < mapSizeInt32MapFieldEmbedded; i++ {
@@ -1638,7 +1643,7 @@ func _decodeModelWithAllFieldTypes(x *ModelWithAllFieldTypes, d *polyglot.Decode
 		if err != nil {
 			return nil, err
 		}
-		x.Int32MapFieldEmbedded[k] = v
+		x.Int32MapFieldEmbedded[k] = *v
 	}
 
 	x.Int64Field, err = d.Int64()
@@ -1688,7 +1693,7 @@ func _decodeModelWithAllFieldTypes(x *ModelWithAllFieldTypes, d *polyglot.Decode
 	}
 
 	if uint32(len(x.Int64MapFieldEmbedded)) != mapSizeInt64MapFieldEmbedded {
-		x.Int64MapFieldEmbedded = make(map[int64]*EmptyModel, mapSizeInt64MapFieldEmbedded)
+		x.Int64MapFieldEmbedded = make(map[int64]EmptyModel, mapSizeInt64MapFieldEmbedded)
 	}
 
 	for i := uint32(0); i < mapSizeInt64MapFieldEmbedded; i++ {
@@ -1700,7 +1705,7 @@ func _decodeModelWithAllFieldTypes(x *ModelWithAllFieldTypes, d *polyglot.Decode
 		if err != nil {
 			return nil, err
 		}
-		x.Int64MapFieldEmbedded[k] = v
+		x.Int64MapFieldEmbedded[k] = *v
 	}
 
 	x.Uint32Field, err = d.Uint32()
@@ -1750,7 +1755,7 @@ func _decodeModelWithAllFieldTypes(x *ModelWithAllFieldTypes, d *polyglot.Decode
 	}
 
 	if uint32(len(x.Uint32MapFieldEmbedded)) != mapSizeUint32MapFieldEmbedded {
-		x.Uint32MapFieldEmbedded = make(map[uint32]*EmptyModel, mapSizeUint32MapFieldEmbedded)
+		x.Uint32MapFieldEmbedded = make(map[uint32]EmptyModel, mapSizeUint32MapFieldEmbedded)
 	}
 
 	for i := uint32(0); i < mapSizeUint32MapFieldEmbedded; i++ {
@@ -1762,7 +1767,7 @@ func _decodeModelWithAllFieldTypes(x *ModelWithAllFieldTypes, d *polyglot.Decode
 		if err != nil {
 			return nil, err
 		}
-		x.Uint32MapFieldEmbedded[k] = v
+		x.Uint32MapFieldEmbedded[k] = *v
 	}
 
 	x.Uint64Field, err = d.Uint64()
@@ -1812,7 +1817,7 @@ func _decodeModelWithAllFieldTypes(x *ModelWithAllFieldTypes, d *polyglot.Decode
 	}
 
 	if uint32(len(x.Uint64MapFieldEmbedded)) != mapSizeUint64MapFieldEmbedded {
-		x.Uint64MapFieldEmbedded = make(map[uint64]*EmptyModel, mapSizeUint64MapFieldEmbedded)
+		x.Uint64MapFieldEmbedded = make(map[uint64]EmptyModel, mapSizeUint64MapFieldEmbedded)
 	}
 
 	for i := uint32(0); i < mapSizeUint64MapFieldEmbedded; i++ {
@@ -1824,7 +1829,7 @@ func _decodeModelWithAllFieldTypes(x *ModelWithAllFieldTypes, d *polyglot.Decode
 		if err != nil {
 			return nil, err
 		}
-		x.Uint64MapFieldEmbedded[k] = v
+		x.Uint64MapFieldEmbedded[k] = *v
 	}
 
 	x.Float32Field, err = d.Float32()
@@ -1918,7 +1923,7 @@ func _decodeModelWithAllFieldTypes(x *ModelWithAllFieldTypes, d *polyglot.Decode
 	}
 
 	if uint32(len(x.EnumMapFieldEmbedded)) != mapSizeEnumMapFieldEmbedded {
-		x.EnumMapFieldEmbedded = make(map[GenericEnum]*EmptyModel, mapSizeEnumMapFieldEmbedded)
+		x.EnumMapFieldEmbedded = make(map[GenericEnum]EmptyModel, mapSizeEnumMapFieldEmbedded)
 	}
 
 	for i := uint32(0); i < mapSizeEnumMapFieldEmbedded; i++ {
@@ -1930,7 +1935,7 @@ func _decodeModelWithAllFieldTypes(x *ModelWithAllFieldTypes, d *polyglot.Decode
 		if err != nil {
 			return nil, err
 		}
-		x.EnumMapFieldEmbedded[k] = v
+		x.EnumMapFieldEmbedded[k] = *v
 	}
 
 	x.BytesField, err = d.Bytes(nil)
