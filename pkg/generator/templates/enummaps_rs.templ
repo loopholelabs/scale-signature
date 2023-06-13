@@ -62,7 +62,7 @@
             let size_{{ SnakeCase .Name }} = d.decode_map(Kind::U32, Kind::Any)?;
             for _ in 0..size_{{ SnakeCase .Name }} {
                 let k = {{ .Reference }}::try_from(d.decode_u32()?)?;
-                let v = {{ .Value }}::decode(d)?;
+                let v = {{ .Value }}::decode(d)?.ok_or(DecodingError::InvalidMap)?;
                 x.{{ SnakeCase .Name }}.insert(k, v);
             }
         {{- end }}

@@ -50,7 +50,7 @@
             let size_{{ SnakeCase .Name }} = d.decode_map({{ PolyglotPrimitive $type }}, Kind::Any)?;
             for _ in 0..size_{{ SnakeCase .Name }} {
                 let k = d.{{ PolyglotPrimitiveDecode $type }}()?;
-                let v = {{ .Value }}::decode(d)?;
+                let v = {{ .Value }}::decode(d)?.ok_or(DecodingError::InvalidMap)?;
                 x.{{ SnakeCase .Name }}.insert(k, v);
             }
         {{- end }}

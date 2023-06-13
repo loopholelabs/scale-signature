@@ -19,7 +19,7 @@
         {{- end }}
 
         {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
-            {{ LowerFirst .Name }} map[{{ .Reference }}]*{{ .Value }}
+            {{ LowerFirst .Name }} map[{{ .Reference }}]{{ .Value }}
         {{- end }}
 
         {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
@@ -27,7 +27,7 @@
         {{- end }}
 
         {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
-            {{ .Name }} map[{{ .Reference }}]*{{ .Value }}
+            {{ .Name }} map[{{ .Reference }}]{{ .Value }}
         {{- end }}
     {{ end }}
 {{ end }}
@@ -40,7 +40,7 @@
         {{- end }}
 
         {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
-            {{ LowerFirst .Name }}: make(map[{{ .Reference }}]*{{ .Value }}),
+            {{ LowerFirst .Name }}: make(map[{{ .Reference }}]{{ .Value }}),
         {{- end }}
 
         {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
@@ -48,7 +48,7 @@
         {{- end }}
 
         {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
-            {{ .Name }}: make(map[{{ .Reference }}]*{{ .Value }}),
+            {{ .Name }}: make(map[{{ .Reference }}]{{ .Value }}),
         {{- end }}
     {{ end }}
 {{ end }}
@@ -95,7 +95,7 @@
         {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
             mapSize{{ LowerFirst .Name }}, err := d.Map(polyglot.Uint32Kind, {{ PolyglotPrimitive .Value }})
             if err != nil {
-                return err
+                return nil, err
             }
 
             if uint32(len(x.{{ LowerFirst .Name }})) != mapSize{{ LowerFirst .Name }} {
@@ -106,7 +106,7 @@
                 var k {{ .Reference }}
                 enumValue{{ LowerFirst .Name }}, err := d.Uint32()
                 if err != nil {
-                    return err
+                    return nil, err
                 }
                 {{ $current_enum := . }}
                 switch {{ .Reference }}(enumValue{{ LowerFirst .Name }}) {
@@ -115,11 +115,11 @@
                         k = {{ .Reference }}{{ $value }}
                 {{- end }}
                     default:
-                        return InvalidEnum
+                        return nil, InvalidEnum
                 }
                 x.{{ LowerFirst .Name }}[k], err = d.{{ PolyglotPrimitiveDecode .Value }}()
                 if err != nil {
-                    return err
+                    return nil, err
                 }
             }
         {{- end }}
@@ -127,18 +127,18 @@
         {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
             mapSize{{ LowerFirst .Name }}, err := d.Map(polyglot.Uint32Kind, polyglot.AnyKind)
             if err != nil {
-                return err
+                return nil, err
             }
 
             if uint32(len(x.{{ LowerFirst .Name }})) != mapSize{{ LowerFirst .Name }} {
-                x.{{ LowerFirst .Name }} = make(map[{{ .Reference }}]*{{ .Value }}, mapSize{{ LowerFirst .Name }})
+                x.{{ LowerFirst .Name }} = make(map[{{ .Reference }}]{{ .Value }}, mapSize{{ LowerFirst .Name }})
             }
 
             for i := uint32(0); i < mapSize{{ LowerFirst .Name }}; i++ {
                 var k {{ .Reference }}
                 enumValue{{ LowerFirst .Name }}, err := d.Uint32()
                 if err != nil {
-                    return err
+                    return nil, err
                 }
                 {{ $current_enum := . }}
                 switch {{ .Reference }}(enumValue{{ LowerFirst .Name }}) {
@@ -147,21 +147,20 @@
                         k = {{ .Reference }}{{ $value }}
                 {{- end }}
                     default:
-                        return InvalidEnum
+                        return nil, InvalidEnum
                 }
-                v := New{{ .Value }}()
-                err = v._decode(d)
+                v, err := _decode{{ .Value }}(nil, d)
                 if err != nil {
-                    return err
+                    return nil, err
                 }
-                x.{{ LowerFirst .Name }}[k] = v
+                x.{{ LowerFirst .Name }}[k] = *v
             }
         {{- end }}
 
         {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
             mapSize{{ .Name }}, err := d.Map(polyglot.Uint32Kind, {{ PolyglotPrimitive .Value }})
             if err != nil {
-                return err
+                return nil, err
             }
 
             if uint32(len(x.{{ .Name }})) != mapSize{{ .Name }} {
@@ -171,11 +170,11 @@
             for i := uint32(0); i < mapSize{{ .Name }}; i++ {
                 k, err := decode{{ .Reference }}(d)
                 if err != nil {
-                    return err
+                    return nil, err
                 }
                 x.{{ .Name }}[k], err = d.{{ PolyglotPrimitiveDecode .Value }}()
                 if err != nil {
-                    return err
+                    return nil, err
                 }
             }
         {{- end }}
@@ -183,24 +182,23 @@
         {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
             mapSize{{ .Name }}, err := d.Map(polyglot.Uint32Kind, polyglot.AnyKind)
             if err != nil {
-                return err
+                return nil, err
             }
 
             if uint32(len(x.{{ .Name }})) != mapSize{{ .Name }} {
-                x.{{ .Name }} = make(map[{{ .Reference }}]*{{ .Value }}, mapSize{{ .Name }})
+                x.{{ .Name }} = make(map[{{ .Reference }}]{{ .Value }}, mapSize{{ .Name }})
             }
 
             for i := uint32(0); i < mapSize{{ .Name }}; i++ {
                 k, err := decode{{ .Reference }}(d)
                 if err != nil {
-                    return err
+                    return nil, err
                 }
-                v := New{{ .Value }}()
-                err = v._decode(d)
+                v, err := _decode{{ .Value }}(nil, d)
                 if err != nil {
-                    return err
+                    return nil, err
                 }
-                x.{{ .Name }}[k] = v
+                x.{{ .Name }}[k] = *v
             }
         {{- end }}
     {{ end }}

@@ -6,7 +6,7 @@
         {{- end }}
 
         {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
-            {{ LowerFirst .Name }} map[{{ Primitive $type }}]*{{ .Value }}
+            {{ LowerFirst .Name }} map[{{ Primitive $type }}]{{ .Value }}
         {{- end }}
 
         {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
@@ -14,7 +14,7 @@
         {{- end }}
 
         {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
-            {{ .Name }} map[{{ Primitive $type }}]*{{ .Value }}
+            {{ .Name }} map[{{ Primitive $type }}]{{ .Value }}
         {{- end }}
     {{ end }}
 {{ end }}
@@ -27,7 +27,7 @@
         {{- end }}
 
         {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
-            {{ LowerFirst .Name }}: make(map[{{ Primitive $type }}]*{{ .Value }}),
+            {{ LowerFirst .Name }}: make(map[{{ Primitive $type }}]{{ .Value }}),
         {{- end }}
 
         {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
@@ -35,7 +35,7 @@
         {{- end }}
 
         {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
-            {{ .Name }}: make(map[{{ Primitive $type }}]*{{ .Value }}),
+            {{ .Name }}: make(map[{{ Primitive $type }}]{{ .Value }}),
         {{- end }}
     {{ end }}
 {{ end }}
@@ -83,7 +83,7 @@
         {{- if and (Deref .Accessor) (IsPrimitive .Value) }}
             mapSize{{ LowerFirst .Name }}, err := d.Map({{ PolyglotPrimitive $type }}, {{ PolyglotPrimitive .Value }})
             if err != nil {
-                return err
+                return nil, err
             }
 
             if uint32(len(x.{{ LowerFirst .Name }})) != mapSize{{ LowerFirst .Name }} {
@@ -93,11 +93,11 @@
             for i := uint32(0); i < mapSize{{ LowerFirst .Name }}; i++ {
                 k, err := d.{{ PolyglotPrimitiveDecode $type }}()
                 if err != nil {
-                    return err
+                    return nil, err
                 }
                 x.{{ LowerFirst .Name }}[k], err = d.{{ PolyglotPrimitiveDecode .Value }}()
                 if err != nil {
-                    return err
+                    return nil, err
                 }
             }
         {{- end }}
@@ -105,31 +105,30 @@
         {{- if and (Deref .Accessor) (not (IsPrimitive .Value)) }}
             mapSize{{ LowerFirst .Name }}, err := d.Map({{ PolyglotPrimitive $type }}, polyglot.AnyKind)
             if err != nil {
-                return err
+                return nil, err
             }
 
             if uint32(len(x.{{ LowerFirst .Name }})) != mapSize{{ LowerFirst .Name }} {
-                x.{{ LowerFirst .Name }} = make(map[{{ Primitive $type }}]*{{ .Value }}, mapSize{{ LowerFirst .Name }})
+                x.{{ LowerFirst .Name }} = make(map[{{ Primitive $type }}]{{ .Value }}, mapSize{{ LowerFirst .Name }})
             }
 
             for i := uint32(0); i < mapSize{{ LowerFirst .Name }}; i++ {
                 k, err := d.{{ PolyglotPrimitiveDecode $type }}()
                 if err != nil {
-                    return err
+                    return nil, err
                 }
-                v := New{{ .Value }}()
-                err = v._decode(d)
+                v, err := _decode{{ .Value }}(nil, d)
                 if err != nil {
-                    return err
+                    return nil, err
                 }
-                x.{{ LowerFirst .Name }}[k] = v
+                x.{{ LowerFirst .Name }}[k] = *v
             }
         {{- end }}
 
         {{- if and (not (Deref .Accessor)) (IsPrimitive .Value) }}
             mapSize{{ .Name }}, err := d.Map({{ PolyglotPrimitive $type }}, {{ PolyglotPrimitive .Value }})
             if err != nil {
-                return err
+                return nil, err
             }
 
             if uint32(len(x.{{ .Name }})) != mapSize{{ .Name }} {
@@ -139,11 +138,11 @@
             for i := uint32(0); i < mapSize{{ .Name }}; i++ {
                 k, err := d.{{ PolyglotPrimitiveDecode $type }}()
                 if err != nil {
-                    return err
+                    return nil, err
                 }
                 x.{{ .Name }}[k], err = d.{{ PolyglotPrimitiveDecode .Value }}()
                 if err != nil {
-                    return err
+                    return nil, err
                 }
             }
         {{- end }}
@@ -151,24 +150,23 @@
         {{- if and (not (Deref .Accessor)) (not (IsPrimitive .Value)) }}
             mapSize{{ .Name }}, err := d.Map({{ PolyglotPrimitive $type }}, polyglot.AnyKind)
             if err != nil {
-                return err
+                return nil, err
             }
 
             if uint32(len(x.{{ .Name }})) != mapSize{{ .Name }} {
-                x.{{ .Name }} = make(map[{{ Primitive $type }}]*{{ .Value }}, mapSize{{ .Name }})
+                x.{{ .Name }} = make(map[{{ Primitive $type }}]{{ .Value }}, mapSize{{ .Name }})
             }
 
             for i := uint32(0); i < mapSize{{ .Name }}; i++ {
                 k, err := d.{{ PolyglotPrimitiveDecode $type }}()
                 if err != nil {
-                    return err
+                    return nil, err
                 }
-                v := New{{ .Value }}()
-                err = v._decode(d)
+                v, err := _decode{{ .Value }}(nil, d)
                 if err != nil {
-                    return err
+                    return nil, err
                 }
-                x.{{ .Name }}[k] = v
+                x.{{ .Name }}[k] = *v
             }
         {{- end }}
     {{ end }}

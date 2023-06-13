@@ -55,7 +55,7 @@
         {{- if (Deref .Accessor) }}
             sliceSize{{ LowerFirst .Name }}, err := d.Slice(polyglot.Uint32Kind)
             if err != nil {
-                return err
+                return nil, err
             }
 
             if uint32(len(x.{{ LowerFirst .Name }})) != sliceSize{{ LowerFirst .Name }} {
@@ -64,13 +64,13 @@
 
             val, err := decode{{ .Reference }}(d)
             if err != nil {
-                return err
+                return nil, err
             }
             x.{{ LowerFirst .Name }}[i] = val
         {{- else }}
             sliceSize{{ .Name }}, err := d.Slice(polyglot.Uint32Kind)
             if err != nil {
-                return err
+                return nil, err
             }
 
             if uint32(len(x.{{ .Name }})) != sliceSize{{ .Name }} {
@@ -80,7 +80,7 @@
             for i := uint32(0); i < sliceSize{{ .Name }}; i++ {
                 val, err := decode{{ .Reference }}(d)
                 if err != nil {
-                    return err
+                    return nil, err
                 }
                 x.{{ .Name }}[i] = val
             }

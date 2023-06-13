@@ -1,9 +1,9 @@
 {{ define "go_modelarrays_struct_reference" }}
     {{- range .ModelArrays }}
         {{- if .Accessor }}
-            {{ LowerFirst .Name }} []*{{ .Reference }}
+            {{ LowerFirst .Name }} []{{ .Reference }}
         {{- else }}
-            {{ .Name }} []*{{ .Reference }}
+            {{ .Name }} []{{ .Reference }}
         {{- end -}}
     {{ end }}
 {{ end }}
@@ -11,9 +11,9 @@
 {{ define "go_modelarrays_new_struct_reference" }}
     {{- range .ModelArrays }}
         {{- if .Accessor }}
-            {{ LowerFirst .Name }}: make([]*{{ .Reference }},  {{ .InitialSize }}),
+            {{ LowerFirst .Name }}: make([]{{ .Reference }},  {{ .InitialSize }}),
         {{- else }}
-            {{ .Name }}: make([]*{{ .Reference }}, 0, {{ .InitialSize }}),
+            {{ .Name }}: make([]{{ .Reference }}, 0, {{ .InitialSize }}),
         {{- end -}}
     {{ end }}
 {{ end }}
@@ -39,32 +39,32 @@
         {{- if .Accessor }}
             sliceSize{{ LowerFirst .Name }}, err := d.Slice(polyglot.AnyKind)
             if err != nil {
-                return err
+                return nil, err
             }
             if uint32(len(x.{{ LowerFirst .Name }})) != sliceSize{{ LowerFirst .Name }} {
-                x.{{ LowerFirst .Name }} = make([]*{{ .Reference }}, sliceSize{{ LowerFirst .Name }})
+                x.{{ LowerFirst .Name }} = make([]{{ .Reference }}, sliceSize{{ LowerFirst .Name }})
             }
             for i := uint32(0); i < sliceSize{{ LowerFirst .Name }}; i++ {
-                x.{{ LowerFirst .Name }}[i] = New{{ .Reference }}()
-                err = x.{{ LowerFirst .Name }}[i]._decode(d)
+                v, err := _decode{{ .Reference }}(nil, d)
                 if err != nil {
-                    return err
+                    return nil, err
                 }
+                x.{{ LowerFirst .Name }}[i] = *v
             }
         {{- else }}
             sliceSize{{ .Name }}, err := d.Slice(polyglot.AnyKind)
             if err != nil {
-                return err
+                return nil, err
             }
             if uint32(len(x.{{ .Name }})) != sliceSize{{ .Name }} {
-                x.{{ .Name }} = make([]*{{ .Reference }}, sliceSize{{ .Name }})
+                x.{{ .Name }} = make([]{{ .Reference }}, sliceSize{{ .Name }})
             }
             for i := uint32(0); i < sliceSize{{ .Name }}; i++ {
-                x.{{ .Name }}[i] = New{{ .Reference }}()
-                err = x.{{ .Name }}[i]._decode(d)
+                v, err := _decode{{ .Reference }}(nil, d)
                 if err != nil {
-                    return err
+                    return nil, err
                 }
+                x.{{ .Name }}[i] = *v
             }
         {{- end -}}
     {{ end }}
@@ -74,11 +74,11 @@
     {{ $current_model := . }}
     {{- range .ModelArrays }}
         {{- if .Accessor }}
-            func (x *{{ $current_model.Name }}) Get{{ .Name }}() ([]*{{ .Reference }}, error) {
+            func (x *{{ $current_model.Name }}) Get{{ .Name }}() ([]{{ .Reference }}, error) {
                 return x.{{ LowerFirst .Name }}, nil
             }
 
-            func (x *{{ $current_model.Name }}) Set{{ .Name }}(v []*{{ .Reference }}) error {
+            func (x *{{ $current_model.Name }}) Set{{ .Name }}(v []{{ .Reference }}) error {
                 x.{{ LowerFirst .Name }} = v
                 return nil
             }

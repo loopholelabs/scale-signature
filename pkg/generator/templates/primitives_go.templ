@@ -59,12 +59,12 @@
         {{- if (Deref .Accessor) }}
             x.{{ LowerFirst .Name }}, err = d.{{ PolyglotPrimitiveDecode $type }}()
             if err != nil {
-                return err
+                return nil, err
             }
         {{- else }}
             x.{{ .Name }}, err = d.{{ PolyglotPrimitiveDecode $type }}()
             if err != nil {
-                return err
+                return nil, err
             }
         {{- end -}}
     {{ end }}
@@ -76,12 +76,12 @@
         {{- if (Deref .Accessor) }}
             x.{{ LowerFirst .Name }}, err = d.{{ PolyglotPrimitiveDecode $type }}(nil)
             if err != nil {
-                return err
+                return nil, err
             }
         {{- else }}
             x.{{ .Name }}, err = d.{{ PolyglotPrimitiveDecode $type }}(nil)
             if err != nil {
-                return err
+                return nil, err
             }
         {{- end -}}
     {{ end }}

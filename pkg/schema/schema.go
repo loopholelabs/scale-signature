@@ -203,12 +203,13 @@ func (s *Schema) Validate() error {
 		}
 
 		if s.Config.Input != "" {
+			s.Config.Input = TitleCaser.String(s.Config.Input)
 			if _, ok := knownModels[s.Config.Input]; !ok {
 				return fmt.Errorf("unknown config.input: %s", s.Config.Input)
 			}
 		}
 
-		// Ensure that the config.output is a valid model
+		s.Config.Output = TitleCaser.String(s.Config.Output)
 		if _, ok := knownModels[s.Config.Output]; !ok {
 			return fmt.Errorf("unknown config.output: %s", s.Config.Output)
 		}

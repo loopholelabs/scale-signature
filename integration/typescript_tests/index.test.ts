@@ -3,6 +3,10 @@ import * as polyglot from "@loopholelabs/polyglot";
 import * as fs from 'fs';
 
 test('test-output', () => {
+    const nilModelEncoder = new polyglot.Encoder();
+   generated.EmptyModel.encode_undefined(nilModelEncoder);
+    fs.writeFileSync('../binaries/nil_model.bin', nilModelEncoder.bytes, 'binary');
+
     const emptyModelEncoder = new polyglot.Encoder();
     const emptyModel = new generated.EmptyModel();
     emptyModel.encode(emptyModelEncoder);
@@ -279,6 +283,10 @@ test('test-output', () => {
 });
 
 test('test-input', () => {
+    const nilModelData = fs.readFileSync("../binaries/nil_model.bin")
+    const nilModel = generated.EmptyModel.decode(new polyglot.Decoder(nilModelData));
+    expect(nilModel).toBeUndefined();
+
     const emptyModelData = fs.readFileSync("../binaries/empty_model.bin")
     const emptyModel = generated.EmptyModel.decode(new polyglot.Decoder(emptyModelData));
     expect(emptyModel).not.toBeNull();

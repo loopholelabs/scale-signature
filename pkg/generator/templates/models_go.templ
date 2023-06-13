@@ -31,20 +31,14 @@
 {{ define "go_models_decode" }}
     {{- range .Models }}
         {{- if .Accessor }}
-            if x.{{ LowerFirst .Name }} == nil {
-                x.{{ LowerFirst .Name }} = New{{ .Reference }}()
-            }
-            err = x.{{ LowerFirst .Name }}._decode(d)
+            x.{{ LowerFirst .Name }}, err = _decode{{ .Reference }}(nil, d)
             if err != nil {
-                return err
+                return nil, err
             }
         {{- else }}
-            if x.{{ .Name }} == nil {
-                x.{{ .Name }} = New{{ .Reference }}()
-            }
-            err = x.{{ .Name }}._decode(d)
+            x.{{ .Name }}, err = _decode{{ .Reference }}(nil, d)
             if err != nil {
-                return err
+                return nil, err
             }
         {{- end -}}
     {{ end }}

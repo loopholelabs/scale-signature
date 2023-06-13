@@ -60,13 +60,13 @@
         {{- if (Deref .Accessor) }}
             result, err := decode{{ .Reference }}(d)
             if err != nil {
-                return err
+                return nil, err
             }
             x.{{ LowerFirst .Name }} = result
         {{- else }}
             result, err := decode{{ .Reference }}(d)
             if err != nil {
-                return err
+                return nil, err
             }
             x.{{ .Name }} = result
         {{- end -}}

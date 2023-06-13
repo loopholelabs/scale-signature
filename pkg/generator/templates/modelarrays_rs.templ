@@ -27,7 +27,7 @@
     {{- range .ModelArrays }}
         let size_{{ SnakeCase .Name }} = d.decode_array(Kind::Any)?;
         for _ in 0..size_{{ SnakeCase .Name }} {
-            x.{{ SnakeCase .Name }}.push({{ .Reference }}::decode(d)?);
+            x.{{ SnakeCase .Name }}.push({{ .Reference }}::decode(d)?.ok_or(DecodingError::InvalidArray)?);
         }
     {{- end }}
 {{ end }}

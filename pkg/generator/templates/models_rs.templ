@@ -22,7 +22,7 @@
 
 {{ define "rs_models_decode" }}
     {{- range .Models }}
-        x.{{ SnakeCase .Name }} = Option::<{{ .Reference }}>::decode(d)?;
+        x.{{ SnakeCase .Name }} = {{ .Reference }}::decode(d)?;
     {{- end }}
 {{ end }}
 
