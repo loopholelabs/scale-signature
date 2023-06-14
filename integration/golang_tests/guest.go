@@ -6,23 +6,25 @@ package golang_tests
 
 import (
 	"github.com/loopholelabs/polyglot"
+	"github.com/loopholelabs/scale/signature"
+	"os"
 	"unsafe"
 )
+
+const identifier = "MasterSchema:MasterSchemaTag"
 
 var (
 	writeBuffer = polyglot.NewBuffer()
 	readBuffer  []byte
+	initial     = signature.NewInitial()
 )
 
 // _Write serializes the signature into the global writeBuffer and returns the pointer to the buffer and its size
 //
 // Users should not use this method.
-func _Write(input *EmptyModel, output *ModelWithAllFieldTypes) (uint32, uint32) {
+func _Write(ctx *ModelWithAllFieldTypes) (uint32, uint32) {
 	writeBuffer.Reset()
-
-	input.Encode(writeBuffer)
-
-	output.Encode(writeBuffer)
+	ctx.Encode(writeBuffer)
 	underlying := writeBuffer.Bytes()
 	ptr := &underlying[0]
 	unsafePtr := uintptr(unsafe.Pointer(ptr))
@@ -32,16 +34,8 @@ func _Write(input *EmptyModel, output *ModelWithAllFieldTypes) (uint32, uint32) 
 // _Read deserializes signature from the global readBuffer
 //
 // Users should not use this method.
-func _Read(input *EmptyModel, output *ModelWithAllFieldTypes) (*EmptyModel, *ModelWithAllFieldTypes, error) {
-	var err error
-
-	input, err = DecodeEmptyModel(input, readBuffer)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	output, err = DecodeModelWithAllFieldTypes(output, readBuffer)
-	return input, output, err
+func _Read(ctx *ModelWithAllFieldTypes) (*ModelWithAllFieldTypes, error) {
+	return DecodeModelWithAllFieldTypes(ctx, readBuffer)
 }
 
 // _Error serializes an error into the global writeBuffer and returns a pointer to the buffer and its size
@@ -67,10 +61,26 @@ func _Resize(size uint32) uint32 {
 	return uint32(uintptr(unsafe.Pointer(&readBuffer[0])))
 }
 
+// _Initialize initializes the function at runtime and registers any required
+// environment variables
+//
+// Users should not use this method.
+func _Initialize() {
+	err := initial.Decode(readBuffer)
+	if err != nil {
+		return
+	}
+}
+
+// Identifier returns the identifier of the Scale Signature
+func Identifier() string {
+	return identifier
+}
+
 // Next calls the next function in the Scale Function Chain
-func Next(input *EmptyModel, output *ModelWithAllFieldTypes) (*EmptyModel, *ModelWithAllFieldTypes, error) {
-	next(_Write(input, output))
-	return _Read(input, output)
+func Next(ctx *ModelWithAllFieldTypes) (*ModelWithAllFieldTypes, error) {
+	next(_Write(ctx))
+	return _Read(ctx)
 }
 
 //export next

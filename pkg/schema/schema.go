@@ -47,17 +47,16 @@ var (
 )
 
 type Schema struct {
-	Version string         `hcl:"version,attr"`
-	Config  ConfigSchema   `hcl:"config,block"`
-	Enums   []*EnumSchema  `hcl:"enum,block"`
-	Models  []*ModelSchema `hcl:"model,block"`
-}
-
-type ConfigSchema struct {
-	Name   string `hcl:"name,attr"`
-	Tag    string `hcl:"tag,attr"`
-	Input  string `hcl:"input,optional"`
-	Output string `hcl:"output,attr"`
+	Version            string         `hcl:"version,attr"`
+	Name               string         `hcl:"name,attr"`
+	Tag                string         `hcl:"tag,attr"`
+	Context            string         `hcl:"context,attr"`
+	Enums              []*EnumSchema  `hcl:"enum,block"`
+	Models             []*ModelSchema `hcl:"model,block"`
+	hasLimitValidator  bool
+	hasLengthValidator bool
+	hasRegexValidator  bool
+	hasCaseModifier    bool
 }
 
 func ReadSchema(path string) (*Schema, error) {
@@ -87,11 +86,11 @@ func (s *Schema) Decode(data []byte) error {
 func (s *Schema) Validate() error {
 	switch s.Version {
 	case V1AlphaVersion:
-		if !ValidLabel.MatchString(s.Config.Name) {
+		if !ValidLabel.MatchString(s.Name) {
 			return ErrInvalidName
 		}
 
-		if InvalidString.MatchString(s.Config.Tag) {
+		if InvalidString.MatchString(s.Tag) {
 			return ErrInvalidTag
 		}
 
@@ -137,11 +136,29 @@ func (s *Schema) Validate() error {
 				}
 			}
 
+			for _, str := range model.Strings {
+				if str.LengthValidator != nil {
+					s.hasLengthValidator = true
+				}
+				if str.RegexValidator != nil {
+					s.hasRegexValidator = true
+				}
+				if str.CaseModifier != nil {
+					s.hasCaseModifier = true
+				}
+			}
+
 			for _, strMap := range model.StringMaps {
 				if !ValidPrimitiveType(strMap.Value) {
 					if _, ok := knownModels[strMap.Value]; !ok {
 						return fmt.Errorf("unknown %s.%s.value: %s", model.Name, strMap.Name, strMap.Value)
 					}
+				}
+			}
+
+			for _, i32 := range model.Int32s {
+				if i32.LimitValidator != nil {
+					s.hasLimitValidator = true
 				}
 			}
 
@@ -153,11 +170,23 @@ func (s *Schema) Validate() error {
 				}
 			}
 
+			for _, i64 := range model.Int64s {
+				if i64.LimitValidator != nil {
+					s.hasLimitValidator = true
+				}
+			}
+
 			for _, i64Map := range model.Int64Maps {
 				if !ValidPrimitiveType(i64Map.Value) {
 					if _, ok := knownModels[i64Map.Value]; !ok {
 						return fmt.Errorf("unknown %s.%s.value: %s", model.Name, i64Map.Name, i64Map.Value)
 					}
+				}
+			}
+
+			for _, u32 := range model.Uint32s {
+				if u32.LimitValidator != nil {
+					s.hasLimitValidator = true
 				}
 			}
 
@@ -169,11 +198,29 @@ func (s *Schema) Validate() error {
 				}
 			}
 
+			for _, u64 := range model.Uint64s {
+				if u64.LimitValidator != nil {
+					s.hasLimitValidator = true
+				}
+			}
+
 			for _, u64Map := range model.Uint64Maps {
 				if !ValidPrimitiveType(u64Map.Value) {
 					if _, ok := knownModels[u64Map.Value]; !ok {
 						return fmt.Errorf("unknown %s.%s.value: %s", model.Name, u64Map.Name, u64Map.Value)
 					}
+				}
+			}
+
+			for _, f32 := range model.Float32s {
+				if f32.LimitValidator != nil {
+					s.hasLimitValidator = true
+				}
+			}
+
+			for _, f64 := range model.Float64s {
+				if f64.LimitValidator != nil {
+					s.hasLimitValidator = true
 				}
 			}
 
@@ -202,16 +249,9 @@ func (s *Schema) Validate() error {
 			}
 		}
 
-		if s.Config.Input != "" {
-			s.Config.Input = TitleCaser.String(s.Config.Input)
-			if _, ok := knownModels[s.Config.Input]; !ok {
-				return fmt.Errorf("unknown config.input: %s", s.Config.Input)
-			}
-		}
-
-		s.Config.Output = TitleCaser.String(s.Config.Output)
-		if _, ok := knownModels[s.Config.Output]; !ok {
-			return fmt.Errorf("unknown config.output: %s", s.Config.Output)
+		s.Context = TitleCaser.String(s.Context)
+		if _, ok := knownModels[s.Context]; !ok {
+			return fmt.Errorf("unknown context: %s", s.Context)
 		}
 
 		return nil
@@ -367,6 +407,22 @@ func (s *Schema) DisableAccessorsValidatorsModifiers() error {
 	return nil
 }
 
+func (s *Schema) HasLimitValidator() bool {
+	return s.hasLimitValidator
+}
+
+func (s *Schema) HasLengthValidator() bool {
+	return s.hasLengthValidator
+}
+
+func (s *Schema) HasRegexValidator() bool {
+	return s.hasRegexValidator
+}
+
+func (s *Schema) HasCaseModifier() bool {
+	return s.hasCaseModifier
+}
+
 func ValidPrimitiveType(t string) bool {
 	switch t {
 	case "string", "int32", "int64", "uint32", "uint64", "float32", "float64", "bool", "bytes":
@@ -378,13 +434,9 @@ func ValidPrimitiveType(t string) bool {
 
 const MasterTestingSchema = `
 version = "v1alpha"
-
-config {
-	name = "MasterSchema"
-	tag = "MasterSchemaTag"
-	input = "EmptyModel"
-	output = "ModelWithAllFieldTypes"
-}
+name = "MasterSchema"
+tag = "MasterSchemaTag"
+context = "ModelWithAllFieldTypes"
 
 model EmptyModel {}
 

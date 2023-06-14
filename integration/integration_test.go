@@ -27,6 +27,44 @@ import (
 	"testing"
 )
 
+const simpleSchema = `
+version = "v1alpha"
+name = "simpleSchema"
+tag = "simpleSchematag"
+context = "Context"
+model Context {
+	int32 A {
+		default = 0
+	}
+
+	int32 B {
+		default = 0
+	}
+
+	int32 C {
+		default = 0
+	}
+}
+`
+
+func TestSimpleSchema(t *testing.T) {
+	g, err := golang.New()
+	require.NoError(t, err)
+
+	s := new(schema.Schema)
+	err = s.Decode([]byte(simpleSchema))
+	require.NoError(t, err)
+
+	require.NoError(t, s.Validate())
+
+	const golangDir = "./golang_tests"
+	formatted, err := g.Generate(s, "golang_tests", "v0.1.0")
+	require.NoError(t, err)
+
+	err = os.WriteFile(golangDir+"/generated.go", formatted, 0644)
+	require.NoError(t, err)
+}
+
 func TestGolangToGolang(t *testing.T) {
 	g, err := golang.New()
 	require.NoError(t, err)

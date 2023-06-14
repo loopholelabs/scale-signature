@@ -82,6 +82,25 @@ func (g *Generator) GenerateGuest(schema *schema.Schema, packageName string, ver
 	return format.Source(buf.Bytes())
 }
 
+// GenerateHost generates the host bindings
+func (g *Generator) GenerateHost(schema *schema.Schema, packageName string, version string) ([]byte, error) {
+	if packageName == "" {
+		packageName = defaultPackageName
+	}
+
+	buf := new(bytes.Buffer)
+	err := g.templ.ExecuteTemplate(buf, "host.go.templ", map[string]any{
+		"schema":  schema,
+		"version": version,
+		"package": packageName,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return format.Source(buf.Bytes())
+}
+
 func templateFunctions() template.FuncMap {
 	return template.FuncMap{
 		"Primitive":               primitive,
