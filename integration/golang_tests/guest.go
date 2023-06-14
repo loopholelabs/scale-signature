@@ -6,8 +6,7 @@ package golang_tests
 
 import (
 	"github.com/loopholelabs/polyglot"
-	"github.com/loopholelabs/scale/signature"
-	"os"
+
 	"unsafe"
 )
 
@@ -16,7 +15,6 @@ const identifier = "MasterSchema:MasterSchemaTag"
 var (
 	writeBuffer = polyglot.NewBuffer()
 	readBuffer  []byte
-	initial     = signature.NewInitial()
 )
 
 // _Write serializes the signature into the global writeBuffer and returns the pointer to the buffer and its size
@@ -65,12 +63,6 @@ func _Resize(size uint32) uint32 {
 // environment variables
 //
 // Users should not use this method.
-func _Initialize() {
-	err := initial.Decode(readBuffer)
-	if err != nil {
-		return
-	}
-}
 
 // Identifier returns the identifier of the Scale Signature
 func Identifier() string {
