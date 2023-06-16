@@ -6,7 +6,6 @@ package {{ .package }}
 
 import (
     "github.com/loopholelabs/polyglot"
-{{/*    "github.com/loopholelabs/scale-signature"*/}}
     "unsafe"
 )
 
@@ -15,7 +14,6 @@ const identifier = "{{ .schema.Name }}:{{ .schema.Tag }}"
 var (
     writeBuffer = polyglot.NewBuffer()
     readBuffer  []byte
-{{/*    initial = signature.NewInitial()*/}}
 )
 
 // _Write serializes the signature into the global writeBuffer and returns the pointer to the buffer and its size
@@ -59,17 +57,6 @@ func _Resize(size uint32) uint32 {
     readBuffer = readBuffer[:size]
     return uint32(uintptr(unsafe.Pointer(&readBuffer[0])))
 }
-
-// _Initialize initializes the function at runtime and registers any required
-// environment variables
-//
-// Users should not use this method.
-{{/*func _Initialize() {*/}}
-{{/*    err := initial.Decode(readBuffer)*/}}
-{{/*    if err != nil {*/}}
-{{/*        return*/}}
-{{/*    }*/}}
-{{/*}*/}}
 
 // Identifier returns the identifier of the Scale Signature
 func Identifier() string {
