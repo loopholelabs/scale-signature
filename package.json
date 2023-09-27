@@ -1,6 +1,6 @@
 {
   "name": "@loopholelabs/scale-signature",
-  "version": "0.2.11",
+  "version": "0.2.12",
   "license": "apache-2.0",
   "description": "The definitions and tooling required to test and consume Typescript Signatures for Scale Functions.",
   "source": "index.ts",
@@ -8,6 +8,7 @@
   "scripts": {
     "build": "rm -rf dist && tsc --outDir dist && cp package.json dist"
   },
+  "dependencies": {},
   "devDependencies": {
     "@types/google-protobuf": "^3.15.6",
     "@types/jest": "^28.1.5",
